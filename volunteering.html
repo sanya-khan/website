@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Volunteering · Sanya Khan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #f5f2ea;
+      --fg:       #2D3A31;
+      --sage:     #8C9A84;
+      --clay:     #DCCFC2;
+      --stone:    #E6E2DA;
+      --terra:    #f86e48;
+      --navy:     #1B263B;
+      --surface:  #FFFFFF;
+      --warm:     #F2F0EB;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans:  'Source Sans 3', system-ui, sans-serif;
+      --r-card: 24px;
+      --r-btn:  9999px;
+      --shadow-sm: 0 4px 6px -1px rgba(45,58,49,0.05);
+      --shadow-xl: 0 25px 50px -12px rgba(45,58,49,0.16);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+
+    .grain { pointer-events: none; position: fixed; inset: 0; z-index: 200; opacity: 0.018; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-repeat: repeat; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--bg); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; height: 64px; display: flex; align-items: center; }
+    .nav-logo { font-family: var(--font-serif); font-weight: 700; font-size: 17px; color: var(--fg); letter-spacing: 0.01em; margin-right: auto; flex-shrink: 0; transition: color 300ms ease-out; }
+    .nav-logo:hover { color: var(--sage); }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.02em; color: var(--fg); opacity: 0.55; padding: 6px 14px; border-radius: var(--r-btn); transition: all 300ms ease-out; }
+    .nav-links a:hover { opacity: 1; background: var(--warm); }
+    .nav-links a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 48px; }
+
+    .page-header { padding: 80px 0 64px; }
+    .eyebrow { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sage); margin-bottom: 16px; }
+    .page-title { font-family: var(--font-serif); font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 16px; }
+    .page-title em { font-style: italic; color: var(--fg); }
+    .page-subtitle { font-size: 17px; color: var(--fg); opacity: 0.6; line-height: 1.75; max-width: 520px; }
+
+    /* VOLUNTEER CARDS — staggered 2-col grid */
+    .content-area { padding: 56px 0; border-top: 1px solid var(--stone); }
+    .vol-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-items: start; margin-bottom: 56px; }
+
+    .vol-card {
+      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
+      padding: 32px 30px; box-shadow: var(--shadow-sm);
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
+      position: relative; overflow: hidden;
+    }
+    .vol-card:nth-child(even) { margin-top: 28px; }
+    .vol-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-xl); border-color: var(--clay); }
+    .vol-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--sage); margin-bottom: 20px;
+    }
+    .vol-type { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--sage); margin-bottom: 6px; }
+    .vol-title { font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--fg); margin-bottom: 4px; line-height: 1.3; }
+    .vol-org { font-size: 13px; color: var(--fg); opacity: 0.55; margin-bottom: 14px; }
+    .vol-desc { font-size: 14px; color: var(--fg); opacity: 0.68; line-height: 1.7; margin-bottom: 16px; }
+    .vol-date {
+      display: inline-block; font-size: 12px; color: var(--terra);
+      font-weight: 600; letter-spacing: 0.04em;
+    }
+
+    /* SPOTLIGHT */
+    .initiative-spotlight {
+      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
+      padding: 40px; box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
+    }
+    .initiative-spotlight::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 4px; background: var(--sage); border-radius: 4px 0 0 4px;
+    }
+    .initiative-label {
+      font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em;
+      color: var(--sage); margin-bottom: 14px;
+    }
+    .initiative-spotlight h3 {
+      font-family: var(--font-serif); font-size: 22px; font-weight: 700;
+      color: var(--fg); margin-bottom: 14px; line-height: 1.3;
+    }
+    .initiative-spotlight p {
+      font-size: 15px; color: var(--fg); opacity: 0.7; line-height: 1.8;
+    }
+
+    .back-btn { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: var(--fg); opacity: 0.6; background: var(--warm); border: 1px solid var(--stone); border-radius: var(--r-btn); padding: 6px 16px; margin-top: 24px; transition: all 300ms ease-out; }
+    .back-btn:hover { opacity: 1; border-color: var(--clay); background: var(--surface); }
+
+    footer { border-top: 1px solid var(--stone); padding: 40px 0; text-align: center; margin-top: 56px; }
+    .footer-text { font-size: 13px; color: var(--fg); opacity: 0.45; letter-spacing: 0.03em; }
+    .footer-text a { transition: opacity 300ms ease; }
+    .footer-text a:hover { opacity: 1; color: var(--terra); }
+
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 20px; }
+      .nav-links a { font-size: 11px; padding: 5px 9px; }
+      .container { padding: 0 20px; }
+      .vol-grid { grid-template-columns: 1fr; }
+      .vol-card:nth-child(even) { margin-top: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Sanya Khan</a>
+    <ul class="nav-links">
+      <li><a href="articles.html">Articles</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="honors.html">Honors</a></li>
+      <li><a href="volunteering.html" class="active">Volunteering</a></li>
+      <li><a href="creative.html">Creative</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <a href="index.html" class="back-btn">← Home</a>
+  <div class="page-header">
+    <p class="eyebrow">Community</p>
+    <h1 class="page-title"><em>Volunteering</em></h1>
+    <p class="page-subtitle">Healthcare outreach, academic mentorship, and arts-based community programs across Mumbai and Los Angeles.</p>
+  </div>
+
+  <div class="content-area">
+    <div class="vol-grid">
+
+      <div class="vol-card">
+        <div class="vol-dot"></div>
+        <div class="vol-type">Healthcare</div>
+        <div class="vol-title">COVID-19 Vaccination Drives</div>
+        <div class="vol-org">SRCC Children's Hospital &nbsp;&middot;&nbsp; Rotaract Club of Kishinchand Chellaram College</div>
+        <p class="vol-desc">Volunteered at SRCC Children's Hospital through the Rotaract Club, organizing and supporting community COVID-19 vaccination drives in Mumbai during the height of the pandemic. Worked alongside medical staff to coordinate logistics, manage patient flow, and communicate health information to families.</p>
+        <span class="vol-date">2021 – 2022</span>
+      </div>
+
+      <div class="vol-card">
+        <div class="vol-dot"></div>
+        <div class="vol-type">Education &amp; Mentorship</div>
+        <div class="vol-title">Academic Mentor for High School Students</div>
+        <div class="vol-org">H.S.C., I.C.S.E., and S.S.C. Education Boards &nbsp;&middot;&nbsp; Mumbai</div>
+        <p class="vol-desc">Mentored high school students across Mumbai's major education boards — H.S.C., I.C.S.E., and S.S.C. — guiding academic planning, skill development, and college preparation. Provided one-on-one guidance to students navigating board exams, subject selection, and post-secondary planning during a formative and high-pressure period.</p>
+        <span class="vol-date">2019 – 2022</span>
+      </div>
+
+      <div class="vol-card">
+        <div class="vol-dot"></div>
+        <div class="vol-type">Arts &amp; Cultural Outreach</div>
+        <div class="vol-title">Summer Dance Workshops — Jazz, Ballet &amp; Contemporary</div>
+        <div class="vol-org">Community &amp; Nupoor Zankar Bharatnatyam Institute &nbsp;&middot;&nbsp; Mumbai</div>
+        <p class="vol-desc">Led summer workshops in the community and at the Nupoor Zankar Bharatnatyam Institute to introduce children and young adults to jazz, ballet, and contemporary dance. Designed accessible, inclusive programs to foster cultural appreciation, creativity, and physical expression in students with varying levels of prior dance experience.</p>
+        <span class="vol-date">2019 – 2022</span>
+      </div>
+
+      <div class="vol-card">
+        <div class="vol-dot"></div>
+        <div class="vol-type">Healthcare &amp; Arts Therapy</div>
+        <div class="vol-title">Dance &amp; Yoga Workshops for Pediatric Cancer Patients</div>
+        <div class="vol-org">Tata Memorial Centre &nbsp;&middot;&nbsp; Mumbai</div>
+        <p class="vol-desc">Taught dance and yoga to children receiving treatment at Tata Memorial Centre, one of India's leading cancer hospitals. Conducted skill-building and recreational workshops designed to promote emotional well-being, stress relief, and moments of joy for pediatric patients and their families during a deeply challenging time.</p>
+        <span class="vol-date">2019 – 2020</span>
+      </div>
+
+    </div>
+
+    <div class="initiative-spotlight">
+      <div class="initiative-label">Civic Initiative</div>
+      <h3>Spark A Smile — Founder</h3>
+      <p>Founded a civic outreach program in Mumbai in 2021, organizing citywide clothing drives and COVID relief kits. Distributed 2,000+ clothing items and care packages to 150+ families affected by the pandemic. The initiative was awarded "Best Social Service Provider during COVID-19" by the Nationalist Youth Congress, Mumbai. <em>(Mar 2021 – May 2022)</em></p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p class="footer-text">Sanya Khan &nbsp;&middot;&nbsp; <a href="index.html">Back to home</a></p>
+</footer>
+
+</body>
+</html>

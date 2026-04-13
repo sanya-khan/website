@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Articles · Sanya Khan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #f5f2ea;
+      --fg:       #2D3A31;
+      --sage:     #8C9A84;
+      --clay:     #DCCFC2;
+      --stone:    #E6E2DA;
+      --terra:    #f86e48;
+      --navy:     #1B263B;
+      --surface:  #FFFFFF;
+      --warm:     #F2F0EB;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans:  'Source Sans 3', system-ui, sans-serif;
+      --r-card: 24px;
+      --r-btn:  9999px;
+      --shadow-sm: 0 4px 6px -1px rgba(45,58,49,0.05);
+      --shadow-xl: 0 25px 50px -12px rgba(45,58,49,0.16);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .grain { pointer-events: none; position: fixed; inset: 0; z-index: 200; opacity: 0.018; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-repeat: repeat; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--bg); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; height: 64px; display: flex; align-items: center; }
+    .nav-logo { font-family: var(--font-serif); font-weight: 700; font-size: 17px; color: var(--fg); letter-spacing: 0.01em; margin-right: auto; flex-shrink: 0; transition: color 300ms ease-out; }
+    .nav-logo:hover { color: var(--sage); }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.02em; color: var(--fg); opacity: 0.55; padding: 6px 14px; border-radius: var(--r-btn); transition: all 300ms ease-out; }
+    .nav-links a:hover { opacity: 1; background: var(--warm); }
+    .nav-links a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 48px; }
+
+    .page-header { padding: 80px 0 64px; }
+    .eyebrow { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sage); margin-bottom: 16px; }
+    .page-title { font-family: var(--font-serif); font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; color: var(--fg); margin-bottom: 16px; }
+    .page-title em { font-style: italic; color: var(--terra); }
+    .page-subtitle { font-size: 17px; color: var(--fg); opacity: 0.6; line-height: 1.75; max-width: 520px; }
+
+    .pub-section { padding: 56px 0; border-top: 1px solid var(--stone); }
+    .pub-section-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 36px; }
+    .pub-section-title { font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--fg); }
+    .pub-section-count { font-size: 13px; color: var(--fg); opacity: 0.45; }
+    .pub-section-desc { font-size: 15px; color: var(--fg); opacity: 0.6; line-height: 1.7; margin-bottom: 32px; max-width: 600px; }
+
+    /* HER CAMPUS — 2-col staggered grid */
+    .articles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-items: start; }
+    .article-card {
+      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
+      padding: 26px 28px; display: flex; flex-direction: column; gap: 8px;
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
+      box-shadow: var(--shadow-sm); color: var(--fg);
+    }
+    .article-card:nth-child(even) { margin-top: 24px; }
+    .article-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-xl); border-color: var(--clay); }
+    .article-pub { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--sage); }
+    .article-title { font-family: var(--font-serif); font-size: 16px; font-weight: 600; line-height: 1.35; color: var(--fg); margin-top: 2px; }
+    .article-desc { font-size: 13px; color: var(--fg); opacity: 0.6; line-height: 1.6; flex: 1; }
+    .article-link { margin-top: 12px; font-size: 12px; font-weight: 600; color: var(--terra); display: flex; align-items: center; gap: 5px; letter-spacing: 0.04em; transition: gap 300ms ease-out; }
+    .article-card:hover .article-link { gap: 9px; }
+
+    /* FAST — full-width list */
+    .fast-grid { display: flex; flex-direction: column; gap: 12px; }
+    .fast-card {
+      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
+      padding: 24px 32px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 24px;
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
+      box-shadow: var(--shadow-sm); color: var(--fg);
+    }
+    .fast-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-xl); border-color: var(--clay); }
+    .fast-series { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--sage); margin-bottom: 5px; }
+    .fast-title { font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--fg); margin-bottom: 6px; }
+    .fast-desc { font-size: 14px; color: var(--fg); opacity: 0.6; line-height: 1.55; }
+    .fast-arrow { font-size: 20px; color: var(--terra); flex-shrink: 0; transition: transform 300ms ease-out; }
+    .fast-card:hover .fast-arrow { transform: translate(3px, -3px); }
+
+    .back-btn { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: var(--fg); opacity: 0.6; background: var(--warm); border: 1px solid var(--stone); border-radius: var(--r-btn); padding: 6px 16px; margin-top: 24px; transition: all 300ms ease-out; }
+    .back-btn:hover { opacity: 1; border-color: var(--clay); background: var(--surface); }
+
+    footer { border-top: 1px solid var(--stone); padding: 40px 0; text-align: center; margin-top: 40px; }
+    .footer-text { font-size: 13px; color: var(--fg); opacity: 0.45; letter-spacing: 0.03em; }
+    .footer-text a { transition: opacity 300ms ease; }
+    .footer-text a:hover { opacity: 1; color: var(--terra); }
+
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 20px; }
+      .nav-links a { font-size: 11px; padding: 5px 9px; }
+      .container { padding: 0 20px; }
+      .articles-grid { grid-template-columns: 1fr; }
+      .article-card:nth-child(even) { margin-top: 0; }
+      .fast-card { grid-template-columns: 1fr; }
+      .fast-arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Sanya Khan</a>
+    <ul class="nav-links">
+      <li><a href="articles.html" class="active">Articles</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="honors.html">Honors</a></li>
+      <li><a href="volunteering.html">Volunteering</a></li>
+      <li><a href="creative.html">Creative</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <a href="index.html" class="back-btn">← Home</a>
+  <div class="page-header">
+    <p class="eyebrow">Writing</p>
+    <h1 class="page-title">Published <em>Articles</em></h1>
+    <p class="page-subtitle">Feature writing across Her Campus UCLA and FAST at UCLA — covering fashion, psychology, culture, lifestyle, and identity.</p>
+  </div>
+
+  <section class="pub-section">
+    <div class="pub-section-header">
+      <h2 class="pub-section-title">Her Campus UCLA</h2>
+      <span class="pub-section-count">12 articles</span>
+    </div>
+    <div class="articles-grid">
+
+      <a class="article-card" href="https://www.hercampus.com/school/ucla/homecoming-in-transit-my-24-hour-airport-routine/" target="_blank" rel="noopener">
+        <span class="article-pub">Her Campus UCLA</span>
+        <div class="article-title">Homecoming in Transit: My 24 Hour Airport Routine</div>
+        <p class="article-desc">A personal essay on the ritual of flying home — finding stillness, nostalgia, and identity in transit between cities.</p>
+        <div class="article-link">Read article ↗</div>
+      </a>
+
+      <a class="article-card" href="https://www.hercampus.com/school/ucla/from-the-city-of-dreams-to-the-city-of-angels-from-mumbai-to-la/" target="_blank" rel="noopener">
+        <span class="article-pub">Her Campus UCLA</span>
+        <div class="article-title">From the "City of Dreams" to the "City of Angels" — From Mumbai to LA</div>
+        <p class="article-desc">On identity, displacement, and the strange joy of building a life between two cities that feel like opposites.</p>
+        <div class="article-link">Read article ↗</div>
+      </a>
+
+      <a class="article-card" href="https://www.hercampus.com/school/ucla/a-how-to-guide-on-doing-your-twenties-right/" target="_blank" rel="noopener">
+        <span class="article-pub">Her Campus UCLA</span>
+        <div class="article-title">A How-To Guide to Getting Your Twenties Right</div>
+        <p class="article-desc">A guide to embracing uncertainty, intention, and growth in your early twenties without the pressure of perfection.</p>
+        <div class="article-link">Read article ↗</div>
+      </a>
+
+      <a class="article-card" href="https://www.hercampus.com/school/ucla/the-gaze-and-the-body-her-fashion-vs-his-fashion/" target="_blank" rel="noopener">
+        <span class="article-pub">Her Campus UCLA</span>
+        <div class="article-title">The Gaze and the Body: Her Fashion vs. His Fashion</div>
+        <p class="article-desc">Exploring the gendered dynamics of how clothing is worn, witnessed, and judged differently across gender lines.</p>
+        <div class="article-link">Read article ↗</div>
+      </a>
+
+      <a class="article-card" href="https://www.hercampus.com/school/ucla/i-left-my-heart-on-an-aritzia-sleeve-a-fall-with-grace/" target="_blank" rel="noopener">
+        <span class="article-pub">Her Campus UCLA</span>
+        <div class="article-title">I Left My Heart on an Aritzia Sleeve: A Fall With Grace</div>
+        <p class="article-desc">A meditation on fall fashion, emotional attachment to clothing, and the quiet poetry of seasonal change.</p>
+        <div class="article-link">Read article ↗</div>
+      </a>
+
+      <a class="article-card" href="https://www.hercampus.com/school/ucla/the-psychology-of-procrastination-why-we-wait-on-the-things-we-love/" target="_blank" rel="noopener">
+        <span class="article-pub">Her Campus UCLA</span>
+        <div class="article-title">The Psychology of Procrastination: Why We Wait on the Things We Love</div>
+        <p class="article-desc">A behavioral science lens on why we delay the things we care about most — and what it reveals about how we value ourselves.</p>
+        <div class="article-link">Read article ↗</div>
+      </a>
+
+      <a class="article-card" href="https://www.hercampus.com/school/ucla/the-supplement-shelf-is-a-love-letter-to-anxiety-your-grocery-list-can-do-better/" target="_blank" rel="noopener">
+        <span class="article-pub">Her Campus UCLA</span>
+        <div class="article-title">The Supplement Shelf Is Not Self-Care, Your Grocery List Can Do Better</div>
+        <p class="article-desc">Making the case for food-as-medicine over the supplement industrial complex and its carefully marketed anxiety.</p>
+        <div class="article-link">Read article ↗</div>
+      </a>
+
+      <a class="article-card" href="https://www.hercampus.com/school/ucla/when-the-crown-feels-heavy-but-holy/" target="_blank" rel="noopener">
+        <span class="article-pub">Her Campus UCLA</span>
+        <div class="article-title">When the Crown Feels Heavy but Holy</div>
+        <p class="article-desc">On identity, burden, and the sacred weight of being fully, unapologetically yourself in a world that resists it.</p>
+        <div class="article-link">Read article ↗</div>
+      </a>
+
+      <a class="article-card" href="https://www.hercampus.com/school/ucla/the-ways-los-angeles-influences-you-without-you-noticing/" target="_blank" rel="noopener">
+        <span class="article-pub">Her Campus UCLA</span>
+        <div class="article-title">The Ways Los Angeles Influences You Without You Noticing</div>
+        <p class="article-desc">How Los Angeles quietly reshapes your aesthetics, ambitions, and sense of self — without ever asking permission.</p>
+        <div class="article-link">Read article ↗</div>
+      </a>
+
+      <a class="article-card" href="https://www.hercampus.com/school/ucla/gossip-girl-at-ucla-censored-edition/" target="_blank" rel="noopener">
+        <span class="article-pub">Her Campus UCLA</span>
+        <div class="article-title">Gossip Girl at UCLA: Censored Edition</div>
+        <p class="article-desc">A satirical and affectionate look at UCLA campus culture filtered through the dramatic lens of the iconic show.</p>
+        <div class="article-link">Read article ↗</div>
+      </a>
+
+      <a class="article-card" href="https://www.hercampus.com/school/ucla/who-is-the-modern-day-jane-austen-dating-wit-and-womanhood-in-the-algorithm-age/" target="_blank" rel="noopener">
+        <span class="article-pub">Her Campus UCLA</span>
+        <div class="article-title">Who Is the Modern-Day Jane Austen? Dating, Wit, and Womanhood in the Algorithm Age</div>
+        <p class="article-desc">Austen's social acuity translated into the era of apps, algorithms, and digital performance of desirability.</p>
+        <div class="article-link">Read article ↗</div>
+      </a>
+
+      <a class="article-card" href="https://www.hercampus.com/school/ucla/whats-in-my-bag-a-girls-only-secret-weapon/" target="_blank" rel="noopener">
+        <span class="article-pub">Her Campus UCLA</span>
+        <div class="article-title">What's In My Bag: A Girl's Secret Weapon</div>
+        <p class="article-desc">An essay through objects — what a woman carries, and what it quietly reveals about who she is and what she needs.</p>
+        <div class="article-link">Read article ↗</div>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="pub-section">
+    <div class="pub-section-header">
+      <h2 class="pub-section-title">FAST at UCLA &mdash; The Effect Series</h2>
+      <span class="pub-section-count">5 articles</span>
+    </div>
+    <p class="pub-section-desc">A fashion journalism series exploring the psychology, culture, and embodied histories of clothing. Each piece is accompanied by original editorial photography and styling.</p>
+
+    <div class="fast-grid">
+
+      <a class="fast-card" href="https://www.fastatucla.com/fast-at-ucla/saree" target="_blank" rel="noopener">
+        <div>
+          <div class="fast-series">The Effect Series</div>
+          <div class="fast-title">The Saree Effect</div>
+          <div class="fast-desc">On the cultural weight, feminine power, and diasporic significance of the saree as more than garment — as identity, memory, and resistance.</div>
+        </div>
+        <div class="fast-arrow">↗</div>
+      </a>
+
+      <a class="fast-card" href="https://www.fastatucla.com/fast-at-ucla/ballet" target="_blank" rel="noopener">
+        <div>
+          <div class="fast-series">The Effect Series</div>
+          <div class="fast-title">The Ballerina Effect</div>
+          <div class="fast-desc">How ballet's Eurocentric aesthetic ideals, demanding physicality, and cultural mythology shape the dancer's identity and self-perception.</div>
+        </div>
+        <div class="fast-arrow">↗</div>
+      </a>
+
+      <a class="fast-card" href="https://fastatucla.substack.com/p/the-uniform-effect" target="_blank" rel="noopener">
+        <div>
+          <div class="fast-series">The Effect Series</div>
+          <div class="fast-title">The Uniform Effect</div>
+          <div class="fast-desc">The paradox of uniformity — how dress codes standardize appearance yet consistently fail to erase individuality, class, and self-expression.</div>
+        </div>
+        <div class="fast-arrow">↗</div>
+      </a>
+
+      <a class="fast-card" href="https://www.fastatucla.com/fast-at-ucla/holi" target="_blank" rel="noopener">
+        <div>
+          <div class="fast-series">The Effect Series</div>
+          <div class="fast-title">Holi, Felt</div>
+          <div class="fast-desc">A sensory, experiential essay on Holi as cultural memory, celebration, and the visceral way festivals live in the body long after they end.</div>
+        </div>
+        <div class="fast-arrow">↗</div>
+      </a>
+
+      <a class="fast-card" href="https://www.fastatucla.com/fast-at-ucla/body-canvas" target="_blank" rel="noopener">
+        <div>
+          <div class="fast-series">The Effect Series</div>
+          <div class="fast-title">The Canvas Effect</div>
+          <div class="fast-desc">The body as canvas — examining tattooing, adornment, and the long tradition of marking the body as an art of visible self-authorship.</div>
+        </div>
+        <div class="fast-arrow">↗</div>
+      </a>
+
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p class="footer-text">Sanya Khan &nbsp;&middot;&nbsp; <a href="index.html">Back to home</a></p>
+</footer>
+
+</body>
+</html>

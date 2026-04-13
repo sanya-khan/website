@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Honors · Sanya Khan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #f5f2ea;
+      --fg:       #2D3A31;
+      --sage:     #8C9A84;
+      --clay:     #DCCFC2;
+      --stone:    #E6E2DA;
+      --terra:    #f86e48;
+      --navy:     #1B263B;
+      --surface:  #FFFFFF;
+      --warm:     #F2F0EB;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans:  'Source Sans 3', system-ui, sans-serif;
+      --r-card: 24px;
+      --r-btn:  9999px;
+      --shadow-sm: 0 4px 6px -1px rgba(45,58,49,0.05);
+      --shadow-xl: 0 25px 50px -12px rgba(45,58,49,0.16);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+
+    .grain { pointer-events: none; position: fixed; inset: 0; z-index: 200; opacity: 0.018; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-repeat: repeat; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--bg); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; height: 64px; display: flex; align-items: center; }
+    .nav-logo { font-family: var(--font-serif); font-weight: 700; font-size: 17px; color: var(--fg); letter-spacing: 0.01em; margin-right: auto; flex-shrink: 0; transition: color 300ms ease-out; }
+    .nav-logo:hover { color: var(--sage); }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.02em; color: var(--fg); opacity: 0.55; padding: 6px 14px; border-radius: var(--r-btn); transition: all 300ms ease-out; }
+    .nav-links a:hover { opacity: 1; background: var(--warm); }
+    .nav-links a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 48px; }
+
+    .page-header { padding: 80px 0 64px; }
+    .eyebrow { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sage); margin-bottom: 16px; }
+    .page-title { font-family: var(--font-serif); font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 16px; }
+    .page-title em { font-style: italic; color: var(--terra); }
+    .page-subtitle { font-size: 17px; color: var(--fg); opacity: 0.6; line-height: 1.75; max-width: 520px; }
+
+    .honors-section { padding: 56px 0; border-top: 1px solid var(--stone); }
+    .honors-section-label { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; color: var(--sage); margin-bottom: 32px; }
+
+    /* WORLD RECORDS — featured */
+    .award-featured {
+      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
+      padding: 40px; box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
+    }
+    .award-featured::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 4px; background: var(--terra); border-radius: 4px 0 0 4px;
+    }
+    .award-pill {
+      display: inline-flex; align-items: center;
+      background: rgba(248,110,72,0.10); color: var(--terra);
+      border: 1px solid rgba(248,110,72,0.25); border-radius: var(--r-btn);
+      padding: 5px 18px; font-size: 12px; font-weight: 600;
+      letter-spacing: 0.04em; margin-bottom: 20px;
+    }
+    .award-title { font-family: var(--font-serif); font-size: 20px; font-weight: 700; margin-bottom: 6px; line-height: 1.3; }
+    .award-org { font-size: 14px; color: var(--sage); font-weight: 600; margin-bottom: 4px; }
+    .award-date { font-size: 13px; color: var(--fg); opacity: 0.5; margin-bottom: 16px; font-style: italic; }
+    .award-desc { font-size: 15px; color: var(--fg); opacity: 0.7; line-height: 1.75; }
+
+    /* ACADEMIC HONORS — clean list */
+    .honors-list {
+      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
+      overflow: hidden; box-shadow: var(--shadow-sm);
+    }
+    .honor-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 28px; gap: 16px;
+      border-bottom: 1px solid var(--stone);
+      transition: background 300ms ease-out;
+    }
+    .honor-row:last-child { border-bottom: none; }
+    .honor-row:hover { background: var(--warm); }
+    .honor-name { font-size: 15px; font-weight: 500; color: var(--fg); }
+    .honor-term { font-size: 13px; color: var(--fg); opacity: 0.5; white-space: nowrap; }
+
+    /* AWARD CARDS */
+    .awards-grid { display: flex; flex-direction: column; gap: 14px; }
+    .award-card {
+      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
+      padding: 24px 28px 24px 32px; display: flex; justify-content: space-between; align-items: flex-start; gap: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
+    }
+    .award-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-xl); border-color: var(--clay); }
+    .award-card-title { font-family: var(--font-serif); font-size: 17px; font-weight: 600; margin-bottom: 3px; line-height: 1.35; }
+    .award-card-org { font-size: 13px; color: var(--sage); font-weight: 600; margin-bottom: 8px; }
+    .award-card-desc { font-size: 14px; color: var(--fg); opacity: 0.65; line-height: 1.65; }
+    .award-card-date { font-size: 12px; color: var(--fg); opacity: 0.45; white-space: nowrap; flex-shrink: 0; font-style: italic; }
+
+    .back-btn { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: var(--fg); opacity: 0.6; background: var(--warm); border: 1px solid var(--stone); border-radius: var(--r-btn); padding: 6px 16px; margin-top: 24px; transition: all 300ms ease-out; }
+    .back-btn:hover { opacity: 1; border-color: var(--clay); background: var(--surface); }
+
+    footer { border-top: 1px solid var(--stone); padding: 40px 0; text-align: center; margin-top: 40px; }
+    .footer-text { font-size: 13px; color: var(--fg); opacity: 0.45; letter-spacing: 0.03em; }
+    .footer-text a { transition: opacity 300ms ease; }
+    .footer-text a:hover { opacity: 1; color: var(--terra); }
+
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 20px; }
+      .nav-links a { font-size: 11px; padding: 5px 9px; }
+      .container { padding: 0 20px; }
+      .award-card { flex-direction: column; }
+      .honor-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Sanya Khan</a>
+    <ul class="nav-links">
+      <li><a href="articles.html">Articles</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="honors.html" class="active">Honors</a></li>
+      <li><a href="volunteering.html">Volunteering</a></li>
+      <li><a href="creative.html">Creative</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <a href="index.html" class="back-btn">← Home</a>
+  <div class="page-header">
+    <p class="eyebrow">Recognition</p>
+    <h1 class="page-title">Honors &amp; <em>Awards</em></h1>
+    <p class="page-subtitle">World records, national competition wins, academic honors, and published literary works.</p>
+  </div>
+
+  <!-- WORLD RECORDS -->
+  <section class="honors-section">
+    <p class="honors-section-label">World Records</p>
+    <div class="award-featured">
+      <span class="award-pill">3 World Records</span>
+      <h2 class="award-title">Guinness Book of World Records &nbsp;&middot;&nbsp; Asia Book of Records &nbsp;&middot;&nbsp; India Book of Records</h2>
+      <div class="award-org">"Natya Kala Tirana" &nbsp;&mdash;&nbsp; Bharatnatyam Sword Dance Performance</div>
+      <div class="award-date">August 2018 &nbsp;&middot;&nbsp; Green India Mission, Karnataka</div>
+      <p class="award-desc">Awarded three simultaneous world records — the Guinness Book of World Records, The Asia Book of Records, and the India Book of Records — for performing in the "Bharatnatyam Sword Dance" as part of the Green India Mission. The performance garnered national media coverage across India.</p>
+    </div>
+  </section>
+
+  <!-- ACADEMIC HONORS -->
+  <section class="honors-section">
+    <p class="honors-section-label">Academic Honors</p>
+    <div class="honors-list">
+      <div class="honor-row">
+        <span class="honor-name">Dean's Honor List &nbsp;&middot;&nbsp; UCLA</span>
+        <span class="honor-term">Fall 2022</span>
+      </div>
+      <div class="honor-row">
+        <span class="honor-name">Dean's Honor List &nbsp;&middot;&nbsp; UCLA</span>
+        <span class="honor-term">Winter 2023</span>
+      </div>
+      <div class="honor-row">
+        <span class="honor-name">Dean's Honor List &nbsp;&middot;&nbsp; UCLA</span>
+        <span class="honor-term">Spring 2023</span>
+      </div>
+      <div class="honor-row">
+        <span class="honor-name">Dean's Honor List &nbsp;&middot;&nbsp; UCLA</span>
+        <span class="honor-term">Spring 2024</span>
+      </div>
+      <div class="honor-row">
+        <span class="honor-name">Dean's Honor List &nbsp;&middot;&nbsp; UCLA</span>
+        <span class="honor-term">Winter 2026</span>
+      </div>
+      <div class="honor-row">
+        <span class="honor-name">ISC Board Examination &nbsp;&middot;&nbsp; Kishinchand Chellaram College</span>
+        <span class="honor-term">94% &nbsp;&middot;&nbsp; 2022</span>
+      </div>
+      <div class="honor-row">
+        <span class="honor-name">ICSE Board Examination &nbsp;&middot;&nbsp; Queen Mary School</span>
+        <span class="honor-term">96% &nbsp;&middot;&nbsp; 2020</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPETITIONS & CIVIC AWARDS -->
+  <section class="honors-section">
+    <p class="honors-section-label">Competitions &amp; Civic Awards</p>
+    <div class="awards-grid">
+
+      <div class="award-card">
+        <div>
+          <div class="award-card-title">1st Place — "Invicta" National Slam Poetry Competition</div>
+          <div class="award-card-org">National Competition, India</div>
+          <p class="award-card-desc">Awarded 1st place for reciting an original piece on social justice and Hindu-Muslim riots in India.</p>
+        </div>
+        <div class="award-card-date">Oct 2021</div>
+      </div>
+
+      <div class="award-card">
+        <div>
+          <div class="award-card-title">Best Social Service Provider during Covid-19</div>
+          <div class="award-card-org">Nationalist Youth Congress, Mumbai</div>
+          <p class="award-card-desc">Awarded for founding 'Spark A Smile' — a civic outreach program that organized citywide clothing drives, distributing 2,000+ items and COVID relief kits to 150+ families across Mumbai.</p>
+        </div>
+        <div class="award-card-date">2021–2023</div>
+      </div>
+
+      <div class="award-card">
+        <div>
+          <div class="award-card-title">Head Girl of School</div>
+          <div class="award-card-org">Queen Mary School, Mumbai</div>
+          <p class="award-card-desc">Elected Head Girl for Grades 9–10, having previously served as Vice Captain of House (Gr. 8) and Junior Captain of House (Gr. 7).</p>
+        </div>
+        <div class="award-card-date">2019–2020</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LITERARY PUBLICATIONS -->
+  <section class="honors-section">
+    <p class="honors-section-label">Literary Publications</p>
+    <div class="awards-grid">
+
+      <div class="award-card">
+        <div>
+          <div class="award-card-title">Published in <em>The Night Wanderers</em></div>
+          <div class="award-card-org">The Writer's Abode</div>
+          <p class="award-card-desc">Contributed original poetry exploring themes of love, loss, and resilience.</p>
+        </div>
+        <div class="award-card-date">2020–2022</div>
+      </div>
+
+      <div class="award-card">
+        <div>
+          <div class="award-card-title">Published in <em>The Lost Love</em></div>
+          <div class="award-card-org">The Writer's Abode</div>
+          <p class="award-card-desc">Contributed original poetry highlighting emotional depth and cultural narrative within the anthology.</p>
+        </div>
+        <div class="award-card-date">2020–2022</div>
+      </div>
+
+      <div class="award-card">
+        <div>
+          <div class="award-card-title"><em>Hum of My Heart</em> — Ongoing Book</div>
+          <div class="award-card-org">Independent &nbsp;&middot;&nbsp; @hum_of_my_heart</div>
+          <p class="award-card-desc">Authoring a book exploring resilience and emotional healing, influenced by research and introspection during the pandemic. Active Instagram platform sharing mental health and well-being content to a growing community.</p>
+        </div>
+        <div class="award-card-date">Jan 2021 – Present</div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p class="footer-text">Sanya Khan &nbsp;&middot;&nbsp; <a href="index.html">Back to home</a></p>
+</footer>
+
+</body>
+</html>

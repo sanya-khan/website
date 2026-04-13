@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creative · Sanya Khan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #f5f2ea;
+      --fg:       #2D3A31;
+      --sage:     #8C9A84;
+      --clay:     #DCCFC2;
+      --stone:    #E6E2DA;
+      --terra:    #f86e48;
+      --navy:     #1B263B;
+      --surface:  #FFFFFF;
+      --warm:     #F2F0EB;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans:  'Source Sans 3', system-ui, sans-serif;
+      --r-card: 24px;
+      --r-btn:  9999px;
+      --shadow-sm: 0 4px 6px -1px rgba(45,58,49,0.05);
+      --shadow-xl: 0 25px 50px -12px rgba(45,58,49,0.16);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+
+    .grain { pointer-events: none; position: fixed; inset: 0; z-index: 200; opacity: 0.018; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-repeat: repeat; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--bg); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; height: 64px; display: flex; align-items: center; }
+    .nav-logo { font-family: var(--font-serif); font-weight: 700; font-size: 17px; color: var(--fg); letter-spacing: 0.01em; margin-right: auto; flex-shrink: 0; transition: color 300ms ease-out; }
+    .nav-logo:hover { color: var(--sage); }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.02em; color: var(--fg); opacity: 0.55; padding: 6px 14px; border-radius: var(--r-btn); transition: all 300ms ease-out; }
+    .nav-links a:hover { opacity: 1; background: var(--warm); }
+    .nav-links a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 48px; }
+
+    .page-header { padding: 80px 0 64px; }
+    .eyebrow { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sage); margin-bottom: 16px; }
+    .page-title { font-family: var(--font-serif); font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 16px; }
+    .page-title em { font-style: italic; color: var(--terra); }
+    .page-subtitle { font-size: 17px; color: var(--fg); opacity: 0.6; line-height: 1.75; max-width: 540px; }
+
+    .creative-section { padding: 56px 0; border-top: 1px solid var(--stone); }
+    .section-label { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; color: var(--sage); margin-bottom: 32px; }
+
+    /* FEATURED CARDS — for landmark performances */
+    .creative-featured {
+      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
+      padding: 36px; box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
+      margin-bottom: 14px;
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
+    }
+    .creative-featured:hover { transform: translateY(-3px); box-shadow: var(--shadow-xl); border-color: var(--clay); }
+    .creative-featured-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--terra); margin-bottom: 10px; }
+    .creative-featured-title { font-family: var(--font-serif); font-size: 20px; font-weight: 700; margin-bottom: 4px; line-height: 1.3; }
+    .creative-featured-sub { font-size: 13px; color: var(--sage); font-weight: 600; margin-bottom: 14px; }
+    .creative-featured-desc { font-size: 15px; color: var(--fg); opacity: 0.68; line-height: 1.75; margin-bottom: 20px; }
+    .creative-featured-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .meta-tag {
+      background: var(--warm); border: 1px solid var(--stone);
+      border-radius: var(--r-btn); padding: 4px 14px;
+      font-size: 12px; color: var(--fg); opacity: 0.7;
+    }
+
+    /* DANCE DISCIPLINES LIST */
+    .dance-list {
+      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
+      overflow: hidden; box-shadow: var(--shadow-sm); margin-top: 14px;
+    }
+    .dance-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 28px; gap: 20px; border-bottom: 1px solid var(--stone);
+      transition: background 300ms ease-out;
+    }
+    .dance-item:last-child { border-bottom: none; }
+    .dance-item:hover { background: var(--warm); }
+    .dance-name { font-family: var(--font-serif); font-size: 16px; font-weight: 600; color: var(--fg); }
+    .dance-detail { font-size: 13px; color: var(--fg); opacity: 0.5; text-align: right; }
+
+    /* CREATIVE CARDS GRID — 2-col staggered */
+    .creative-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-items: start; }
+    .creative-card {
+      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
+      padding: 28px 30px; box-shadow: var(--shadow-sm);
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
+    }
+    .creative-card:nth-child(even) { margin-top: 24px; }
+    .creative-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-xl); border-color: var(--clay); }
+    .creative-card-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--sage); margin-bottom: 8px; }
+    .creative-card-title { font-family: var(--font-serif); font-size: 17px; font-weight: 700; color: var(--fg); margin-bottom: 10px; line-height: 1.35; }
+    .creative-card-desc { font-size: 14px; color: var(--fg); opacity: 0.65; line-height: 1.7; margin-bottom: 14px; }
+    .creative-card-desc a { color: var(--terra); text-decoration: underline; text-underline-offset: 2px; }
+    .creative-card-date { font-size: 12px; color: var(--fg); opacity: 0.45; font-style: italic; }
+
+    /* SKILLS */
+    .skills-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .skill-tag {
+      background: rgba(140,154,132,0.10); color: var(--sage);
+      border: 1px solid rgba(140,154,132,0.3); border-radius: var(--r-btn);
+      padding: 4px 14px; font-size: 12px; font-weight: 600;
+    }
+
+    .back-btn { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: var(--fg); opacity: 0.6; background: var(--warm); border: 1px solid var(--stone); border-radius: var(--r-btn); padding: 6px 16px; margin-top: 24px; transition: all 300ms ease-out; }
+    .back-btn:hover { opacity: 1; border-color: var(--clay); background: var(--surface); }
+
+    footer { border-top: 1px solid var(--stone); padding: 40px 0; text-align: center; margin-top: 40px; }
+    .footer-text { font-size: 13px; color: var(--fg); opacity: 0.45; letter-spacing: 0.03em; }
+    .footer-text a { transition: opacity 300ms ease; }
+    .footer-text a:hover { opacity: 1; color: var(--terra); }
+
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 20px; }
+      .nav-links a { font-size: 11px; padding: 5px 9px; }
+      .container { padding: 0 20px; }
+      .creative-grid { grid-template-columns: 1fr; }
+      .creative-card:nth-child(even) { margin-top: 0; }
+      .dance-item { flex-direction: column; align-items: flex-start; }
+      .dance-detail { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Sanya Khan</a>
+    <ul class="nav-links">
+      <li><a href="articles.html">Articles</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="honors.html">Honors</a></li>
+      <li><a href="volunteering.html">Volunteering</a></li>
+      <li><a href="creative.html" class="active">Creative</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <a href="index.html" class="back-btn">← Home</a>
+  <div class="page-header">
+    <p class="eyebrow">Creative Work</p>
+    <h1 class="page-title">Creative <em>Portfolio</em></h1>
+    <p class="page-subtitle">Dance performance, editorial modeling, commercial film, painting, and authorship — work that exists at the intersection of body, culture, and story.</p>
+  </div>
+
+  <!-- DANCE PERFORMANCE -->
+  <section class="creative-section">
+    <p class="section-label">Dance Performance</p>
+
+    <div class="creative-featured">
+      <div class="creative-featured-label">World Record Performance</div>
+      <div class="creative-featured-title">Bharatnatyam Sword Dance — "Natya Kala Tirana"</div>
+      <div class="creative-featured-sub">Green India Mission &nbsp;&middot;&nbsp; Karnataka, India</div>
+      <p class="creative-featured-desc">A landmark performance that earned simultaneous entry in the Guinness Book of World Records, the Asia Book of Records, and the India Book of Records. The "Natya Kala Tirana" Bharatnatyam Sword Dance garnered national media coverage across India.</p>
+      <div class="creative-featured-meta">
+        <span class="meta-tag">Guinness World Record</span>
+        <span class="meta-tag">Asia Book of Records</span>
+        <span class="meta-tag">India Book of Records</span>
+        <span class="meta-tag">August 2018</span>
+      </div>
+    </div>
+
+    <div class="creative-featured">
+      <div class="creative-featured-label">Fashion Week Performance</div>
+      <div class="creative-featured-title">Ballet Production for Falguni Shane Peacock</div>
+      <div class="creative-featured-sub">India Couture Week &nbsp;&middot;&nbsp; Institute of Classical and Modern Dance (ICMD)</div>
+      <p class="creative-featured-desc">Debuted in a ballet production for fashion designers Falguni Shane Peacock at India Couture Week — part of ICMD's historic distinction as the first ballet institution ever featured in a national Indian fashion event. Managed AV logistics and staging; collaborated across production, fashion, and media teams. Performance covered by Hindustan Times, Times Now, and NDTV.</p>
+      <div class="creative-featured-meta">
+        <span class="meta-tag">India Couture Week</span>
+        <span class="meta-tag">ICMD</span>
+        <span class="meta-tag">September 2022</span>
+        <span class="meta-tag">National Media Coverage</span>
+      </div>
+    </div>
+
+    <div class="dance-list">
+      <div class="dance-item">
+        <span class="dance-name">Bharatanatyam</span>
+        <span class="dance-detail">Classical Indian &nbsp;&middot;&nbsp; World Record holder</span>
+      </div>
+      <div class="dance-item">
+        <span class="dance-name">Ballet</span>
+        <span class="dance-detail">India Couture Week performer &nbsp;&middot;&nbsp; ICMD</span>
+      </div>
+      <div class="dance-item">
+        <span class="dance-name">Bollywood &amp; Fusion</span>
+        <span class="dance-detail">UCLA Nashaa &nbsp;&middot;&nbsp; Desi Dance Network collegiate circuit</span>
+      </div>
+      <div class="dance-item">
+        <span class="dance-name">Jazz &amp; Contemporary</span>
+        <span class="dance-detail">Instructor &amp; performer &nbsp;&middot;&nbsp; 'Step On It' Dance Classes</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODELING & EDITORIAL -->
+  <section class="creative-section">
+    <p class="section-label">Modeling &amp; Editorial</p>
+    <div class="creative-grid">
+
+      <div class="creative-card">
+        <div class="creative-card-label">Fashion Editorial</div>
+        <div class="creative-card-title">The Effect Series &mdash; FAST at UCLA</div>
+        <p class="creative-card-desc">Featured model and co-director across four editorial shoots for FAST at UCLA's flagship fashion journalism series: The Saree Effect, The Canvas Effect, The Uniform Effect, and The Ballerina Effect. Each shoot extended the visual arc of the accompanying written article.</p>
+        <div class="creative-card-date">Sep 2023 – Present</div>
+      </div>
+
+      <div class="creative-card">
+        <div class="creative-card-label">Documentary &amp; Editorial Film</div>
+        <div class="creative-card-title">FAST at UCLA Documentaries</div>
+        <p class="creative-card-desc">Featured in documentary-style video features produced by FAST at UCLA, extending cultural storytelling across digital and visual platforms alongside original written articles. Contributed to scripting and artistic direction of the features.</p>
+        <div class="creative-card-date">Sep 2023 – Present</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FILM & COMMERCIAL -->
+  <section class="creative-section">
+    <p class="section-label">Film &amp; Commercial</p>
+    <div class="creative-grid">
+
+      <div class="creative-card">
+        <div class="creative-card-label">International Commercial</div>
+        <div class="creative-card-title">Qatar Airways &mdash; FIFA World Cup Advertisement</div>
+        <p class="creative-card-desc">Featured as a dancer and actor in a Qatar Airways FIFA World Cup advertisement — an international commercial campaign. Executed choreographed movement for film, adapting live performance to the specific demands of screen-based commercial production.</p>
+        <div class="creative-card-date">June 2022</div>
+      </div>
+
+      <div class="creative-card">
+        <div class="creative-card-label">Fashion Week Coverage</div>
+        <div class="creative-card-title">India Couture Week — National Media Coverage</div>
+        <p class="creative-card-desc">Ballet performance at India Couture Week was covered by Hindustan Times, Times Now, and NDTV, contributing to the national media narrative around the intersection of classical dance and high fashion in India.</p>
+        <div class="creative-card-date">September 2022</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WRITING & AUTHORSHIP -->
+  <section class="creative-section">
+    <p class="section-label">Writing &amp; Authorship</p>
+    <div class="creative-grid">
+
+      <div class="creative-card">
+        <div class="creative-card-label">Book in Progress</div>
+        <div class="creative-card-title"><em>Hum of My Heart</em></div>
+        <p class="creative-card-desc">Authoring a book exploring resilience and emotional healing, influenced by research and personal introspection during the pandemic. Active Instagram platform <a href="https://www.instagram.com/hum_of_my_heart" target="_blank" rel="noopener">@hum_of_my_heart</a> sharing mental health and well-being content, fostering community dialogue.</p>
+        <div class="creative-card-date">Jan 2021 – Present &nbsp;&middot;&nbsp; 500+ readers</div>
+      </div>
+
+      <div class="creative-card">
+        <div class="creative-card-label">Published Poetry</div>
+        <div class="creative-card-title">Anthologies: <em>The Night Wanderers</em> &amp; <em>The Lost Love</em></div>
+        <p class="creative-card-desc">Published original poetry in two anthologies by The Writer's Abode — exploring themes of love, loss, resilience, and cultural narrative. The work reflects her engagement with emotional depth and the stories carried through personal and collective memory.</p>
+        <div class="creative-card-date">2020 – 2022</div>
+      </div>
+
+      <div class="creative-card">
+        <div class="creative-card-label">Slam Poetry</div>
+        <div class="creative-card-title">1st Place — "Invicta" National Slam Poetry Competition</div>
+        <p class="creative-card-desc">Awarded 1st place at the national Invicta Slam Poetry Competition for an original piece on social justice and Hindu-Muslim riots in India. The piece demonstrated the power of personal witness and poetic form in addressing historical and communal violence.</p>
+        <div class="creative-card-date">October 2021</div>
+      </div>
+
+      <div class="creative-card">
+        <div class="creative-card-label">Fashion Journalism</div>
+        <div class="creative-card-title">17+ Published Articles — Her Campus &amp; FAST at UCLA</div>
+        <p class="creative-card-desc">Published 12 feature articles in Her Campus UCLA and 5 in FAST at UCLA's The Effect Series, reaching 6,000+ readers. Work spans fashion psychology, identity, lifestyle, culture, and mental health. <a href="articles.html">View all articles &rarr;</a></p>
+        <div class="creative-card-date">Sep 2023 – Present</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- VISUAL ARTS -->
+  <section class="creative-section">
+    <p class="section-label">Visual Arts</p>
+    <div class="creative-featured" style="margin-bottom:0;">
+      <div class="creative-featured-label">Fine Art</div>
+      <div class="creative-featured-title">Charcoal &amp; Oil Painting</div>
+      <p class="creative-featured-desc" style="margin-bottom:0;">Practices charcoal drawing and oil painting as part of her broader creative practice — work that engages with form, texture, and emotional expression through visual media. A natural extension of her interest in visual storytelling across editorial and digital platforms.</p>
+      <div class="skills-row">
+        <span class="skill-tag">Charcoal</span>
+        <span class="skill-tag">Oil Painting</span>
+        <span class="skill-tag">Visual Storytelling</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p class="footer-text">Sanya Khan &nbsp;&middot;&nbsp; <a href="index.html">Back to home</a></p>
+</footer>
+
+</body>
+</html>

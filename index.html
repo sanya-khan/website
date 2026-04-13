@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sanya Khan — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #f5f2ea;
+      --fg:       #2D3A31;
+      --sage:     #8C9A84;
+      --clay:     #DCCFC2;
+      --stone:    #E6E2DA;  
+      --terra:    #f86e48;
+      --surface:  #FFFFFF;
+      --warm:     #F2F0EB;
+      --navy:     #1B263B;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans:  'Source Sans 3', system-ui, sans-serif;
+      --r-card: 24px;
+      --r-btn:  9999px;
+      --shadow-sm: 0 4px 6px -1px rgba(45,58,49,0.05);
+      --shadow-md: 0 10px 20px -4px rgba(45,58,49,0.07);
+      --shadow-lg: 0 20px 40px -10px rgba(45,58,49,0.09);
+      --shadow-xl: 0 25px 50px -12px rgba(45,58,49,0.16);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* GRAIN */
+    .grain {
+      pointer-events: none;
+      position: fixed; inset: 0; z-index: 200;
+      opacity: 0.018;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg);
+    }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 48px;
+      height: 64px; display: flex; align-items: center;
+    }
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-weight: 700; font-size: 17px;
+      color: var(--fg); letter-spacing: 0.01em;
+      margin-right: auto; flex-shrink: 0;
+      transition: color 300ms ease-out;
+    }
+    .nav-logo:hover { color: var(--sage); }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a {
+      font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
+      color: var(--fg); opacity: 0.55;
+      padding: 6px 14px; border-radius: var(--r-btn);
+      transition: all 300ms ease-out;
+    }
+    .nav-links a:hover { opacity: 1; background: var(--warm); }
+    .nav-links a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+
+    /* CONTAINER */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+
+    /* ===== HERO ===== */
+    .hero { padding: 96px 0 80px; }
+    .hero-inner { display: flex; align-items: center; gap: 72px; }
+    .hero-text { flex: 1; min-width: 0; }
+    .hero-eyebrow {
+      font-size: 14px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      color: var(--sage); margin-bottom: 18px;
+      animation: fadeUp 700ms var(--ease) both;
+    }
+    .hero-name {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 6.5vw, 4.8rem);
+      font-weight: 700; letter-spacing: -0.01em;
+      line-height: 1.08; margin-bottom: 6px;
+      animation: fadeUp 700ms var(--ease) 80ms both;
+    }
+    .hero-name em { font-style: italic; color: var(--terra); }
+    .hero-subtitle {
+      font-size: 17px; color: var(--fg); opacity: 0.55;
+      font-weight: 400; margin-bottom: 26px;
+      animation: fadeUp 700ms var(--ease) 150ms both;
+    }
+    .hero-bio {
+      font-size: 16px; line-height: 1.8;
+      color: var(--fg); opacity: 0.7;
+      max-width: 580px; margin-bottom: 40px;
+      animation: fadeUp 700ms var(--ease) 220ms both;
+    }
+    .hero-links {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      animation: fadeUp 700ms var(--ease) 290ms both;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: var(--r-btn);
+      font-family: var(--font-sans);
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      transition: all 300ms ease-out; cursor: pointer;
+      border: none;
+    }
+    .btn-primary { background: var(--fg); color: #fff; }
+    .btn-primary:hover { background: var(--terra); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent; color: var(--sage);
+      border: 1.5px solid var(--sage);
+    }
+    .btn-outline:hover { background: var(--sage); color: #fff; transform: translateY(-1px); }
+
+    /* HERO PHOTO — arch shape */
+    .hero-photo-wrap {
+      flex-shrink: 0; width: 260px; overflow: hidden;
+      border-radius: 130px 130px 24px 24px;
+      border: 1px solid var(--stone);
+      box-shadow: var(--shadow-xl);
+      animation: fadeUp 900ms var(--ease) 200ms both;
+    }
+    .hero-photo-wrap img {
+      width: 100%; height: auto; display: block;
+      transition: transform 700ms var(--ease);
+    }
+    .hero-photo-wrap:hover img { transform: scale(1.04); }
+
+    /* ===== STATS CARDS ===== */
+    .stats-band {
+      border-bottom: 1px solid var(--stone);
+      padding: 48px 0;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--stone);
+      border-radius: var(--r-card);
+      padding: 28px 24px 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--clay);
+    }
+    .stat-value {
+      font-family: var(--font-serif);
+      font-size: 28px; font-weight: 700;
+      color: var(--terra); margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .stat-label { font-size: 13px; color: var(--fg); opacity: 0.6; line-height: 1.45; }
+
+    /* ===== EDUCATION SLAB ===== */
+    .edu-slab {
+      background: var(--fg);
+      padding: 80px 0 72px;
+      margin: -10px;
+      border-radius: 40px;
+    }
+    @media (max-width: 768px) {
+      .edu-slab { margin: 0 16px; border-radius: 28px; }
+    }
+    .edu-slab-eyebrow {
+      font-size: 14px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      color: var(--terra); margin-bottom: 12px;
+    }
+    .edu-slab-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700; color: #ffffff;
+      margin-bottom: 48px; line-height: 1.15;
+      opacity: 0.95;
+    }
+    .edu-slab-heading em { font-style: italic; color: var(--terra); }
+
+    /* UCLA main card */
+    .edu-main-card {
+      background: var(--surface);
+      border-radius: var(--r-card);
+      padding: 36px 40px;
+      box-shadow: 0 20px 60px -10px rgba(0,0,0,0.35);
+      margin-bottom: 16px;
+    }
+    .edu-main-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 20px;
+      margin-bottom: 16px;
+    }
+    .edu-degree-name {
+      font-size: 16px; font-weight: 600;
+      color: var(--terra); margin-bottom: 10px;
+    }
+    .edu-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+    .edu-badge {
+      background: rgba(242,125,165,0.10);
+      border: 1px solid rgba(242,125,165,0.25);
+      border-radius: var(--r-btn);
+      padding: 4px 14px; font-size: 12px;
+      font-weight: 600; color: var(--terra);
+    }
+    .edu-location { text-align: right; flex-shrink: 0; }
+    .edu-location-name {
+      font-size: 14px; color: var(--fg); opacity: 0.55;
+      display: flex; align-items: center; gap: 5px; justify-content: flex-end;
+    }
+    .edu-location-name::before { content: '📍'; font-size: 12px; }
+    .edu-grad { font-size: 13px; color: var(--fg); opacity: 0.45; margin-top: 4px; text-align: right; }
+    .edu-divider { height: 1px; background: var(--stone); margin: 20px 0; }
+    .edu-detail {
+      font-size: 14px; color: var(--fg); opacity: 0.65;
+      line-height: 1.75;
+    }
+    .edu-detail + .edu-detail { margin-top: 8px; }
+
+    /* ===== SECTION CARDS ===== */
+    .explore-area { padding: 72px 0 80px; }
+    .area-eyebrow {
+      font-size: 14px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.16em;
+      color: var(--sage); margin-bottom: 36px;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--stone);
+      border-radius: var(--r-card);
+      padding: 32px 30px;
+      display: flex; flex-direction: column; gap: 8px;
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
+      box-shadow: var(--shadow-sm);
+      color: var(--fg);
+    }
+    .section-card:nth-child(even) { margin-top: 24px; }
+    .section-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--clay);
+    }
+    .card-tag {
+      font-size: 10px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.14em;
+      color: var(--sage);
+    }
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 20px; font-weight: 700;
+      letter-spacing: -0.01em; color: var(--fg);
+      margin-top: 2px;
+    }
+    .card-desc { font-size: 14px; color: var(--fg); opacity: 0.6; line-height: 1.6; flex: 1; }
+    .card-arrow {
+      font-size: 13px; color: var(--terra);
+      font-weight: 600; margin-top: 16px;
+      display: flex; align-items: center; gap: 5px;
+      transition: gap 300ms ease-out; letter-spacing: 0.02em;
+    }
+    .section-card:hover .card-arrow { gap: 10px; }
+
+    /* ===== FOOTER ===== */
+    footer { border-top: 0px solid var(--stone); padding: 40px 0; text-align: center; }
+    .footer-text { font-size: 13px; color: var(--fg); opacity: 0.45; letter-spacing: 0.03em; line-height: 2; }
+    .footer-text a { transition: opacity 300ms ease; }
+    .footer-text a:hover { opacity: 1; color: var(--terra); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1000px) {
+      .cards-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .section-card:nth-child(even) { margin-top: 0; }
+    }
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 20px; }
+      .nav-links a { font-size: 11px; padding: 5px 9px; }
+      .container { padding: 0 20px; }
+      .hero { padding: 60px 0 52px; }
+      .hero-inner { flex-direction: column-reverse; align-items: flex-start; gap: 32px; }
+      .hero-photo-wrap { width: 180px; border-radius: 90px 90px 20px 20px; }
+      .stats-band { padding: 36px 0; }
+      .edu-main-header { flex-direction: column; }
+      .edu-location { text-align: left; }
+      .edu-grad { text-align: left; }
+    }
+    @media (max-width: 560px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Sanya Khan</a>
+    <ul class="nav-links">
+      <li><a href="articles.html">Articles</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="honors.html">Honors</a></li>
+      <li><a href="volunteering.html">Volunteering</a></li>
+      <li><a href="creative.html">Creative</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Portfolio</p>
+        <h1 class="hero-name">Sanya Khan</h1>
+        <p class="hero-subtitle">Psychology &amp; Dance &nbsp;·&nbsp; UCLA '26 &nbsp;·&nbsp; Los Angeles</p>
+        <p class="hero-bio">
+          UCLA senior double-majoring in Psychology and Dance with interests in behavioral marketing, brand strategy, and cultural storytelling. From first-authoring India's inaugural quality-of-life study in pediatric medicine — presented at an international conference in Paris — to editorial writing on fashion, identity, and mental health, I work across the intersections of science, creativity, and narrative.
+        </p>
+        <div class="hero-links">
+          <a href="mailto:sanyakhan2805@g.ucla.edu" class="btn btn-primary">Email Me</a>
+          <a href="https://www.linkedin.com/in/sanyakhan/" target="_blank" rel="noopener" class="btn btn-outline">LinkedIn ↗</a>
+          <a href="_Khan_Sanya-Resume.pdf" target="_blank" rel="noopener" class="btn btn-outline">Resume ↗</a>
+          <a href="Sanya_khan_CV.pdf" target="_blank" rel="noopener" class="btn btn-outline">CV ↗</a>
+        </div>
+      </div>
+      <div class="hero-photo-wrap">
+        <img src="home_page_pic.JPG" alt="Sanya Khan" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-band">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">3.8</div>
+        <div class="stat-label">GPA &nbsp;·&nbsp; Dean's Honor List</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">3×</div>
+        <div class="stat-label">World Record Holder<br>Guinness · Asia · India</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">ISSAID</div>
+        <div class="stat-label">First Author · International<br>Publication, Paris 2025</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">17+</div>
+        <div class="stat-label">Articles Published<br>Her Campus &amp; FAST at UCLA</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDUCATION SLAB -->
+<div class="edu-slab">
+  <div class="container">
+    <p class="edu-slab-eyebrow">Education</p>
+    <h2 class="edu-slab-heading">University of California, <em>Los Angeles</em></h2>
+
+    <!-- UCLA Featured Card -->
+    <div class="edu-main-card">
+      <div class="edu-main-header">
+        <div>
+          <div class="edu-degree-name">B.A. Psychology &amp; Dance (Double Major)</div>
+          <div class="edu-badges">
+            <span class="edu-badge">GPA 3.8</span>
+            <span class="edu-badge">Dean's Honor List ×5</span>
+          </div>
+        </div>
+        <div class="edu-location">
+          <div class="edu-location-name">Los Angeles, CA</div>
+          <div class="edu-grad">Expected Jun 2026</div>
+        </div>
+      </div>
+      <div class="edu-divider"></div>
+      <p class="edu-detail">Pursuing a double major across Psychology and Dance, combining behavioral science with performance, choreography, and cultural studies. Named to the Dean's Honor List five times across four academic years.</p>
+      <p class="edu-detail">Research interests span behavioral marketing, social perception, body image, and the intersection of cultural identity with physical practice. Active in clinical research, editorial journalism, and dance competition at the national level.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="container">
+  <div class="explore-area">
+    <p class="area-eyebrow">Explore</p>
+    <div class="cards-grid">
+
+      <a href="articles.html" class="section-card">
+        <span class="card-tag">Writing</span>
+        <div class="card-title">Published Articles</div>
+        <p class="card-desc">Her Campus UCLA and FAST at UCLA — 17+ published pieces on fashion, psychology, lifestyle, and identity.</p>
+        <div class="card-arrow">View articles &rarr;</div>
+      </a>
+
+      <a href="research.html" class="section-card">
+        <span class="card-tag">Research</span>
+        <div class="card-title">Research</div>
+        <p class="card-desc">International clinical publications, behavioral lab research at UCLA Anderson, and academic research projects.</p>
+        <div class="card-arrow">View research &rarr;</div>
+      </a>
+
+      <a href="experience.html" class="section-card">
+        <span class="card-tag">Career</span>
+        <div class="card-title">Experience</div>
+        <p class="card-desc">Brand marketing internships, clinical research, and leadership roles across UCLA and Los Angeles.</p>
+        <div class="card-arrow">View experience &rarr;</div>
+      </a>
+
+      <a href="honors.html" class="section-card">
+        <span class="card-tag">Recognition</span>
+        <div class="card-title">Honors &amp; Awards</div>
+        <p class="card-desc">World records, national competition wins, academic honors, and published literary works.</p>
+        <div class="card-arrow">View honors &rarr;</div>
+      </a>
+
+      <a href="volunteering.html" class="section-card">
+        <span class="card-tag">Community</span>
+        <div class="card-title">Volunteering</div>
+        <p class="card-desc">Healthcare outreach, education mentorship, and arts-based community programs in Mumbai and Los Angeles.</p>
+        <div class="card-arrow">View volunteering &rarr;</div>
+      </a>
+
+      <a href="creative.html" class="section-card">
+        <span class="card-tag">Creative Work</span>
+        <div class="card-title">Creative Portfolio</div>
+        <p class="card-desc">Dance performance, editorial modeling, commercial film, oil &amp; charcoal painting, and authored works.</p>
+        <div class="card-arrow">View creative work &rarr;</div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p class="footer-text">
+    Sanya Khan &nbsp;&middot;&nbsp;
+    <a href="mailto:sanyakhan2805@g.ucla.edu">sanyakhan2805@g.ucla.edu</a> &nbsp;&middot;&nbsp;
+    <a href="https://www.linkedin.com/in/sanyakhan/" target="_blank" rel="noopener">LinkedIn</a> &nbsp;&middot;&nbsp;
+    <a href="_Khan_Sanya-Resume.pdf" target="_blank" rel="noopener">Resume</a> &nbsp;&middot;&nbsp;
+    <a href="Sanya_khan_CV.pdf" target="_blank" rel="noopener">CV</a>
+  </p>
+</footer>
+
+</body>
+</html>

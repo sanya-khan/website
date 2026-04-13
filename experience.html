@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experience · Sanya Khan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #f5f2ea;
+      --fg:       #2D3A31;
+      --sage:     #8C9A84;
+      --clay:     #DCCFC2;
+      --stone:    #E6E2DA;
+      --terra:    #f86e48;
+      --navy:     #1B263B;
+      --surface:  #FFFFFF;
+      --warm:     #F2F0EB;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans:  'Source Sans 3', system-ui, sans-serif;
+      --r-card: 24px;
+      --r-btn:  9999px;
+      --shadow-sm: 0 4px 6px -1px rgba(45,58,49,0.05);
+      --shadow-xl: 0 25px 50px -12px rgba(45,58,49,0.16);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+
+    .grain { pointer-events: none; position: fixed; inset: 0; z-index: 200; opacity: 0.018; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-repeat: repeat; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--bg); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; height: 64px; display: flex; align-items: center; }
+    .nav-logo { font-family: var(--font-serif); font-weight: 700; font-size: 17px; color: var(--fg); letter-spacing: 0.01em; margin-right: auto; flex-shrink: 0; transition: color 300ms ease-out; }
+    .nav-logo:hover { color: var(--sage); }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.02em; color: var(--fg); opacity: 0.55; padding: 6px 14px; border-radius: var(--r-btn); transition: all 300ms ease-out; }
+    .nav-links a:hover { opacity: 1; background: var(--warm); }
+    .nav-links a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 48px; }
+
+    .page-header { padding: 80px 0 64px; }
+    .eyebrow { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sage); margin-bottom: 16px; }
+    .page-title { font-family: var(--font-serif); font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 16px; }
+    .page-title em { font-style: italic; color: var(--fg); }
+    .page-subtitle { font-size: 17px; color: var(--fg); opacity: 0.6; line-height: 1.75; max-width: 520px; }
+
+    .exp-section { padding: 56px 0; border-top: 1px solid var(--stone); }
+    .exp-section-label { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; color: var(--sage); margin-bottom: 32px; }
+
+    /* EDUCATION */
+    .edu-stack { display: flex; flex-direction: column; gap: 14px; }
+    .edu-card {
+      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
+      padding: 28px 32px; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
+    }
+    .edu-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-xl); border-color: var(--clay); }
+    .edu-school { font-family: var(--font-serif); font-size: 17px; font-weight: 700; margin-bottom: 3px; }
+    .edu-degree { font-size: 14px; color: var(--fg); opacity: 0.7; margin-bottom: 10px; }
+    .edu-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+    .edu-badge {
+      background: rgba(140,154,132,0.12); color: var(--sage);
+      border: 1px solid rgba(140,154,132,0.3); border-radius: var(--r-btn);
+      padding: 3px 12px; font-size: 12px; font-weight: 600;
+    }
+    .edu-right { text-align: right; flex-shrink: 0; }
+    .edu-date { font-size: 13px; color: var(--fg); opacity: 0.5; }
+
+    /* TIMELINE */
+    .timeline { display: flex; flex-direction: column; gap: 14px; }
+    .timeline-item {
+      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
+      padding: 28px 32px; box-shadow: var(--shadow-sm);
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
+    }
+    .timeline-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-xl); border-color: var(--clay); }
+    .timeline-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; margin-bottom: 4px; }
+    .timeline-role { font-family: var(--font-serif); font-size: 17px; font-weight: 700; }
+    .timeline-company { font-size: 14px; color: var(--sage); font-weight: 600; }
+    .timeline-date { font-size: 12px; color: var(--fg); opacity: 0.5; margin-left: auto; }
+    .timeline-location { font-size: 13px; color: var(--fg); opacity: 0.5; margin-bottom: 14px; font-style: italic; }
+    .timeline-bullets { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .timeline-bullets li { font-size: 14px; color: var(--fg); opacity: 0.7; padding-left: 18px; position: relative; line-height: 1.65; }
+    .timeline-bullets li::before { content: '›'; position: absolute; left: 0; color: var(--terra); font-weight: 700; }
+
+    .back-btn { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: var(--fg); opacity: 0.6; background: var(--warm); border: 1px solid var(--stone); border-radius: var(--r-btn); padding: 6px 16px; margin-top: 24px; transition: all 300ms ease-out; }
+    .back-btn:hover { opacity: 1; border-color: var(--clay); background: var(--surface); }
+
+    footer { border-top: 1px solid var(--stone); padding: 40px 0; text-align: center; margin-top: 40px; }
+    .footer-text { font-size: 13px; color: var(--fg); opacity: 0.45; letter-spacing: 0.03em; }
+    .footer-text a { transition: opacity 300ms ease; }
+    .footer-text a:hover { opacity: 1; color: var(--terra); }
+
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 20px; }
+      .nav-links a { font-size: 11px; padding: 5px 9px; }
+      .container { padding: 0 20px; }
+      .edu-card { flex-direction: column; }
+      .edu-right { text-align: left; }
+      .timeline-date { margin-left: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Sanya Khan</a>
+    <ul class="nav-links">
+      <li><a href="articles.html">Articles</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="experience.html" class="active">Experience</a></li>
+      <li><a href="honors.html">Honors</a></li>
+      <li><a href="volunteering.html">Volunteering</a></li>
+      <li><a href="creative.html">Creative</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <a href="index.html" class="back-btn">← Home</a>
+  <div class="page-header">
+    <p class="eyebrow">Background</p>
+    <h1 class="page-title"><em>Experience</em></h1>
+    <p class="page-subtitle">Internships, research roles, and leadership across marketing, clinical science, and student media at UCLA and beyond.</p>
+  </div>
+
+  <!-- EDUCATION -->
+  <section class="exp-section">
+    <p class="exp-section-label">Education</p>
+    <div class="edu-stack">
+
+      <div class="edu-card">
+        <div>
+          <div class="edu-school">University of California, Los Angeles</div>
+          <div class="edu-degree">B.A. Psychology &amp; Dance (Double Major)</div>
+          <div class="edu-meta">
+            <span class="edu-badge">GPA 3.8</span>
+            <span class="edu-badge">Dean's Honor List ×5</span>
+          </div>
+        </div>
+        <div class="edu-right">
+          <div class="edu-date">Los Angeles, CA</div>
+          <div class="edu-date" style="margin-top: 4px;">Expected Jun 2026</div>
+        </div>
+      </div>
+
+      <div class="edu-card">
+        <div>
+          <div class="edu-school">Kishinchand Chellaram College</div>
+          <div class="edu-degree">Higher Secondary Certificate &middot; Science</div>
+          <div class="edu-meta">
+            <span class="edu-badge">ISC 94%</span>
+          </div>
+        </div>
+        <div class="edu-right">
+          <div class="edu-date">Mumbai, India</div>
+          <div class="edu-date" style="margin-top: 4px;">Graduated 2022</div>
+        </div>
+      </div>
+
+      <div class="edu-card">
+        <div>
+          <div class="edu-school">Queen Mary School</div>
+          <div class="edu-degree">Indian Certificate of Secondary Education &middot; Science</div>
+          <div class="edu-meta">
+            <span class="edu-badge">ICSE 96%</span>
+            <span class="edu-badge">Head Girl</span>
+          </div>
+        </div>
+        <div class="edu-right">
+          <div class="edu-date">Mumbai, India</div>
+          <div class="edu-date" style="margin-top: 4px;">Graduated 2020</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WORK EXPERIENCE -->
+  <section class="exp-section">
+    <p class="exp-section-label">Work Experience</p>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <span class="timeline-role">Senior Marketing and Management Intern</span>
+          <span class="timeline-company">Club Rewire LLC</span>
+          <span class="timeline-date">Sep 2025 – Mar 2026</span>
+        </div>
+        <p class="timeline-location">Los Angeles, CA &nbsp;&middot;&nbsp; Internship</p>
+        <ul class="timeline-bullets">
+          <li>Led brand partnerships, coordinated event operations, and marketing initiatives for brand activations including Hypeach Boutique, Glossier, L'Occitane, Juneshine, and Little Words Project.</li>
+          <li>Delivered brand decks, sponsorship proposals, and media materials using Canva, PowerPoint, and Excel — securing $15K+ in partner value with features in publications including the L.A. Times.</li>
+          <li>Produced weekly newsletters and directed social media content through targeted campaigns.</li>
+          <li>Supported event operations: run of show planning, day-of logistics, and stakeholder communication under tight timelines.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <span class="timeline-role">Intern in Pediatric Rheumatology Department</span>
+          <span class="timeline-company">SRCC Children's Hospital</span>
+          <span class="timeline-date">Jul–Sep 2024, Dec 2024</span>
+        </div>
+        <p class="timeline-location">Mumbai, India &nbsp;&middot;&nbsp; Internship</p>
+        <ul class="timeline-bullets">
+          <li>First author of India's inaugural HRQoL study applying KIDSCREEN-52 in pediatric autoinflammatory disease.</li>
+          <li>Conducted 20+ bilingual interviews with parents and caregivers; managed data collection across 10 psychosocial domains.</li>
+          <li>Calculated and summarized quality-of-life scores, generating pilot trend statistics that informed research directions.</li>
+          <li>Presented findings at ISSAID 2025 (Paris), advocating for national inclusion of rare diseases in pediatric policy.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <span class="timeline-role">Performer and Coordinator</span>
+          <span class="timeline-company">Institute of Classical and Modern Dance (ICMD)</span>
+          <span class="timeline-date">Sep 2022</span>
+        </div>
+        <p class="timeline-location">New Delhi, India</p>
+        <ul class="timeline-bullets">
+          <li>Debuted in a ballet production for Falguni Shane Peacock at India Couture Week — ICMD's distinction as the first ballet institution featured in a national Indian fashion event.</li>
+          <li>Managed AV logistics and staging; collaborated across production, fashion, and media teams.</li>
+          <li>Performance covered by major Indian media outlets including Hindustan Times, Times Now, and NDTV.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <span class="timeline-role">Dancer and Actor</span>
+          <span class="timeline-company">FIFA World Cup — Qatar Airways Advertisement</span>
+          <span class="timeline-date">Jun 2022</span>
+        </div>
+        <p class="timeline-location">Mumbai, India</p>
+        <ul class="timeline-bullets">
+          <li>Featured as a dancer and actor in a Qatar Airways FIFA World Cup advertisement — an international commercial campaign.</li>
+          <li>Executed choreographed movement for film, adapting live performance technique to a screen-based commercial format.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <span class="timeline-role">Founder &amp; Instructor</span>
+          <span class="timeline-company">'Step On It' Dance Classes</span>
+          <span class="timeline-date">Feb 2020 – Aug 2022</span>
+        </div>
+        <p class="timeline-location">Mumbai, India</p>
+        <ul class="timeline-bullets">
+          <li>Founded and led a grassroots community dance program teaching jazz and contemporary to 10 students ages 5–14 in an inclusive, technique-focused setting.</li>
+          <li>Designed curriculum and directed scheduling, finances, and day-to-day operations to build a structured and sustainable training program.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LEADERSHIP -->
+  <section class="exp-section">
+    <p class="exp-section-label">Leadership &amp; Campus Involvement</p>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <span class="timeline-role">Co-Director of Events &amp; Marketing</span>
+          <span class="timeline-company">Her Campus UCLA (Elite Chapter)</span>
+          <span class="timeline-date">Sep 2025 – Present</span>
+        </div>
+        <p class="timeline-location">Los Angeles, CA</p>
+        <ul class="timeline-bullets">
+          <li>Lead a 22-member committee overseeing campus partnerships, event planning, and brand collaborations for UCLA's Elite Chapter of the #1 media community for college women.</li>
+          <li>Direct brand outreach and deck creation for national partnerships with Jo Malone, Ciele, Poppi, Rare Beauty, and L.A. Libations.</li>
+          <li>Manage project execution across UCLA pop-ups and wellness activations, engaging 6,000+ student readers.</li>
+          <li>Coordinate cross-team initiatives in a fast-paced, Agile-style environment supporting 400+ chapter network collaborations.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <span class="timeline-role">Feature Writer</span>
+          <span class="timeline-company">Her Campus UCLA</span>
+          <span class="timeline-date">Sep 2025 – Present</span>
+        </div>
+        <p class="timeline-location">Los Angeles, CA</p>
+        <ul class="timeline-bullets">
+          <li>Author and publish feature stories covering wellness, lifestyle, culture, and student perspectives, reaching 6,000+ readers.</li>
+          <li>Advance the chapter's editorial voice through audience-facing content tailored to college readership and digital engagement.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <span class="timeline-role">Journalist &amp; Model</span>
+          <span class="timeline-company">FAST at UCLA — Fashion Magazine</span>
+          <span class="timeline-date">Sep 2023 – Present</span>
+        </div>
+        <p class="timeline-location">Los Angeles, CA</p>
+        <ul class="timeline-bullets">
+          <li>Research and author editorial features exploring fashion as an ethnocultural narrative — The Saree Effect, The Canvas Effect, The Uniform Effect, and The Ballerina Effect.</li>
+          <li>Featured in documentaries and editorial shoots, extending storytelling across digital and visual platforms.</li>
+          <li>Conceptualize and co-direct editorial shoots, collaborating with stylists, designers, and photographers.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <span class="timeline-role">Judging &amp; Hospitality Team &amp; Event Coordinator</span>
+          <span class="timeline-company">Jhoomti Shaam UCLA</span>
+          <span class="timeline-date">Sep 2024 – Jun 2025</span>
+        </div>
+        <p class="timeline-location">Los Angeles, CA</p>
+        <ul class="timeline-bullets">
+          <li>Coordinated event logistics, managed team operations, secured judges, and oversaw hospitality for UCLA's premier Bollywood dance competition.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <span class="timeline-role">Dancer and Choreographer</span>
+          <span class="timeline-company">UCLA Nashaa — Premiere Bollywood Competitive Dance Team</span>
+          <span class="timeline-date">Sep 2023 – Jun 2024</span>
+        </div>
+        <p class="timeline-location">Los Angeles, CA</p>
+        <ul class="timeline-bullets">
+          <li>Performed with UCLA's premier Bollywood fusion team, competing nationally through the Desi Dance Network collegiate circuit.</li>
+          <li>Participated in intensive rehearsals integrating Bollywood, classical, hip-hop, and contemporary styles.</li>
+          <li>Represented UCLA at national collegiate competitions and cultural showcases.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-meta">
+          <span class="timeline-role">Class Representative</span>
+          <span class="timeline-company">WACD Advisory Council &nbsp;&middot;&nbsp; UCLA</span>
+          <span class="timeline-date">Sep 2022 – Jun 2024</span>
+        </div>
+        <p class="timeline-location">Los Angeles, CA</p>
+        <ul class="timeline-bullets">
+          <li>Served as advocate for the undergraduate class of 2026, contributing to departmental decision-making and student representation within UCLA's World Arts and Cultures/Dance department.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p class="footer-text">Sanya Khan &nbsp;&middot;&nbsp; <a href="index.html">Back to home</a></p>
+</footer>
+
+</body>
+</html>
