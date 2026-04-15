@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feature Writer · HerCampus Media · Sanya Khan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#f5f2ea; --fg:#2D3A31; --sage:#8C9A84; --clay:#DCCFC2; --stone:#E6E2DA;
+      --terra:#f86e48; --navy:#1B263B; --surface:#FFFFFF; --warm:#F2F0EB;
+      --font-serif:'Playfair Display',Georgia,serif; --font-sans:'Source Sans 3',system-ui,sans-serif;
+      --r-card:24px; --r-btn:9999px;
+      --shadow-sm:0 4px 6px -1px rgba(45,58,49,0.05);
+      --shadow-xl:0 25px 50px -12px rgba(45,58,49,0.16);
+      --ease:cubic-bezier(0.22,1,0.36,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--font-sans);background:var(--bg);color:var(--fg);line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;min-height:100vh;}
+    a{color:inherit;text-decoration:none;}
+    img{max-width:100%;display:block;image-orientation:from-image;}
+    .grain{pointer-events:none;position:fixed;inset:0;z-index:200;opacity:0.018;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;}
+
+    /* ── NAV ── */
+    nav{position:sticky;top:0;z-index:100;background:var(--bg);}
+    .nav-inner{max-width:1280px;margin:0 auto;padding:0 48px;height:64px;display:flex;align-items:center;}
+    .nav-logo{font-family:var(--font-serif);font-weight:700;font-size:17px;color:var(--fg);letter-spacing:0.01em;margin-right:auto;flex-shrink:0;transition:color 300ms ease-out;}
+    .nav-logo:hover{color:var(--sage);}
+    .nav-links{display:flex;gap:2px;list-style:none;}
+    .nav-links a{font-size:13px;font-weight:500;letter-spacing:0.02em;color:var(--fg);opacity:0.55;padding:6px 14px;border-radius:var(--r-btn);transition:all 300ms ease-out;}
+    .nav-links a:hover{opacity:1;background:var(--warm);}
+    .nav-links a.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+    .nav-dropdown{position:relative;}
+    .nav-dropdown-btn{font-size:13px;font-weight:500;letter-spacing:0.02em;color:var(--fg);opacity:0.55;background:none;border:none;cursor:pointer;font-family:var(--font-sans);padding:6px 14px;border-radius:var(--r-btn);display:inline-flex;align-items:center;gap:4px;transition:all 300ms ease-out;}
+    .nav-dropdown-btn:hover{opacity:1;background:var(--warm);}
+    .nav-dropdown-btn.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+    .nav-dropdown-btn svg{width:11px;height:11px;transition:transform 250ms var(--ease);}
+    .nav-dropdown.open .nav-dropdown-btn svg{transform:rotate(180deg);}
+    .nav-submenu{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--stone);border-radius:14px;padding:6px;min-width:190px;box-shadow:0 8px 28px -4px rgba(45,58,49,0.13);list-style:none;opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity 200ms ease,transform 200ms ease;z-index:300;}
+    .nav-dropdown.open .nav-submenu{opacity:1;pointer-events:all;transform:translateY(0);}
+    .nav-submenu li a{display:block;font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--fg);opacity:0.65;padding:8px 14px;border-radius:9px;transition:all 200ms ease;}
+    .nav-submenu li a:hover{opacity:1;background:var(--warm);}
+    .nav-submenu li a.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+    .has-nested{position:relative;}
+    .submenu-label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--fg);opacity:0.65;padding:8px 14px;border-radius:9px;cursor:default;transition:all 200ms ease;user-select:none;}
+    .submenu-label svg{width:10px;height:10px;flex-shrink:0;}
+    .has-nested:hover .submenu-label{opacity:1;background:var(--warm);}
+    .nav-nested{position:absolute;top:-6px;left:calc(100% + 6px);background:var(--surface);border:1px solid var(--stone);border-radius:14px;padding:6px;min-width:230px;box-shadow:0 8px 28px -4px rgba(45,58,49,0.13);list-style:none;opacity:0;pointer-events:none;transform:translateX(-6px);transition:opacity 200ms ease,transform 200ms ease;z-index:400;}
+    .has-nested:hover .nav-nested{opacity:1;pointer-events:all;transform:translateX(0);}
+    .nav-nested li a{display:block;font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--fg);opacity:0.65;padding:8px 14px;border-radius:9px;transition:all 200ms ease;}
+    .nav-nested li a:hover{opacity:1;background:var(--warm);}
+    .nav-nested li a.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+
+    /* ── LAYOUT ── */
+    .container{max-width:1280px;margin:0 auto;padding:0 48px;}
+    .back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--fg);opacity:0.6;background:var(--warm);border:1px solid var(--stone);border-radius:var(--r-btn);padding:6px 16px;margin-top:24px;transition:all 300ms ease-out;}
+    .back-btn:hover{opacity:1;border-color:var(--clay);background:var(--surface);}
+
+    /* ── PAGE HEADER ── */
+    .page-header{padding:80px 0 72px;}
+    .eyebrow{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.18em;color:var(--sage);margin-bottom:16px;}
+    .page-title{font-family:var(--font-serif);font-size:clamp(2.4rem,5vw,4rem);font-weight:700;line-height:1.08;letter-spacing:-0.01em;margin-bottom:14px;}
+    .page-title em{font-style:italic;color:var(--terra);}
+    .page-subtitle{font-size:17px;color:var(--fg);opacity:0.6;line-height:1.8;max-width:640px;}
+    .article-count{display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-size:13px;font-weight:600;color:var(--sage);letter-spacing:0.05em;}
+    .article-count span{display:inline-block;width:32px;height:1.5px;background:var(--sage);opacity:0.5;}
+
+    /* ── ARTICLE GRID ── */
+    .articles-section{padding:0 0 80px;}
+    .art-grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      column-gap:20px;
+      row-gap:24px;
+      align-items:start;
+    }
+    /* Editorial scattered placement */
+    .art-card:nth-child(1)  { grid-column: 1 / 8; }
+    .art-card:nth-child(2)  { grid-column: 8 / 13; margin-top: 72px; }
+    .art-card:nth-child(3)  { grid-column: 1 / 6; }
+    .art-card:nth-child(4)  { grid-column: 6 / 13; margin-top: 40px; }
+    .art-card:nth-child(5)  { grid-column: 1 / 7; }
+    .art-card:nth-child(6)  { grid-column: 7 / 13; margin-top: 56px; }
+    .art-card:nth-child(7)  { grid-column: 1 / 5; }
+    .art-card:nth-child(8)  { grid-column: 5 / 9;  margin-top: 36px; }
+    .art-card:nth-child(9)  { grid-column: 9 / 13; margin-top: 64px; }
+    .art-card:nth-child(10) { grid-column: 2 / 8; }
+    .art-card:nth-child(11) { grid-column: 8 / 13; margin-top: 48px; }
+    .art-card:nth-child(12) { grid-column: 1 / 7;  margin-top: 20px; }
+
+    .art-card{
+      background:var(--surface);border:1px solid var(--stone);
+      border-radius:var(--r-card);overflow:hidden;
+      box-shadow:var(--shadow-sm);
+      transition:transform 500ms var(--ease),box-shadow 500ms var(--ease),border-color 300ms ease-out;
+      color:var(--fg);
+      display:flex;flex-direction:column;
+    }
+    .art-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-xl);border-color:var(--clay);}
+    .art-photo{width:100%;height:240px;overflow:hidden;flex-shrink:0;}
+    .art-photo img{width:100%;height:100%;object-fit:cover;transition:transform 600ms var(--ease);}
+    .art-card:hover .art-photo img{transform:scale(1.04);}
+    .art-body{padding:28px 28px 24px;display:flex;flex-direction:column;flex:1;}
+    .art-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+    .art-pub{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:var(--sage);}
+    .art-date{font-size:11px;color:var(--fg);opacity:0.45;font-style:italic;}
+    .art-title{font-family:var(--font-serif);font-size:17px;font-weight:700;line-height:1.3;color:var(--fg);margin-bottom:10px;}
+    .art-desc{font-size:13px;color:var(--fg);opacity:0.62;line-height:1.65;flex:1;}
+    .art-link{margin-top:16px;font-size:12px;font-weight:600;color:var(--terra);display:flex;align-items:center;gap:5px;letter-spacing:0.04em;transition:gap 300ms ease-out;}
+    .art-card:hover .art-link{gap:9px;}
+
+    /* ── SCROLL REVEAL ── */
+    [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity 700ms var(--ease),transform 700ms var(--ease);}
+    [data-reveal].in-view{opacity:1;transform:translateY(0);}
+
+    /* ── FOOTER ── */
+    footer{padding:40px 0;text-align:center;}
+    .footer-text{font-size:13px;color:var(--fg);opacity:0.45;letter-spacing:0.03em;}
+    .footer-text a{transition:opacity 300ms ease;}
+    .footer-text a:hover{opacity:1;color:var(--terra);}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1024px){
+      .art-card:nth-child(n){grid-column:1/-1;margin-top:0;}
+      .art-grid{grid-template-columns:repeat(2,1fr);}
+      .art-card:nth-child(2n){margin-top:32px;}
+    }
+    @media(max-width:768px){
+      .nav-inner,.container{padding:0 20px;}
+      .nav-links a{font-size:11px;padding:5px 9px;}
+      .art-grid{grid-template-columns:1fr;}
+      .art-card:nth-child(n){grid-column:1/-1;margin-top:0;}
+      .art-photo{height:200px;}
+    }
+  </style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Sanya Khan</a>
+    <ul class="nav-links">
+      <li><a href="research.html">Research</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="honors.html">Honors</a></li>
+      <li><a href="volunteering.html">Volunteering</a></li>
+      <li><a href="creative.html">Creative</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">Academia &amp; Research <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-submenu">
+          <li><a href="research_lab.html">Research Lab</a></li>
+          <li><a href="academic_research.html">Academic Research</a></li>
+          <li><a href="academic_projects.html">Academic Projects</a></li>
+        </ul>
+      </li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn active" aria-haspopup="true" aria-expanded="false">Publications <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-submenu">
+          <li class="has-nested">
+            <span class="submenu-label">Articles <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+            <ul class="nav-nested">
+              <li><a href="hercampus.html" class="active">Feature Writer (HerCampus Media)</a></li>
+              <li><a href="fastarticles.html">Journalism (Fast at UCLA &ndash; Blog)</a></li>
+            </ul>
+          </li>
+          <li><a href="internation_pub.html">International Publication</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <a href="index.html" class="back-btn">← Home</a>
+  <div class="page-header">
+    <p class="eyebrow">Publications &nbsp;&middot;&nbsp; Articles</p>
+    <h1 class="page-title"><em>Feature Writer</em></h1>
+    <p class="page-subtitle">HerCampus Media — UCLA chapter. Twelve published pieces across fashion, psychology, identity, culture, and city life. Written between October 2025 and March 2026.</p>
+    <div class="article-count"><span></span> 12 Articles <span></span></div>
+  </div>
+
+  <div class="articles-section">
+    <div class="art-grid">
+
+      <!-- 1. Most recent: Modern-Day Jane Austen — March 2, 2026 -->
+      <a class="art-card" href="https://www.hercampus.com/school/ucla/who-is-the-modern-day-jane-austen-dating-wit-and-womanhood-in-the-algorithm-age/" target="_blank" rel="noopener" data-reveal data-delay="0">
+        <div class="art-photo">
+          <img src="Hercampuspics/Modern_jane_austen.jpg" alt="Who Is the Modern-Day Jane Austen?" style="object-position:50% 20%;" />
+        </div>
+        <div class="art-body">
+          <div class="art-meta">
+            <span class="art-pub">Her Campus UCLA</span>
+            <span class="art-date">Mar 2, 2026</span>
+          </div>
+          <div class="art-title">Who Is the Modern-Day Jane Austen? Dating, Wit, and Womanhood in the Algorithm Age</div>
+          <p class="art-desc">Austen's social acuity translated into the era of apps, algorithms, and digital performance of desirability.</p>
+          <div class="art-link">Read article ↗</div>
+        </div>
+      </a>
+
+      <!-- 2. What's In My Bag — Feb 24, 2026 -->
+      <a class="art-card" href="https://www.hercampus.com/school/ucla/whats-in-my-bag-a-girls-only-secret-weapon/" target="_blank" rel="noopener" data-reveal data-delay="80">
+        <div class="art-photo">
+          <img src="Hercampuspics/whats_in_my_bag.jpg" alt="What's In My Bag" />
+        </div>
+        <div class="art-body">
+          <div class="art-meta">
+            <span class="art-pub">Her Campus UCLA</span>
+            <span class="art-date">Feb 24, 2026</span>
+          </div>
+          <div class="art-title">What's In My Bag: A Girl's Secret Weapon</div>
+          <p class="art-desc">An essay through objects — what a woman carries, and what it quietly reveals about who she is and what she needs.</p>
+          <div class="art-link">Read article ↗</div>
+        </div>
+      </a>
+
+      <!-- 3. Supplement Shelf — Feb 6/16, 2026 -->
+      <a class="art-card" href="https://www.hercampus.com/school/ucla/the-supplement-shelf-is-a-love-letter-to-anxiety-your-grocery-list-can-do-better/" target="_blank" rel="noopener" data-reveal data-delay="0">
+        <div class="art-photo">
+          <img src="Hercampuspics/supplement_shelf.jpg" alt="The Supplement Shelf Is Not Self-Care" />
+        </div>
+        <div class="art-body">
+          <div class="art-meta">
+            <span class="art-pub">Her Campus UCLA</span>
+            <span class="art-date">Feb 6, 2026</span>
+          </div>
+          <div class="art-title">The Supplement Shelf Is Not Self-Care, Your Grocery List Can Do Better</div>
+          <p class="art-desc">Making the case for food-as-medicine over the supplement industrial complex and its carefully marketed anxiety.</p>
+          <div class="art-link">Read article ↗</div>
+        </div>
+      </a>
+
+      <!-- 4. Homecoming in Transit — Feb 5, 2026 -->
+      <a class="art-card" href="https://www.hercampus.com/school/ucla/homecoming-in-transit-my-24-hour-airport-routine/" target="_blank" rel="noopener" data-reveal data-delay="80">
+        <div class="art-photo">
+          <img src="Hercampuspics/Homecoming_in_Transit.jpg" alt="Homecoming in Transit" />
+        </div>
+        <div class="art-body">
+          <div class="art-meta">
+            <span class="art-pub">Her Campus UCLA</span>
+            <span class="art-date">Feb 5, 2026</span>
+          </div>
+          <div class="art-title">Homecoming in Transit: My 24 Hour Airport Routine</div>
+          <p class="art-desc">A personal essay on the ritual of flying home — finding stillness, nostalgia, and identity in transit between cities.</p>
+          <div class="art-link">Read article ↗</div>
+        </div>
+      </a>
+
+      <!-- 5. How-To Guide — Jan 19, 2026 -->
+      <a class="art-card" href="https://www.hercampus.com/school/ucla/a-how-to-guide-on-doing-your-twenties-right/" target="_blank" rel="noopener" data-reveal data-delay="0">
+        <div class="art-photo">
+          <img src="Hercampuspics/How_to_get_20s_right.jpg" alt="A How-To Guide to Getting Your Twenties Right" />
+        </div>
+        <div class="art-body">
+          <div class="art-meta">
+            <span class="art-pub">Her Campus UCLA</span>
+            <span class="art-date">Jan 19, 2026</span>
+          </div>
+          <div class="art-title">A How-To Guide to Getting Your Twenties Right</div>
+          <p class="art-desc">A guide to embracing uncertainty, intention, and growth in your early twenties without the pressure of perfection.</p>
+          <div class="art-link">Read article ↗</div>
+        </div>
+      </a>
+
+      <!-- 6. Gossip Girl at UCLA — Dec 30, 2025 -->
+      <a class="art-card" href="https://www.hercampus.com/school/ucla/gossip-girl-at-ucla-censored-edition/" target="_blank" rel="noopener" data-reveal data-delay="80">
+        <div class="art-photo">
+          <img src="Hercampuspics/gossip_girl.jpg" alt="Gossip Girl at UCLA: Censored Edition" style="object-position:50% 80%;" />
+        </div>
+        <div class="art-body">
+          <div class="art-meta">
+            <span class="art-pub">Her Campus UCLA</span>
+            <span class="art-date">Dec 30, 2025</span>
+          </div>
+          <div class="art-title">Gossip Girl at UCLA: Censored Edition</div>
+          <p class="art-desc">A satirical and affectionate look at UCLA campus culture filtered through the dramatic lens of the iconic show.</p>
+          <div class="art-link">Read article ↗</div>
+        </div>
+      </a>
+
+      <!-- 7. The Ways LA Influences — Nov 26, 2025 -->
+      <a class="art-card" href="https://www.hercampus.com/school/ucla/the-ways-los-angeles-influences-you-without-you-noticing/" target="_blank" rel="noopener" data-reveal data-delay="0">
+        <div class="art-photo">
+          <img src="Hercampuspics/Los_angeles_influences.jpg" alt="The Ways Los Angeles Influences You" />
+        </div>
+        <div class="art-body">
+          <div class="art-meta">
+            <span class="art-pub">Her Campus UCLA</span>
+            <span class="art-date">Nov 26, 2025</span>
+          </div>
+          <div class="art-title">The Ways Los Angeles Influences You Without You Noticing</div>
+          <p class="art-desc">How Los Angeles quietly reshapes your aesthetics, ambitions, and sense of self — without ever asking permission.</p>
+          <div class="art-link">Read article ↗</div>
+        </div>
+      </a>
+
+      <!-- 8. Psychology of Procrastination — Nov 17, 2025 -->
+      <a class="art-card" href="https://www.hercampus.com/school/ucla/the-psychology-of-procrastination-why-we-wait-on-the-things-we-love/" target="_blank" rel="noopener" data-reveal data-delay="60">
+        <div class="art-photo">
+          <img src="Hercampuspics/psychology_of_procras.jpg" alt="The Psychology of Procrastination" />
+        </div>
+        <div class="art-body">
+          <div class="art-meta">
+            <span class="art-pub">Her Campus UCLA</span>
+            <span class="art-date">Nov 17, 2025</span>
+          </div>
+          <div class="art-title">The Psychology of Procrastination: Why We Wait on the Things We Love</div>
+          <p class="art-desc">A behavioral science lens on why we delay the things we care about most — and what it reveals about how we value ourselves.</p>
+          <div class="art-link">Read article ↗</div>
+        </div>
+      </a>
+
+      <!-- 9. From City of Dreams to LA — Nov 13, 2025 -->
+      <a class="art-card" href="https://www.hercampus.com/school/ucla/from-the-city-of-dreams-to-the-city-of-angels-from-mumbai-to-la/" target="_blank" rel="noopener" data-reveal data-delay="120">
+        <div class="art-photo">
+          <img src="Hercampuspics/Fron_City_of_Dream_to_LA.jpg" alt="From Mumbai to LA" />
+        </div>
+        <div class="art-body">
+          <div class="art-meta">
+            <span class="art-pub">Her Campus UCLA</span>
+            <span class="art-date">Nov 13, 2025</span>
+          </div>
+          <div class="art-title">From the "City of Dreams" to the "City of Angels" — From Mumbai to LA</div>
+          <p class="art-desc">On identity, displacement, and the strange joy of building a life between two cities that feel like opposites.</p>
+          <div class="art-link">Read article ↗</div>
+        </div>
+      </a>
+
+      <!-- 10. The Gaze and the Body — Nov 4, 2025 -->
+      <a class="art-card" href="https://www.hercampus.com/school/ucla/the-gaze-and-the-body-her-fashion-vs-his-fashion/" target="_blank" rel="noopener" data-reveal data-delay="0">
+        <div class="art-photo">
+          <img src="Hercampuspics/Gaze_and_body.jpg" alt="The Gaze and the Body" style="object-position:top;" />
+        </div>
+        <div class="art-body">
+          <div class="art-meta">
+            <span class="art-pub">Her Campus UCLA</span>
+            <span class="art-date">Nov 4, 2025</span>
+          </div>
+          <div class="art-title">The Gaze and the Body: Her Fashion vs. His Fashion</div>
+          <p class="art-desc">Exploring the gendered dynamics of how clothing is worn, witnessed, and judged differently across gender lines.</p>
+          <div class="art-link">Read article ↗</div>
+        </div>
+      </a>
+
+      <!-- 11. I Left My Heart on an Aritzia Sleeve — Oct 29, 2025 -->
+      <a class="art-card" href="https://www.hercampus.com/school/ucla/i-left-my-heart-on-an-aritzia-sleeve-a-fall-with-grace/" target="_blank" rel="noopener" data-reveal data-delay="80">
+        <div class="art-photo">
+          <img src="Hercampuspics/Left_my_heart_sleeve.jpg" alt="I Left My Heart on an Aritzia Sleeve" />
+        </div>
+        <div class="art-body">
+          <div class="art-meta">
+            <span class="art-pub">Her Campus UCLA</span>
+            <span class="art-date">Oct 29, 2025</span>
+          </div>
+          <div class="art-title">I Left My Heart on an Aritzia Sleeve: A Fall With Grace</div>
+          <p class="art-desc">A meditation on fall fashion, emotional attachment to clothing, and the quiet poetry of seasonal change.</p>
+          <div class="art-link">Read article ↗</div>
+        </div>
+      </a>
+
+      <!-- 12. When the Crown Feels Heavy — Oct 20, 2025 -->
+      <a class="art-card" href="https://www.hercampus.com/school/ucla/when-the-crown-feels-heavy-but-holy/" target="_blank" rel="noopener" data-reveal data-delay="0">
+        <div class="art-photo">
+          <img src="Hercampuspics/crown_feels_heavy.jpg" alt="When the Crown Feels Heavy but Holy" />
+        </div>
+        <div class="art-body">
+          <div class="art-meta">
+            <span class="art-pub">Her Campus UCLA</span>
+            <span class="art-date">Oct 20, 2025</span>
+          </div>
+          <div class="art-title">When the Crown Feels Heavy but Holy</div>
+          <p class="art-desc">On identity, burden, and the sacred weight of being fully, unapologetically yourself in a world that resists it.</p>
+          <div class="art-link">Read article ↗</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p class="footer-text">Sanya Khan &nbsp;&middot;&nbsp; <a href="index.html">Back to home</a></p>
+</footer>
+
+<script>
+  /* Scroll Reveal */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const delay = parseInt(el.dataset.delay || '0', 10);
+      setTimeout(() => el.classList.add('in-view'), delay);
+      revealObs.unobserve(el);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
+
+  /* Nav dropdown */
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+    dd.querySelector('.nav-dropdown-btn').addEventListener('click', function(e) {
+      e.stopPropagation(); dd.classList.toggle('open');
+      this.setAttribute('aria-expanded', dd.classList.contains('open'));
+    });
+  });
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.nav-dropdown.open').forEach(function(dd) {
+      dd.classList.remove('open');
+      dd.querySelector('.nav-dropdown-btn').setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+</body>
+</html>

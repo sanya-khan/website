@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journalism · Fast at UCLA · Sanya Khan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#f5f2ea; --fg:#2D3A31; --sage:#8C9A84; --clay:#DCCFC2; --stone:#E6E2DA;
+      --terra:#f86e48; --navy:#1B263B; --surface:#FFFFFF; --warm:#F2F0EB;
+      --font-serif:'Playfair Display',Georgia,serif; --font-sans:'Source Sans 3',system-ui,sans-serif;
+      --r-card:24px; --r-btn:9999px;
+      --shadow-sm:0 4px 6px -1px rgba(45,58,49,0.05);
+      --shadow-xl:0 25px 50px -12px rgba(45,58,49,0.16);
+      --ease:cubic-bezier(0.22,1,0.36,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--font-sans);background:var(--bg);color:var(--fg);line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;min-height:100vh;}
+    a{color:inherit;text-decoration:none;}
+    img{max-width:100%;display:block;image-orientation:from-image;}
+    .grain{pointer-events:none;position:fixed;inset:0;z-index:200;opacity:0.018;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;}
+
+    /* ── NAV ── */
+    nav{position:sticky;top:0;z-index:100;background:var(--bg);}
+    .nav-inner{max-width:1280px;margin:0 auto;padding:0 48px;height:64px;display:flex;align-items:center;}
+    .nav-logo{font-family:var(--font-serif);font-weight:700;font-size:17px;color:var(--fg);letter-spacing:0.01em;margin-right:auto;flex-shrink:0;transition:color 300ms ease-out;}
+    .nav-logo:hover{color:var(--sage);}
+    .nav-links{display:flex;gap:2px;list-style:none;}
+    .nav-links a{font-size:13px;font-weight:500;letter-spacing:0.02em;color:var(--fg);opacity:0.55;padding:6px 14px;border-radius:var(--r-btn);transition:all 300ms ease-out;}
+    .nav-links a:hover{opacity:1;background:var(--warm);}
+    .nav-links a.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+    .nav-dropdown{position:relative;}
+    .nav-dropdown-btn{font-size:13px;font-weight:500;letter-spacing:0.02em;color:var(--fg);opacity:0.55;background:none;border:none;cursor:pointer;font-family:var(--font-sans);padding:6px 14px;border-radius:var(--r-btn);display:inline-flex;align-items:center;gap:4px;transition:all 300ms ease-out;}
+    .nav-dropdown-btn:hover{opacity:1;background:var(--warm);}
+    .nav-dropdown-btn.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+    .nav-dropdown-btn svg{width:11px;height:11px;transition:transform 250ms var(--ease);}
+    .nav-dropdown.open .nav-dropdown-btn svg{transform:rotate(180deg);}
+    .nav-submenu{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--stone);border-radius:14px;padding:6px;min-width:190px;box-shadow:0 8px 28px -4px rgba(45,58,49,0.13);list-style:none;opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity 200ms ease,transform 200ms ease;z-index:300;}
+    .nav-dropdown.open .nav-submenu{opacity:1;pointer-events:all;transform:translateY(0);}
+    .nav-submenu li a{display:block;font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--fg);opacity:0.65;padding:8px 14px;border-radius:9px;transition:all 200ms ease;}
+    .nav-submenu li a:hover{opacity:1;background:var(--warm);}
+    .nav-submenu li a.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+    .has-nested{position:relative;}
+    .submenu-label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--fg);opacity:0.65;padding:8px 14px;border-radius:9px;cursor:default;transition:all 200ms ease;user-select:none;}
+    .submenu-label svg{width:10px;height:10px;flex-shrink:0;}
+    .has-nested:hover .submenu-label{opacity:1;background:var(--warm);}
+    .nav-nested{position:absolute;top:-6px;left:calc(100% + 6px);background:var(--surface);border:1px solid var(--stone);border-radius:14px;padding:6px;min-width:230px;box-shadow:0 8px 28px -4px rgba(45,58,49,0.13);list-style:none;opacity:0;pointer-events:none;transform:translateX(-6px);transition:opacity 200ms ease,transform 200ms ease;z-index:400;}
+    .has-nested:hover .nav-nested{opacity:1;pointer-events:all;transform:translateX(0);}
+    .nav-nested li a{display:block;font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--fg);opacity:0.65;padding:8px 14px;border-radius:9px;transition:all 200ms ease;}
+    .nav-nested li a:hover{opacity:1;background:var(--warm);}
+    .nav-nested li a.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+
+    /* ── LAYOUT ── */
+    .container{max-width:1280px;margin:0 auto;padding:0 48px;}
+    .back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--fg);opacity:0.6;background:var(--warm);border:1px solid var(--stone);border-radius:var(--r-btn);padding:6px 16px;margin-top:24px;transition:all 300ms ease-out;}
+    .back-btn:hover{opacity:1;border-color:var(--clay);background:var(--surface);}
+
+    /* ── PAGE HEADER ── */
+    .page-header{padding:80px 0 72px;}
+    .eyebrow{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.18em;color:var(--sage);margin-bottom:16px;}
+    .page-title{font-family:var(--font-serif);font-size:clamp(2.4rem,5vw,4rem);font-weight:700;line-height:1.08;letter-spacing:-0.01em;margin-bottom:14px;}
+    .page-title em{font-style:italic;color:var(--terra);}
+    .page-subtitle{font-size:17px;color:var(--fg);opacity:0.6;line-height:1.8;max-width:640px;margin-bottom:8px;}
+    .series-tag{display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--terra);background:rgba(248,110,72,0.07);border:1px solid rgba(248,110,72,0.2);border-radius:var(--r-btn);padding:5px 16px;}
+
+    /* ════════════════════════════════════════
+       ARTICLE CAROUSEL SECTION (multi-image)
+       ════════════════════════════════════════ */
+    .art-section{
+      padding:72px 0;
+      border-bottom:1px solid var(--stone);
+    }
+    .art-section:last-of-type{border-bottom:none;}
+    .art-inner{
+      max-width:1280px;margin:0 auto;padding:0 48px;
+      display:flex;gap:64px;align-items:center;
+    }
+    /* Alternating: odd = text left, even = text right */
+    .art-section:nth-child(even) .art-inner{flex-direction:row-reverse;}
+
+    /* Left/right: text block */
+    .art-info{flex:0 0 380px;}
+    .series-label{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.16em;color:var(--terra);margin-bottom:10px;}
+    .art-title{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--fg);margin-bottom:8px;line-height:1.2;}
+    .art-desc{font-size:15px;color:var(--fg);opacity:0.7;line-height:1.8;margin-bottom:28px;}
+    .read-btn{
+      display:inline-flex;align-items:center;gap:8px;
+      background:var(--fg);color:#fff;
+      border-radius:var(--r-btn);padding:11px 26px;
+      font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+      transition:background 300ms ease-out,transform 300ms ease-out;
+    }
+    .read-btn:hover{background:var(--terra);transform:translateY(-2px);}
+
+    /* Carousel controls (below read btn for carousel articles) */
+    .carousel-controls{display:flex;align-items:center;gap:10px;margin-top:20px;}
+    .nav-btn{
+      width:40px;height:40px;border-radius:50%;border:1.5px solid var(--stone);
+      background:var(--surface);cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;
+      color:var(--fg);transition:all 250ms ease-out;flex-shrink:0;
+    }
+    .nav-btn:hover{background:var(--fg);color:#fff;border-color:var(--fg);}
+    .nav-btn:disabled{opacity:0.25;cursor:default;pointer-events:none;}
+    .nav-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+    .carousel-dots-row{display:flex;gap:6px;align-items:center;margin-left:4px;}
+    .cdot{width:8px;height:8px;border-radius:50%;background:var(--stone);border:none;padding:0;cursor:pointer;transition:all 250ms ease-out;}
+    .cdot.active{background:var(--fg);transform:scale(1.15);}
+
+    /* Right/left: image area */
+    .art-visual{flex:1;min-width:0;}
+
+    /* Scroll-snap carousel */
+    .embla{overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;border-radius:24px;height:500px;}
+    .embla::-webkit-scrollbar{display:none;}
+    .embla__container{display:flex;height:100%;}
+    .embla__slide{flex:0 0 100%;min-width:0;position:relative;overflow:hidden;scroll-snap-align:start;}
+    .embla__slide img{width:100%;height:100%;object-fit:cover;transition:transform 600ms var(--ease);}
+    .embla__slide:hover img{transform:scale(1.03);}
+
+    /* Single image */
+    .art-photo{border-radius:24px;overflow:hidden;height:500px;box-shadow:var(--shadow-xl);}
+    .art-photo img{width:100%;height:100%;object-fit:cover;transition:transform 600ms var(--ease);}
+    .art-photo:hover img{transform:scale(1.03);}
+
+    /* Text-only visual (Holi, Felt — no photo) */
+    .art-holi-panel{
+      border-radius:24px;height:500px;
+      background:linear-gradient(135deg,#f5e6da 0%,#e8d5c4 40%,#d4c4b0 100%);
+      display:flex;align-items:center;justify-content:center;
+      position:relative;overflow:hidden;box-shadow:var(--shadow-xl);
+    }
+    .art-holi-panel::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(circle at 30% 40%,rgba(248,110,72,0.18) 0%,transparent 60%),
+                 radial-gradient(circle at 75% 70%,rgba(140,154,132,0.22) 0%,transparent 55%);
+    }
+    .holi-text{
+      position:relative;z-index:1;text-align:center;padding:40px;
+      font-family:var(--font-serif);font-size:2.8rem;font-weight:700;
+      color:var(--fg);line-height:1.15;opacity:0.55;letter-spacing:-0.01em;
+    }
+    .holi-text em{font-style:italic;color:var(--terra);}
+
+    /* ── SCROLL REVEAL ── */
+    [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity 700ms var(--ease),transform 700ms var(--ease);}
+    [data-reveal].in-view{opacity:1;transform:translateY(0);}
+
+    /* ── FOOTER ── */
+    footer{padding:40px 0;text-align:center;}
+    .footer-text{font-size:13px;color:var(--fg);opacity:0.45;letter-spacing:0.03em;}
+    .footer-text a{transition:opacity 300ms ease;}
+    .footer-text a:hover{opacity:1;color:var(--terra);}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1024px){
+      .art-inner{gap:40px;}
+      .art-info{flex:0 0 300px;}
+      .embla,.art-photo,.art-holi-panel{height:420px;}
+    }
+    @media(max-width:768px){
+      .nav-inner,.container{padding:0 20px;}
+      .nav-links a{font-size:11px;padding:5px 9px;}
+      .art-inner,.art-section:nth-child(even) .art-inner{flex-direction:column;padding:0 20px;gap:32px;}
+      .art-info{flex:none;width:100%;}
+      .embla,.art-photo,.art-holi-panel{height:320px;}
+    }
+  </style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Sanya Khan</a>
+    <ul class="nav-links">
+      <li><a href="research.html">Research</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="honors.html">Honors</a></li>
+      <li><a href="volunteering.html">Volunteering</a></li>
+      <li><a href="creative.html">Creative</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">Academia &amp; Research <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-submenu">
+          <li><a href="research_lab.html">Research Lab</a></li>
+          <li><a href="academic_research.html">Academic Research</a></li>
+          <li><a href="academic_projects.html">Academic Projects</a></li>
+        </ul>
+      </li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn active" aria-haspopup="true" aria-expanded="false">Publications <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-submenu">
+          <li class="has-nested">
+            <span class="submenu-label">Articles <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+            <ul class="nav-nested">
+              <li><a href="hercampus.html">Feature Writer (HerCampus Media)</a></li>
+              <li><a href="fastarticles.html" class="active">Journalism (Fast at UCLA &ndash; Blog)</a></li>
+            </ul>
+          </li>
+          <li><a href="internation_pub.html">International Publication</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <a href="index.html" class="back-btn">← Home</a>
+  <div class="page-header">
+    <p class="eyebrow">Publications &nbsp;&middot;&nbsp; Articles</p>
+    <h1 class="page-title"><em>Journalism</em></h1>
+    <p class="page-subtitle">Fast at UCLA &mdash; a fashion journalism series exploring the psychology, culture, and embodied histories of clothing. Each piece is accompanied by original editorial photography and styling.</p>
+    <div class="series-tag">The Effect Series &nbsp;&middot;&nbsp; 5 Articles</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     1. THE SAREE EFFECT — 3 images → carousel
+     ══════════════════════════ -->
+<section class="art-section" data-reveal>
+  <div class="art-inner">
+
+    <div class="art-info">
+      <div class="series-label">The Effect Series &nbsp;&middot;&nbsp; No. 1</div>
+      <h2 class="art-title">The Saree Effect</h2>
+      <p class="art-desc">On the cultural weight, feminine power, and diasporic significance of the saree as more than garment — as identity, memory, and resistance.</p>
+      <a class="read-btn" href="https://www.fastatucla.com/fast-at-ucla/saree" target="_blank" rel="noopener">Read Article ↗</a>
+      <div class="carousel-controls">
+        <button class="nav-btn" id="sareePrev" aria-label="Previous photo">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="nav-btn" id="sareeNext" aria-label="Next photo">
+          <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+        <div class="carousel-dots-row" id="sareeDots">
+          <button class="cdot active" aria-label="Photo 1"></button>
+          <button class="cdot" aria-label="Photo 2"></button>
+          <button class="cdot" aria-label="Photo 3"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="art-visual">
+      <div class="embla" id="sareeEmbla">
+        <div class="embla__container">
+          <div class="embla__slide"><img src="Fast_Pics/Saree_Effect1.jpg" alt="The Saree Effect — editorial 1" /></div>
+          <div class="embla__slide"><img src="Fast_Pics/Saree_Effect2.jpg" alt="The Saree Effect — editorial 2" /></div>
+          <div class="embla__slide"><img src="Fast_Pics/Saree_Effect3.jpg" alt="The Saree Effect — editorial 3" /></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════
+     2. THE BALLERINA EFFECT — 1 image
+     ══════════════════════════ -->
+<section class="art-section" data-reveal>
+  <div class="art-inner">
+
+    <div class="art-info">
+      <div class="series-label">The Effect Series &nbsp;&middot;&nbsp; No. 2</div>
+      <h2 class="art-title">The Ballerina Effect</h2>
+      <p class="art-desc">How ballet's Eurocentric aesthetic ideals, demanding physicality, and cultural mythology shape the dancer's identity and self-perception.</p>
+      <a class="read-btn" href="https://www.fastatucla.com/fast-at-ucla/ballet" target="_blank" rel="noopener">Read Article ↗</a>
+    </div>
+
+    <div class="art-visual">
+      <div class="art-photo">
+        <img src="Fast_Pics/Ballerena_Effect.jpg" alt="The Ballerina Effect — editorial" style="object-position:50% 40%;" />
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════
+     3. THE UNIFORM EFFECT — 3 images → carousel
+     ══════════════════════════ -->
+<section class="art-section" data-reveal>
+  <div class="art-inner">
+
+    <div class="art-info">
+      <div class="series-label">The Effect Series &nbsp;&middot;&nbsp; No. 3</div>
+      <h2 class="art-title">The Uniform Effect</h2>
+      <p class="art-desc">The paradox of uniformity — how dress codes standardize appearance yet consistently fail to erase individuality, class, and self-expression.</p>
+      <a class="read-btn" href="https://fastatucla.substack.com/p/the-uniform-effect" target="_blank" rel="noopener">Read Article ↗</a>
+      <div class="carousel-controls">
+        <button class="nav-btn" id="uniformPrev" aria-label="Previous photo">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="nav-btn" id="uniformNext" aria-label="Next photo">
+          <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+        <div class="carousel-dots-row" id="uniformDots">
+          <button class="cdot active" aria-label="Photo 1"></button>
+          <button class="cdot" aria-label="Photo 2"></button>
+          <button class="cdot" aria-label="Photo 3"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="art-visual">
+      <div class="embla" id="uniformEmbla">
+        <div class="embla__container">
+          <div class="embla__slide"><img src="Fast_Pics/Uniform_Effect1.jpg" alt="The Uniform Effect — editorial 1" /></div>
+          <div class="embla__slide"><img src="Fast_Pics/Uniform_Effect2.jpg" alt="The Uniform Effect — editorial 2" style="object-position:50% 60%;" /></div>
+          <div class="embla__slide"><img src="Fast_Pics/Uniform_Effect_3.jpg" alt="The Uniform Effect — editorial 3" style="object-position:50% 40%;" /></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════
+     4. HOLI, FELT — no image → decorative panel
+     ══════════════════════════ -->
+<section class="art-section" data-reveal>
+  <div class="art-inner">
+
+    <div class="art-info">
+      <div class="series-label">The Effect Series &nbsp;&middot;&nbsp; No. 4</div>
+      <h2 class="art-title">Holi, Felt</h2>
+      <p class="art-desc">A sensory, experiential essay on Holi as cultural memory, celebration, and the visceral way festivals live in the body long after they end.</p>
+      <a class="read-btn" href="https://www.fastatucla.com/fast-at-ucla/holi" target="_blank" rel="noopener">Read Article ↗</a>
+    </div>
+
+    <div class="art-visual">
+      <div class="art-photo">
+        <img src="Fast_Pics/Holi.jpg" alt="Holi, Felt — editorial" style="object-position:50% 40%;" />
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════
+     5. THE CANVAS EFFECT — 1 image
+     ══════════════════════════ -->
+<section class="art-section" data-reveal>
+  <div class="art-inner">
+
+    <div class="art-info">
+      <div class="series-label">The Effect Series &nbsp;&middot;&nbsp; No. 5</div>
+      <h2 class="art-title">The Canvas Effect</h2>
+      <p class="art-desc">The body as canvas — examining tattooing, adornment, and the long tradition of marking the body as an art of visible self-authorship.</p>
+      <a class="read-btn" href="https://www.fastatucla.com/fast-at-ucla/body-canvas" target="_blank" rel="noopener">Read Article ↗</a>
+    </div>
+
+    <div class="art-visual">
+      <div class="art-photo">
+        <img src="Fast_Pics/Canvas_Effect.jpg" alt="The Canvas Effect — editorial" />
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p class="footer-text">Sanya Khan &nbsp;&middot;&nbsp; <a href="index.html">Back to home</a></p>
+</footer>
+
+<script>
+  /* ── Carousel factory ── */
+  function initCarousel(trackId, prevId, nextId, dotsContainerId) {
+    const track = document.getElementById(trackId);
+    const prevBtn = document.getElementById(prevId);
+    const nextBtn = document.getElementById(nextId);
+    const dots = [...document.querySelectorAll('#' + dotsContainerId + ' .cdot')];
+    const total = dots.length;
+    let current = 0;
+
+    function updateUI() {
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === total - 1;
+    }
+    function goTo(idx) {
+      current = Math.max(0, Math.min(idx, total - 1));
+      track.scrollTo({ left: current * track.clientWidth, behavior: 'smooth' });
+      updateUI();
+    }
+    prevBtn.addEventListener('click', function() { goTo(current - 1); });
+    nextBtn.addEventListener('click', function() { goTo(current + 1); });
+    dots.forEach(function(d, i) { d.addEventListener('click', function() { goTo(i); }); });
+    track.addEventListener('scroll', function() {
+      const idx = Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+      if (idx !== current) { current = idx; updateUI(); }
+    }, { passive: true });
+    updateUI();
+  }
+
+  initCarousel('sareeEmbla',   'sareePrev',   'sareeNext',   'sareeDots');
+  initCarousel('uniformEmbla', 'uniformPrev', 'uniformNext', 'uniformDots');
+
+  /* ── Scroll Reveal ── */
+  const revealObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const delay = parseInt(el.dataset.delay || '0', 10);
+      setTimeout(function() { el.classList.add('in-view'); }, delay);
+      revealObs.unobserve(el);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('[data-reveal]').forEach(function(el) { revealObs.observe(el); });
+
+  /* ── Nav dropdown ── */
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+    dd.querySelector('.nav-dropdown-btn').addEventListener('click', function(e) {
+      e.stopPropagation(); dd.classList.toggle('open');
+      this.setAttribute('aria-expanded', dd.classList.contains('open'));
+    });
+  });
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.nav-dropdown.open').forEach(function(dd) {
+      dd.classList.remove('open');
+      dd.querySelector('.nav-dropdown-btn').setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+</body>
+</html>

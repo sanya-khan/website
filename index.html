@@ -345,6 +345,16 @@
       transition: gap 300ms ease-out; letter-spacing: 0.02em;
     }
     .section-card:hover .card-arrow { gap: 10px; }
+    .card-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .card-btn-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+      color: var(--terra); background: rgba(248,110,72,0.08);
+      border: 1px solid rgba(248,110,72,0.22);
+      border-radius: var(--r-btn); padding: 6px 14px;
+      transition: background 250ms ease, border-color 250ms ease, transform 250ms ease;
+    }
+    .card-btn-link:hover { background: rgba(248,110,72,0.16); border-color: rgba(248,110,72,0.45); transform: translateY(-1px); }
 
     /* ===== FOOTER ===== */
     footer { border-top: 0px solid var(--stone); padding: 40px 0; text-align: center; }
@@ -411,7 +421,6 @@
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">Sanya Khan</a>
     <ul class="nav-links">
-      <li><a href="articles.html">Articles</a></li>
       <li><a href="research.html">Research</a></li>
       <li><a href="experience.html">Experience</a></li>
       <li><a href="honors.html">Honors</a></li>
@@ -531,12 +540,15 @@
     <p class="area-eyebrow" data-reveal>Explore</p>
     <div class="cards-grid">
 
-      <a href="articles.html" class="section-card" data-reveal data-delay="0">
+      <div class="section-card" data-reveal data-delay="0">
         <span class="card-tag">Writing</span>
         <div class="card-title">Published Articles</div>
         <p class="card-desc">Her Campus UCLA and FAST at UCLA — 17+ published pieces on fashion, psychology, lifestyle, and identity.</p>
-        <div class="card-arrow">View articles &rarr;</div>
-      </a>
+        <div class="card-btns">
+          <a href="hercampus.html" class="card-btn-link">Her Campus ↗</a>
+          <a href="fastarticles.html" class="card-btn-link">FAST at UCLA ↗</a>
+        </div>
+      </div>
 
       <a href="research.html" class="section-card" data-reveal data-delay="80">
         <span class="card-tag">Research</span>
