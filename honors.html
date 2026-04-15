@@ -41,6 +41,65 @@
     .nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.02em; color: var(--fg); opacity: 0.55; padding: 6px 14px; border-radius: var(--r-btn); transition: all 300ms ease-out; }
     .nav-links a:hover { opacity: 1; background: var(--warm); }
     .nav-links a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+    /* ── DROPDOWN ── */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-btn {
+      font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
+      color: var(--fg); opacity: 0.55; background: none; border: none; cursor: pointer;
+      font-family: var(--font-sans); padding: 6px 14px; border-radius: var(--r-btn);
+      display: inline-flex; align-items: center; gap: 4px;
+      transition: all 300ms ease-out;
+    }
+    .nav-dropdown-btn:hover { opacity: 1; background: var(--warm); }
+    .nav-dropdown-btn.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+    .nav-dropdown-btn svg { width: 11px; height: 11px; transition: transform 250ms var(--ease); }
+    .nav-dropdown.open .nav-dropdown-btn svg { transform: rotate(180deg); }
+    .nav-submenu {
+      position: absolute; top: calc(100% + 6px); right: 0;
+      background: var(--surface); border: 1px solid var(--stone);
+      border-radius: 14px; padding: 6px; min-width: 190px;
+      box-shadow: 0 8px 28px -4px rgba(45,58,49,0.13);
+      list-style: none;
+      opacity: 0; pointer-events: none; transform: translateY(-6px);
+      transition: opacity 200ms ease, transform 200ms ease;
+      z-index: 300;
+    }
+    .nav-dropdown.open .nav-submenu { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .nav-submenu li a {
+      display: block; font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--fg); opacity: 0.65; padding: 8px 14px; border-radius: 9px;
+      transition: all 200ms ease;
+    }
+    .nav-submenu li a:hover { opacity: 1; background: var(--warm); }
+    .nav-submenu li a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+    /* Nested submenu */
+    .has-nested { position: relative; }
+    .submenu-label {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--fg); opacity: 0.65; padding: 8px 14px; border-radius: 9px;
+      cursor: default; transition: all 200ms ease; user-select: none;
+    }
+    .submenu-label svg { width: 10px; height: 10px; flex-shrink: 0; }
+    .has-nested:hover .submenu-label { opacity: 1; background: var(--warm); }
+    .nav-nested {
+      position: absolute; top: -6px; left: calc(100% + 6px);
+      background: var(--surface); border: 1px solid var(--stone);
+      border-radius: 14px; padding: 6px; min-width: 230px;
+      box-shadow: 0 8px 28px -4px rgba(45,58,49,0.13);
+      list-style: none;
+      opacity: 0; pointer-events: none; transform: translateX(-6px);
+      transition: opacity 200ms ease, transform 200ms ease;
+      z-index: 400;
+    }
+    .has-nested:hover .nav-nested { opacity: 1; pointer-events: all; transform: translateX(0); }
+    .nav-nested li a {
+      display: block; font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--fg); opacity: 0.65; padding: 8px 14px; border-radius: 9px;
+      transition: all 200ms ease;
+    }
+    .nav-nested li a:hover { opacity: 1; background: var(--warm); }
+    .nav-nested li a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
 
     .container { max-width: 860px; margin: 0 auto; padding: 0 48px; }
 
@@ -135,6 +194,33 @@
       <li><a href="honors.html" class="active">Honors</a></li>
       <li><a href="volunteering.html">Volunteering</a></li>
       <li><a href="creative.html">Creative</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Academia &amp; Research
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <ul class="nav-submenu">
+          <li><a href="research_lab.html">Research Lab</a></li>
+          <li><a href="academic_research.html">Academic Research</a></li>
+          <li><a href="academic_projects.html">Academic Projects</a></li>
+        </ul>
+      </li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Publications
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <ul class="nav-submenu">
+          <li class="has-nested">
+            <span class="submenu-label">Articles <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+            <ul class="nav-nested">
+              <li><a href="hercampus.html">Feature Writer (HerCampus Media)</a></li>
+              <li><a href="fastarticles.html">Journalism (Fast at UCLA &ndash; Blog)</a></li>
+            </ul>
+          </li>
+          <li><a href="internation_pub.html">International Publication</a></li>
+        </ul>
+      </li>
     </ul>
   </div>
 </nav>
@@ -269,6 +355,20 @@
 <footer>
   <p class="footer-text">Sanya Khan &nbsp;&middot;&nbsp; <a href="index.html">Back to home</a></p>
 </footer>
-
+<script>
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+    dd.querySelector('.nav-dropdown-btn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      dd.classList.toggle('open');
+      this.setAttribute('aria-expanded', dd.classList.contains('open'));
+    });
+  });
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.nav-dropdown.open').forEach(function(dd) {
+      dd.classList.remove('open');
+      dd.querySelector('.nav-dropdown-btn').setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
 </body>
 </html>

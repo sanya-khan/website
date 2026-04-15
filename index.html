@@ -77,6 +77,65 @@
     }
     .nav-links a:hover { opacity: 1; background: var(--warm); }
     .nav-links a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+    /* ── DROPDOWN ── */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-btn {
+      font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
+      color: var(--fg); opacity: 0.55; background: none; border: none; cursor: pointer;
+      font-family: var(--font-sans); padding: 6px 14px; border-radius: var(--r-btn);
+      display: inline-flex; align-items: center; gap: 4px;
+      transition: all 300ms ease-out;
+    }
+    .nav-dropdown-btn:hover { opacity: 1; background: var(--warm); }
+    .nav-dropdown-btn.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+    .nav-dropdown-btn svg { width: 11px; height: 11px; transition: transform 250ms var(--ease); }
+    .nav-dropdown.open .nav-dropdown-btn svg { transform: rotate(180deg); }
+    .nav-submenu {
+      position: absolute; top: calc(100% + 6px); right: 0;
+      background: var(--surface); border: 1px solid var(--stone);
+      border-radius: 14px; padding: 6px; min-width: 190px;
+      box-shadow: 0 8px 28px -4px rgba(45,58,49,0.13);
+      list-style: none;
+      opacity: 0; pointer-events: none; transform: translateY(-6px);
+      transition: opacity 200ms ease, transform 200ms ease;
+      z-index: 300;
+    }
+    .nav-dropdown.open .nav-submenu { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .nav-submenu li a {
+      display: block; font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--fg); opacity: 0.65; padding: 8px 14px; border-radius: 9px;
+      transition: all 200ms ease;
+    }
+    .nav-submenu li a:hover { opacity: 1; background: var(--warm); }
+    .nav-submenu li a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+    /* Nested submenu */
+    .has-nested { position: relative; }
+    .submenu-label {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--fg); opacity: 0.65; padding: 8px 14px; border-radius: 9px;
+      cursor: default; transition: all 200ms ease; user-select: none;
+    }
+    .submenu-label svg { width: 10px; height: 10px; flex-shrink: 0; }
+    .has-nested:hover .submenu-label { opacity: 1; background: var(--warm); }
+    .nav-nested {
+      position: absolute; top: -6px; left: calc(100% + 6px);
+      background: var(--surface); border: 1px solid var(--stone);
+      border-radius: 14px; padding: 6px; min-width: 230px;
+      box-shadow: 0 8px 28px -4px rgba(45,58,49,0.13);
+      list-style: none;
+      opacity: 0; pointer-events: none; transform: translateX(-6px);
+      transition: opacity 200ms ease, transform 200ms ease;
+      z-index: 400;
+    }
+    .has-nested:hover .nav-nested { opacity: 1; pointer-events: all; transform: translateX(0); }
+    .nav-nested li a {
+      display: block; font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--fg); opacity: 0.65; padding: 8px 14px; border-radius: 9px;
+      transition: all 200ms ease;
+    }
+    .nav-nested li a:hover { opacity: 1; background: var(--warm); }
+    .nav-nested li a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
 
     /* CONTAINER */
     .container { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
@@ -298,6 +357,28 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* ===== SCROLL REVEAL ===== */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+    }
+    [data-reveal].in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== CONTAINER SCROLL 3D ===== */
+    .scroll-3d-scene {
+      perspective: 1200px;
+      perspective-origin: 50% -20%;
+    }
+    .scroll-3d-card {
+      transform-origin: 50% 0%;
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+
     /* RESPONSIVE */
     @media (max-width: 1000px) {
       .cards-grid { grid-template-columns: repeat(2, 1fr); }
@@ -336,6 +417,33 @@
       <li><a href="honors.html">Honors</a></li>
       <li><a href="volunteering.html">Volunteering</a></li>
       <li><a href="creative.html">Creative</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Academia &amp; Research
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <ul class="nav-submenu">
+          <li><a href="research_lab.html">Research Lab</a></li>
+          <li><a href="academic_research.html">Academic Research</a></li>
+          <li><a href="academic_projects.html">Academic Projects</a></li>
+        </ul>
+      </li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Publications
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <ul class="nav-submenu">
+          <li class="has-nested">
+            <span class="submenu-label">Articles <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+            <ul class="nav-nested">
+              <li><a href="hercampus.html">Feature Writer (HerCampus Media)</a></li>
+              <li><a href="fastarticles.html">Journalism (Fast at UCLA &ndash; Blog)</a></li>
+            </ul>
+          </li>
+          <li><a href="internation_pub.html">International Publication</a></li>
+        </ul>
+      </li>
     </ul>
   </div>
 </nav>
@@ -353,8 +461,8 @@
         <div class="hero-links">
           <a href="mailto:sanyakhan2805@g.ucla.edu" class="btn btn-primary">Email Me</a>
           <a href="https://www.linkedin.com/in/sanyakhan/" target="_blank" rel="noopener" class="btn btn-outline">LinkedIn ↗</a>
-          <a href="_Khan_Sanya-Resume.pdf" target="_blank" rel="noopener" class="btn btn-outline">Resume ↗</a>
-          <a href="Sanya_khan_CV.pdf" target="_blank" rel="noopener" class="btn btn-outline">CV ↗</a>
+          <a href="Sanya_Khan_Resume.pdf" target="_blank" rel="noopener" class="btn btn-outline">Resume ↗</a>
+          <a href="Sanya_Khan_CV.pdf" target="_blank" rel="noopener" class="btn btn-outline">CV ↗</a>
         </div>
       </div>
       <div class="hero-photo-wrap">
@@ -367,19 +475,19 @@
 <div class="stats-band">
   <div class="container">
     <div class="stats-grid">
-      <div class="stat-card">
+      <div class="stat-card" data-reveal data-delay="0">
         <div class="stat-value">3.8</div>
         <div class="stat-label">GPA &nbsp;·&nbsp; Dean's Honor List</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-reveal data-delay="80">
         <div class="stat-value">3×</div>
         <div class="stat-label">World Record Holder<br>Guinness · Asia · India</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-reveal data-delay="160">
         <div class="stat-value">ISSAID</div>
-        <div class="stat-label">First Author · International<br>Publication, Paris 2025</div>
+        <div class="stat-label">Poster · Paris 2025<br>Manuscript in Preparation</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-reveal data-delay="240">
         <div class="stat-value">17+</div>
         <div class="stat-label">Articles Published<br>Her Campus &amp; FAST at UCLA</div>
       </div>
@@ -390,11 +498,12 @@
 <!-- EDUCATION SLAB -->
 <div class="edu-slab">
   <div class="container">
-    <p class="edu-slab-eyebrow">Education</p>
-    <h2 class="edu-slab-heading">University of California, <em>Los Angeles</em></h2>
+    <p class="edu-slab-eyebrow" data-reveal>Education</p>
+    <h2 class="edu-slab-heading" data-reveal data-delay="100">University of California, <em>Los Angeles</em></h2>
 
-    <!-- UCLA Featured Card -->
-    <div class="edu-main-card">
+    <!-- UCLA Featured Card — ContainerScroll 3D -->
+    <div class="scroll-3d-scene">
+    <div class="edu-main-card scroll-3d-card">
       <div class="edu-main-header">
         <div>
           <div class="edu-degree-name">B.A. Psychology &amp; Dance (Double Major)</div>
@@ -412,51 +521,52 @@
       <p class="edu-detail">Pursuing a double major across Psychology and Dance, combining behavioral science with performance, choreography, and cultural studies. Named to the Dean's Honor List five times across four academic years.</p>
       <p class="edu-detail">Research interests span behavioral marketing, social perception, body image, and the intersection of cultural identity with physical practice. Active in clinical research, editorial journalism, and dance competition at the national level.</p>
     </div>
+    </div><!-- /scroll-3d-scene -->
 
   </div>
 </div>
 
 <div class="container">
   <div class="explore-area">
-    <p class="area-eyebrow">Explore</p>
+    <p class="area-eyebrow" data-reveal>Explore</p>
     <div class="cards-grid">
 
-      <a href="articles.html" class="section-card">
+      <a href="articles.html" class="section-card" data-reveal data-delay="0">
         <span class="card-tag">Writing</span>
         <div class="card-title">Published Articles</div>
         <p class="card-desc">Her Campus UCLA and FAST at UCLA — 17+ published pieces on fashion, psychology, lifestyle, and identity.</p>
         <div class="card-arrow">View articles &rarr;</div>
       </a>
 
-      <a href="research.html" class="section-card">
+      <a href="research.html" class="section-card" data-reveal data-delay="80">
         <span class="card-tag">Research</span>
         <div class="card-title">Research</div>
         <p class="card-desc">International clinical publications, behavioral lab research at UCLA Anderson, and academic research projects.</p>
         <div class="card-arrow">View research &rarr;</div>
       </a>
 
-      <a href="experience.html" class="section-card">
+      <a href="experience.html" class="section-card" data-reveal data-delay="160">
         <span class="card-tag">Career</span>
         <div class="card-title">Experience</div>
         <p class="card-desc">Brand marketing internships, clinical research, and leadership roles across UCLA and Los Angeles.</p>
         <div class="card-arrow">View experience &rarr;</div>
       </a>
 
-      <a href="honors.html" class="section-card">
+      <a href="honors.html" class="section-card" data-reveal data-delay="240">
         <span class="card-tag">Recognition</span>
         <div class="card-title">Honors &amp; Awards</div>
         <p class="card-desc">World records, national competition wins, academic honors, and published literary works.</p>
         <div class="card-arrow">View honors &rarr;</div>
       </a>
 
-      <a href="volunteering.html" class="section-card">
+      <a href="volunteering.html" class="section-card" data-reveal data-delay="320">
         <span class="card-tag">Community</span>
         <div class="card-title">Volunteering</div>
         <p class="card-desc">Healthcare outreach, education mentorship, and arts-based community programs in Mumbai and Los Angeles.</p>
         <div class="card-arrow">View volunteering &rarr;</div>
       </a>
 
-      <a href="creative.html" class="section-card">
+      <a href="creative.html" class="section-card" data-reveal data-delay="400">
         <span class="card-tag">Creative Work</span>
         <div class="card-title">Creative Portfolio</div>
         <p class="card-desc">Dance performance, editorial modeling, commercial film, oil &amp; charcoal painting, and authored works.</p>
@@ -472,10 +582,63 @@
     Sanya Khan &nbsp;&middot;&nbsp;
     <a href="mailto:sanyakhan2805@g.ucla.edu">sanyakhan2805@g.ucla.edu</a> &nbsp;&middot;&nbsp;
     <a href="https://www.linkedin.com/in/sanyakhan/" target="_blank" rel="noopener">LinkedIn</a> &nbsp;&middot;&nbsp;
-    <a href="_Khan_Sanya-Resume.pdf" target="_blank" rel="noopener">Resume</a> &nbsp;&middot;&nbsp;
-    <a href="Sanya_khan_CV.pdf" target="_blank" rel="noopener">CV</a>
+    <a href="Sanya_Khan_Resume.pdf" target="_blank" rel="noopener">Resume</a> &nbsp;&middot;&nbsp;
+    <a href="Sanya_Khan_CV.pdf" target="_blank" rel="noopener">CV</a>
   </p>
 </footer>
 
+<script>
+  /* ── Scroll Reveal (IntersectionObserver) ── */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const delay = parseInt(el.dataset.delay || '0', 10);
+      setTimeout(() => el.classList.add('in-view'), delay);
+      revealObs.unobserve(el);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+
+  document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
+
+  /* ── ContainerScroll 3D (edu card) ── */
+  const scene  = document.querySelector('.scroll-3d-scene');
+  const card3d = document.querySelector('.scroll-3d-card');
+
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, t)    { return a + (b - a) * t; }
+
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function update3D() {
+    if (!scene || !card3d) return;
+    const rect = scene.getBoundingClientRect();
+    const vh   = window.innerHeight;
+    /* 0 = card top at bottom of viewport → 1 = card top has scrolled halfway up */
+    const raw  = 1 - rect.top / (vh * 0.75);
+    const t    = easeOutCubic(clamp(raw, 0, 1));
+    const rotX = lerp(22, 0, t);
+    const sc   = lerp(0.88, 1, t);
+    card3d.style.transform = `rotateX(${rotX}deg) scale(${sc})`;
+  }
+
+  window.addEventListener('scroll', update3D, { passive: true });
+  update3D();
+</script>
+<script>
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+    dd.querySelector('.nav-dropdown-btn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      dd.classList.toggle('open');
+      this.setAttribute('aria-expanded', dd.classList.contains('open'));
+    });
+  });
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.nav-dropdown.open').forEach(function(dd) {
+      dd.classList.remove('open');
+      dd.querySelector('.nav-dropdown-btn').setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
 </body>
 </html>

@@ -30,9 +30,12 @@
     html { scroll-behavior: smooth; }
     body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; min-height: 100vh; }
     a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; image-orientation: from-image; }
 
+    /* ── GRAIN ── */
     .grain { pointer-events: none; position: fixed; inset: 0; z-index: 200; opacity: 0.018; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-repeat: repeat; }
 
+    /* ── NAV ── */
     nav { position: sticky; top: 0; z-index: 100; background: var(--bg); }
     .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; height: 64px; display: flex; align-items: center; }
     .nav-logo { font-family: var(--font-serif); font-weight: 700; font-size: 17px; color: var(--fg); letter-spacing: 0.01em; margin-right: auto; flex-shrink: 0; transition: color 300ms ease-out; }
@@ -41,75 +44,238 @@
     .nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.02em; color: var(--fg); opacity: 0.55; padding: 6px 14px; border-radius: var(--r-btn); transition: all 300ms ease-out; }
     .nav-links a:hover { opacity: 1; background: var(--warm); }
     .nav-links a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+    /* ── DROPDOWN ── */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-btn {
+      font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
+      color: var(--fg); opacity: 0.55; background: none; border: none; cursor: pointer;
+      font-family: var(--font-sans); padding: 6px 14px; border-radius: var(--r-btn);
+      display: inline-flex; align-items: center; gap: 4px;
+      transition: all 300ms ease-out;
+    }
+    .nav-dropdown-btn:hover { opacity: 1; background: var(--warm); }
+    .nav-dropdown-btn.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+    .nav-dropdown-btn svg { width: 11px; height: 11px; transition: transform 250ms var(--ease); }
+    .nav-dropdown.open .nav-dropdown-btn svg { transform: rotate(180deg); }
+    .nav-submenu {
+      position: absolute; top: calc(100% + 6px); right: 0;
+      background: var(--surface); border: 1px solid var(--stone);
+      border-radius: 14px; padding: 6px; min-width: 190px;
+      box-shadow: 0 8px 28px -4px rgba(45,58,49,0.13);
+      list-style: none;
+      opacity: 0; pointer-events: none; transform: translateY(-6px);
+      transition: opacity 200ms ease, transform 200ms ease;
+      z-index: 300;
+    }
+    .nav-dropdown.open .nav-submenu { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .nav-submenu li a {
+      display: block; font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--fg); opacity: 0.65; padding: 8px 14px; border-radius: 9px;
+      transition: all 200ms ease;
+    }
+    .nav-submenu li a:hover { opacity: 1; background: var(--warm); }
+    .nav-submenu li a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+    /* Nested submenu */
+    .has-nested { position: relative; }
+    .submenu-label {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--fg); opacity: 0.65; padding: 8px 14px; border-radius: 9px;
+      cursor: default; transition: all 200ms ease; user-select: none;
+    }
+    .submenu-label svg { width: 10px; height: 10px; flex-shrink: 0; }
+    .has-nested:hover .submenu-label { opacity: 1; background: var(--warm); }
+    .nav-nested {
+      position: absolute; top: -6px; left: calc(100% + 6px);
+      background: var(--surface); border: 1px solid var(--stone);
+      border-radius: 14px; padding: 6px; min-width: 230px;
+      box-shadow: 0 8px 28px -4px rgba(45,58,49,0.13);
+      list-style: none;
+      opacity: 0; pointer-events: none; transform: translateX(-6px);
+      transition: opacity 200ms ease, transform 200ms ease;
+      z-index: 400;
+    }
+    .has-nested:hover .nav-nested { opacity: 1; pointer-events: all; transform: translateX(0); }
+    .nav-nested li a {
+      display: block; font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--fg); opacity: 0.65; padding: 8px 14px; border-radius: 9px;
+      transition: all 200ms ease;
+    }
+    .nav-nested li a:hover { opacity: 1; background: var(--warm); }
+    .nav-nested li a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
 
-    .container { max-width: 960px; margin: 0 auto; padding: 0 48px; }
+    /* ── CONTAINER (wide) ── */
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
 
-    .page-header { padding: 80px 0 64px; }
-    .eyebrow { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sage); margin-bottom: 16px; }
-    .page-title { font-family: var(--font-serif); font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 16px; }
-    .page-title em { font-style: italic; color: var(--fg); }
-    .page-subtitle { font-size: 17px; color: var(--fg); opacity: 0.6; line-height: 1.75; max-width: 520px; }
-
-    /* VOLUNTEER CARDS — staggered 2-col grid */
-    .content-area { padding: 56px 0; border-top: 1px solid var(--stone); }
-    .vol-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-items: start; margin-bottom: 56px; }
-
-    .vol-card {
-      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
-      padding: 32px 30px; box-shadow: var(--shadow-sm);
-      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
-      position: relative; overflow: hidden;
-    }
-    .vol-card:nth-child(even) { margin-top: 28px; }
-    .vol-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-xl); border-color: var(--clay); }
-    .vol-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--sage); margin-bottom: 20px;
-    }
-    .vol-type { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--sage); margin-bottom: 6px; }
-    .vol-title { font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--fg); margin-bottom: 4px; line-height: 1.3; }
-    .vol-org { font-size: 13px; color: var(--fg); opacity: 0.55; margin-bottom: 14px; }
-    .vol-desc { font-size: 14px; color: var(--fg); opacity: 0.68; line-height: 1.7; margin-bottom: 16px; }
-    .vol-date {
-      display: inline-block; font-size: 12px; color: var(--terra);
-      font-weight: 600; letter-spacing: 0.04em;
-    }
-
-    /* SPOTLIGHT */
-    .initiative-spotlight {
-      background: var(--surface); border: 1px solid var(--stone); border-radius: var(--r-card);
-      padding: 40px; box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
-    }
-    .initiative-spotlight::before {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-      width: 4px; background: var(--sage); border-radius: 4px 0 0 4px;
-    }
-    .initiative-label {
-      font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em;
-      color: var(--sage); margin-bottom: 14px;
-    }
-    .initiative-spotlight h3 {
-      font-family: var(--font-serif); font-size: 22px; font-weight: 700;
-      color: var(--fg); margin-bottom: 14px; line-height: 1.3;
-    }
-    .initiative-spotlight p {
-      font-size: 15px; color: var(--fg); opacity: 0.7; line-height: 1.8;
-    }
-
+    /* ── BACK BTN ── */
     .back-btn { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: var(--fg); opacity: 0.6; background: var(--warm); border: 1px solid var(--stone); border-radius: var(--r-btn); padding: 6px 16px; margin-top: 24px; transition: all 300ms ease-out; }
     .back-btn:hover { opacity: 1; border-color: var(--clay); background: var(--surface); }
 
-    footer { border-top: 1px solid var(--stone); padding: 40px 0; text-align: center; margin-top: 56px; }
+    /* ── PAGE HEADER ── */
+    .page-header { padding: 80px 0 72px; }
+    .eyebrow { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--sage); margin-bottom: 16px; }
+    .page-title { font-family: var(--font-serif); font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 20px; }
+    .page-title em { font-style: italic; color: var(--fg); }
+    .page-subtitle { font-size: 17px; color: var(--fg); opacity: 0.62; line-height: 1.8; max-width: 680px; }
+
+    /* ════════════════════════════════════════
+       SPARK A SMILE — Gallery4-style carousel
+       ════════════════════════════════════════ */
+    .spark-section {
+      border-bottom: 1px solid var(--stone);
+      padding: 80px 0;
+      margin-bottom: 0;
+    }
+    .spark-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 48px;
+      display: flex; gap: 64px; align-items: center;
+    }
+
+    /* Left: text + controls */
+    .spark-info { flex: 0 0 380px; }
+    .initiative-label {
+      font-size: 14px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.16em; color: var(--terra); margin-bottom: 10px;
+    }
+    .spark-title {
+      font-family: var(--font-serif); font-size: 2rem; font-weight: 700;
+      color: var(--fg); margin-bottom: 6px; line-height: 1.2;
+    }
+    .spark-date {
+      font-size: 13px; color: var(--fg); opacity: 0.5;
+      font-style: italic; margin-bottom: 20px;
+    }
+    .spark-desc {
+      font-size: 15px; color: var(--fg); opacity: 0.7;
+      line-height: 1.8; margin-bottom: 12px;
+    }
+    .award-badge {
+      display: inline-flex; align-items: flex-start; gap: 8px;
+      background: rgba(248,110,72,0.07); border: 1px solid rgba(248,110,72,0.22);
+      border-radius: 14px; padding: 10px 16px;
+      font-size: 13px; font-weight: 600; color: var(--terra);
+      line-height: 1.5; margin-bottom: 32px;
+    }
+
+    /* Carousel controls row */
+    .carousel-controls { display: flex; align-items: center; gap: 10px; }
+    .nav-btn {
+      width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--stone);
+      background: var(--surface); cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--fg); transition: all 250ms ease-out; flex-shrink: 0;
+    }
+    .nav-btn:hover { background: var(--fg); color: #fff; border-color: var(--fg); }
+    .nav-btn:disabled { opacity: 0.25; cursor: default; pointer-events: none; }
+    .nav-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .carousel-dots-row { display: flex; gap: 6px; align-items: center; margin-left: 4px; }
+    .cdot { width: 8px; height: 8px; border-radius: 50%; background: var(--stone); border: none; padding: 0; cursor: pointer; transition: all 250ms ease-out; }
+    .cdot.active { background: var(--fg); transform: scale(1.15); }
+
+    /* Right: scroll-snap carousel (no dependencies) */
+    .spark-carousel { flex: 1; min-width: 0; }
+    .embla {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      border-radius: 24px;
+      height: 500px;
+    }
+    .embla::-webkit-scrollbar { display: none; }
+    .embla__container { display: flex; height: 100%; }
+    .embla__slide { flex: 0 0 100%; min-width: 0; position: relative; overflow: hidden; scroll-snap-align: start; }
+    .embla__slide img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 600ms var(--ease);
+    }
+    .embla__slide:hover img { transform: scale(1.03); }
+
+    /* ════════════════════════════════════════
+       VOLUNTEER GRID — wide, larger cards
+       ════════════════════════════════════════ */
+    .vol-section { padding: 72px 0 80px; }
+    .section-eyebrow {
+      font-size: 14px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.16em; color: var(--sage); margin-bottom: 36px;
+    }
+    .vol-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      column-gap: 20px;
+      row-gap: 20px;
+      align-items: start;
+    }
+    /* Scattered editorial placement — variable widths + organic offsets */
+    .vol-card:nth-child(1) { grid-column: 1 / 8; }
+    .vol-card:nth-child(2) { grid-column: 8 / 13; margin-top: 80px; }
+    .vol-card:nth-child(3) { grid-column: 1 / 6; }
+    .vol-card:nth-child(4) { grid-column: 6 / 13; margin-top: 48px; }
+    .vol-card:nth-child(5) { grid-column: 1 / 7; margin-top: 12px; }
+    .vol-card:nth-child(6) { grid-column: 7 / 13; margin-top: 56px; }
+    .vol-card:nth-child(7) { grid-column: 2 / 7; }
+    .vol-card:nth-child(8) { grid-column: 7 / 13; margin-top: 44px; }
+
+    .vol-card {
+      background: var(--surface); border: 1px solid var(--stone);
+      border-radius: var(--r-card); overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
+    }
+    .vol-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-xl); border-color: var(--clay); }
+    .vol-card.terra-accent { border-color: rgba(248,110,72,0.22); }
+
+    /* Photo at top of card */
+    .vol-photo {
+      width: 100%; height: 300px; overflow: hidden;
+    }
+    .vol-photo img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 600ms var(--ease);
+    }
+    .vol-card:hover .vol-photo img { transform: scale(1.04); }
+
+    /* Card body */
+    .vol-body { padding: 32px 32px 28px; }
+    .vol-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--sage); margin-bottom: 18px;
+    }
+    .vol-dot.terra { background: var(--terra); }
+    .vol-type { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--sage); margin-bottom: 6px; }
+    .vol-title { font-family: var(--font-serif); font-size: 19px; font-weight: 700; color: var(--fg); margin-bottom: 5px; line-height: 1.3; }
+    .vol-org { font-size: 13px; color: var(--fg); opacity: 0.5; margin-bottom: 14px; line-height: 1.5; }
+    .vol-desc { font-size: 14px; color: var(--fg); opacity: 0.68; line-height: 1.75; margin-bottom: 18px; }
+    .vol-date { display: inline-block; font-size: 12px; color: var(--terra); font-weight: 600; letter-spacing: 0.04em; }
+
+    /* ── SCROLL REVEAL ── */
+    [data-reveal] {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+    }
+    [data-reveal].in-view { opacity: 1; transform: translateY(0); }
+
+    /* ── FOOTER ── */
+    footer { padding: 40px 0; text-align: center; margin-top: 0; }
     .footer-text { font-size: 13px; color: var(--fg); opacity: 0.45; letter-spacing: 0.03em; }
     .footer-text a { transition: opacity 300ms ease; }
     .footer-text a:hover { opacity: 1; color: var(--terra); }
 
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .spark-inner { gap: 40px; }
+      .spark-info { flex: 0 0 320px; }
+      .embla { height: 420px; }
+    }
     @media (max-width: 768px) {
-      .nav-inner { padding: 0 20px; }
+      .nav-inner, .container { padding: 0 20px; }
       .nav-links a { font-size: 11px; padding: 5px 9px; }
-      .container { padding: 0 20px; }
+      .spark-inner { flex-direction: column; padding: 0 20px; gap: 32px; }
+      .spark-info { flex: none; width: 100%; }
+      .embla { height: 320px; }
       .vol-grid { grid-template-columns: 1fr; }
-      .vol-card:nth-child(even) { margin-top: 0; }
+      .vol-card:nth-child(n) { grid-column: 1 / -1; margin-top: 0; }
+      .vol-photo { height: 240px; }
     }
   </style>
 </head>
@@ -127,71 +293,287 @@
       <li><a href="honors.html">Honors</a></li>
       <li><a href="volunteering.html" class="active">Volunteering</a></li>
       <li><a href="creative.html">Creative</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Academia &amp; Research
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <ul class="nav-submenu">
+          <li><a href="research_lab.html">Research Lab</a></li>
+          <li><a href="academic_research.html">Academic Research</a></li>
+          <li><a href="academic_projects.html">Academic Projects</a></li>
+        </ul>
+      </li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Publications
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <ul class="nav-submenu">
+          <li class="has-nested">
+            <span class="submenu-label">Articles <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+            <ul class="nav-nested">
+              <li><a href="hercampus.html">Feature Writer (HerCampus Media)</a></li>
+              <li><a href="fastarticles.html">Journalism (Fast at UCLA &ndash; Blog)</a></li>
+            </ul>
+          </li>
+          <li><a href="internation_pub.html">International Publication</a></li>
+        </ul>
+      </li>
     </ul>
   </div>
 </nav>
 
+<!-- PAGE HEADER -->
 <div class="container">
   <a href="index.html" class="back-btn">← Home</a>
   <div class="page-header">
-    <p class="eyebrow">Community</p>
+    <p class="eyebrow">Service &amp; Community Impact</p>
     <h1 class="page-title"><em>Volunteering</em></h1>
-    <p class="page-subtitle">Healthcare outreach, academic mentorship, and arts-based community programs across Mumbai and Los Angeles.</p>
+    <p class="page-subtitle">My volunteer work often lives at the confluence of movement, care, and community. Whether through teaching dance and yoga to children undergoing cancer treatment, building service initiatives in Mumbai, or using performance as a form of environmental advocacy, I have been drawn to work that offers both expression and tangible impact.</p>
   </div>
+</div>
 
-  <div class="content-area">
+<!-- ══════════════════════════════════════════════
+     SPARK A SMILE — Gallery4-style photo carousel
+     ══════════════════════════════════════════════ -->
+<section class="spark-section" data-reveal>
+  <div class="spark-inner">
+
+    <!-- Text + controls -->
+    <div class="spark-info">
+      <div class="initiative-label">Civic Initiative &nbsp;&middot;&nbsp; Founder</div>
+      <h2 class="spark-title">Spark A Smile</h2>
+      <p class="spark-date">Mar 2021 &ndash; May 2022 &nbsp;&middot;&nbsp; Mumbai</p>
+      <p class="spark-desc">Founded and led Spark A Smile, a community service initiative supporting COVID-affected areas across Mumbai through ongoing clothing and toy drives. I built teams, coordinated donor collection and triage, and helped facilitate quarterly distributions that reached more than 45 areas, with over 100 packets distributed to date.</p>
+      <p class="spark-desc">The initiative also created a ripple effect, inspiring other donors to begin similar drives of their own.</p>
+      <div class="award-badge">🏆 Best Social Service Provider during COVID-19 &mdash; Nationalist Youth Congress, Mumbai</div>
+
+      <!-- Prev / Next + dots -->
+      <div class="carousel-controls">
+        <button class="nav-btn" id="sparkPrev" aria-label="Previous photo">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="nav-btn" id="sparkNext" aria-label="Next photo">
+          <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+        <div class="carousel-dots-row" id="sparkDots">
+          <button class="cdot active" data-index="0" aria-label="Photo 1"></button>
+          <button class="cdot" data-index="1" aria-label="Photo 2"></button>
+          <button class="cdot" data-index="2" aria-label="Photo 3"></button>
+          <button class="cdot" data-index="3" aria-label="Photo 4"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Embla carousel -->
+    <div class="spark-carousel">
+      <div class="embla" id="sparkEmbla">
+        <div class="embla__container">
+          <div class="embla__slide">
+            <img src="Volunteering_Pics/Spark_a_Smile1.jpg" alt="Spark A Smile — sorting donations" />
+          </div>
+          <div class="embla__slide">
+            <img src="Volunteering_Pics/Spark_a_Smile2.jpg" alt="Spark A Smile — community drive" />
+          </div>
+          <div class="embla__slide">
+            <img src="Volunteering_Pics/Spark_a_Smile3.jpg" alt="Spark A Smile — distribution day" />
+          </div>
+          <div class="embla__slide">
+            <img src="Volunteering_Pics/Spark_a_Smile4.jpg" alt="Spark A Smile — team effort" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     VOLUNTEER GRID — wide, larger cards
+     ══════════════════════════════════════ -->
+<div class="container">
+  <div class="vol-section">
+    <p class="section-eyebrow">All Volunteer Experience</p>
     <div class="vol-grid">
 
-      <div class="vol-card">
-        <div class="vol-dot"></div>
-        <div class="vol-type">Healthcare</div>
-        <div class="vol-title">COVID-19 Vaccination Drives</div>
-        <div class="vol-org">SRCC Children's Hospital &nbsp;&middot;&nbsp; Rotaract Club of Kishinchand Chellaram College</div>
-        <p class="vol-desc">Volunteered at SRCC Children's Hospital through the Rotaract Club, organizing and supporting community COVID-19 vaccination drives in Mumbai during the height of the pandemic. Worked alongside medical staff to coordinate logistics, manage patient flow, and communicate health information to families.</p>
-        <span class="vol-date">2021 – 2022</span>
+      <!-- Bruin Day — photo card -->
+      <div class="vol-card" data-reveal data-delay="0">
+        <div class="vol-photo">
+          <img src="Volunteering_Pics/Bruin_day.jpg" alt="Bruin Day at UCLA" />
+        </div>
+        <div class="vol-body">
+          <div class="vol-dot"></div>
+          <div class="vol-type">UCLA &nbsp;&middot;&nbsp; Student Mentorship</div>
+          <div class="vol-title">Bruin Day Volunteer &amp; Student Mentor</div>
+          <div class="vol-org">University of California, Los Angeles</div>
+          <p class="vol-desc">Throughout all four years of my undergraduate experience at UCLA, I volunteered annually for Bruin Day by leading campus tours, engaging with newly admitted students and their families, and offering guidance on academic life, campus culture, and student opportunities. Helped create a welcoming and supportive experience for prospective students during one of the university's key admissions events.</p>
+          <span class="vol-date">Sep 2022 &ndash; Jun 2026</span>
+        </div>
       </div>
 
-      <div class="vol-card">
-        <div class="vol-dot"></div>
-        <div class="vol-type">Education &amp; Mentorship</div>
-        <div class="vol-title">Academic Mentor for High School Students</div>
-        <div class="vol-org">H.S.C., I.C.S.E., and S.S.C. Education Boards &nbsp;&middot;&nbsp; Mumbai</div>
-        <p class="vol-desc">Mentored high school students across Mumbai's major education boards — H.S.C., I.C.S.E., and S.S.C. — guiding academic planning, skill development, and college preparation. Provided one-on-one guidance to students navigating board exams, subject selection, and post-secondary planning during a formative and high-pressure period.</p>
-        <span class="vol-date">2019 – 2022</span>
+      <!-- Green India Mission — world records -->
+      <div class="vol-card terra-accent" data-reveal data-delay="100">
+        <div class="vol-body">
+          <div class="vol-dot terra"></div>
+          <div class="vol-type">Environmental Advocacy &nbsp;&middot;&nbsp; 3 World Records</div>
+          <div class="vol-title">Green India Mission — Bharatanatyam Sword Dance</div>
+          <div class="vol-org">Karnataka &nbsp;&middot;&nbsp; Guinness · Asia · India Book of Records</div>
+          <p class="vol-desc">Performed the Bharatanatyam Sword Dance in Karnataka in support of the Green India Mission under the National Action Plan on Climate Change, using performance as a medium for environmental awareness and advocacy. The work promoted the safeguarding of India's biological resources, drew national media coverage, and was recognized simultaneously by Guinness World Records, the Asia Book of Records, and the India Book of Records.</p>
+          <span class="vol-date">Aug 2018</span>
+        </div>
       </div>
 
-      <div class="vol-card">
-        <div class="vol-dot"></div>
-        <div class="vol-type">Arts &amp; Cultural Outreach</div>
-        <div class="vol-title">Summer Dance Workshops — Jazz, Ballet &amp; Contemporary</div>
-        <div class="vol-org">Community &amp; Nupoor Zankar Bharatnatyam Institute &nbsp;&middot;&nbsp; Mumbai</div>
-        <p class="vol-desc">Led summer workshops in the community and at the Nupoor Zankar Bharatnatyam Institute to introduce children and young adults to jazz, ballet, and contemporary dance. Designed accessible, inclusive programs to foster cultural appreciation, creativity, and physical expression in students with varying levels of prior dance experience.</p>
-        <span class="vol-date">2019 – 2022</span>
+      <!-- Community Garden -->
+      <div class="vol-card" data-reveal data-delay="0">
+        <div class="vol-body">
+          <div class="vol-dot"></div>
+          <div class="vol-type">Campus Sustainability</div>
+          <div class="vol-title">Community Garden Volunteer</div>
+          <div class="vol-org">JBS HCI Community Garden &nbsp;&middot;&nbsp; UCLA</div>
+          <p class="vol-desc">Volunteer at the UCLA Garden, contributing to a campus space centered on sustainability, cultivation, and community care.</p>
+          <span class="vol-date">Sep 2022 &ndash; Jun 2024</span>
+        </div>
       </div>
 
-      <div class="vol-card">
-        <div class="vol-dot"></div>
-        <div class="vol-type">Healthcare &amp; Arts Therapy</div>
-        <div class="vol-title">Dance &amp; Yoga Workshops for Pediatric Cancer Patients</div>
-        <div class="vol-org">Tata Memorial Centre &nbsp;&middot;&nbsp; Mumbai</div>
-        <p class="vol-desc">Taught dance and yoga to children receiving treatment at Tata Memorial Centre, one of India's leading cancer hospitals. Conducted skill-building and recreational workshops designed to promote emotional well-being, stress relief, and moments of joy for pediatric patients and their families during a deeply challenging time.</p>
-        <span class="vol-date">2019 – 2020</span>
+      <!-- COVID Vaccination — photo card -->
+      <div class="vol-card" data-reveal data-delay="100">
+        <div class="vol-photo">
+          <img src="Volunteering_Pics/Covid_doses.jpg" alt="COVID-19 Vaccination Drive at SRCC Children's Hospital" />
+        </div>
+        <div class="vol-body">
+          <div class="vol-dot"></div>
+          <div class="vol-type">Healthcare</div>
+          <div class="vol-title">COVID-19 Vaccination Drive Volunteer</div>
+          <div class="vol-org">SRCC Children's Hospital &nbsp;&middot;&nbsp; Rotaract Club of Kishinchand Chellaram College</div>
+          <p class="vol-desc">Volunteered at SRCC Children's Hospital through the Rotaract Club, helping organize COVID-19 vaccination drives during the pandemic. Worked at the desk to collect patient data, ease the load on hospital workers, and contribute to the coordination and delivery of vaccination initiatives during a time of critical healthcare need.</p>
+          <span class="vol-date">Apr 2021</span>
+        </div>
       </div>
 
-    </div>
+      <!-- Nupoor Zankar Dance Workshop -->
+      <div class="vol-card" data-reveal data-delay="0">
+        <div class="vol-body">
+          <div class="vol-dot"></div>
+          <div class="vol-type">Arts &amp; Cultural Outreach</div>
+          <div class="vol-title">Community Dance Workshop Leader</div>
+          <div class="vol-org">Nupoor Zankar Bharatanatyam Institute &nbsp;&middot;&nbsp; Mumbai</div>
+          <p class="vol-desc">Led summer dance workshops for approximately 30 students at a Bharatanatyam institute, introducing ballet, jazz, and contemporary forms into a traditionally Indian classical training space. Developed choreography and lesson plans, coached students toward performance, and helped shape an annual showcase for an audience of 1,000 — opening the institute to a more holistic, cross-disciplinary vision of dance education.</p>
+          <span class="vol-date">2019 &ndash; 2022</span>
+        </div>
+      </div>
 
-    <div class="initiative-spotlight">
-      <div class="initiative-label">Civic Initiative</div>
-      <h3>Spark A Smile — Founder</h3>
-      <p>Founded a civic outreach program in Mumbai in 2021, organizing citywide clothing drives and COVID relief kits. Distributed 2,000+ clothing items and care packages to 150+ families affected by the pandemic. The initiative was awarded "Best Social Service Provider during COVID-19" by the Nationalist Youth Congress, Mumbai. <em>(Mar 2021 – May 2022)</em></p>
+      <!-- Academic Mentor -->
+      <div class="vol-card" data-reveal data-delay="100">
+        <div class="vol-body">
+          <div class="vol-dot"></div>
+          <div class="vol-type">Education &amp; Mentorship</div>
+          <div class="vol-title">Academic Mentor for High School Students</div>
+          <div class="vol-org">H.S.C., I.C.S.E., and S.S.C. Education Boards &nbsp;&middot;&nbsp; Mumbai</div>
+          <p class="vol-desc">Mentored high school students across Mumbai's major education boards, guiding academic planning, skill development, and college preparation. Provided individual support to students navigating board exams, subject selection, and post-secondary planning during a formative and high-pressure period.</p>
+          <span class="vol-date">2019 &ndash; 2022</span>
+        </div>
+      </div>
+
+      <!-- Tata Memorial Hospital -->
+      <div class="vol-card" data-reveal data-delay="0">
+        <div class="vol-body">
+          <div class="vol-dot"></div>
+          <div class="vol-type">Healthcare &amp; Arts Therapy</div>
+          <div class="vol-title">Volunteer Instructor &amp; Program Coordinator</div>
+          <div class="vol-org">Tata Memorial Hospital &nbsp;&middot;&nbsp; Queen Mary School Rotaract Club &nbsp;&middot;&nbsp; Duhita Foundation</div>
+          <p class="vol-desc">Volunteered with children undergoing cancer treatment, teaching dance and yoga as a means of physical rehabilitation, emotional release, and joy. Helped lead stage performances, art workshops, and the distribution of books and stationery — contributing to creative programming designed to bring young patients a sense of play, resilience, and community throughout their treatment journey.</p>
+          <span class="vol-date">2018 &ndash; 2020</span>
+        </div>
+      </div>
+
+      <!-- Rotaract Sergeant-at-Arms -->
+      <div class="vol-card" data-reveal data-delay="100">
+        <div class="vol-body">
+          <div class="vol-dot"></div>
+          <div class="vol-type">Student Leadership</div>
+          <div class="vol-title">Sergeant-at-Arms, Rotaract Club</div>
+          <div class="vol-org">Queen Mary School &nbsp;&middot;&nbsp; Mumbai</div>
+          <p class="vol-desc">Served as Sergeant-at-Arms for my school's Rotaract Club, helping execute orderly meetings and coordinate service activities, including community visits and trips to the dog shelter. As a member of the chapter's first batch, I contributed to setting routines and standards that continued in later student cohorts.</p>
+          <span class="vol-date">2019 &ndash; 2020</span>
+        </div>
+      </div>
+
     </div>
   </div>
-
 </div>
 
 <footer>
   <p class="footer-text">Sanya Khan &nbsp;&middot;&nbsp; <a href="index.html">Back to home</a></p>
 </footer>
+
+<!-- ══════════════════════════════════════
+     SCRIPTS
+     ══════════════════════════════════════ -->
+<!-- Scroll reveal: plain script, works on file:// and localhost -->
+<script>
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el    = entry.target;
+      const delay = parseInt(el.dataset.delay || '0', 10);
+      setTimeout(() => el.classList.add('in-view'), delay);
+      revealObs.unobserve(el);
+    });
+  }, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
+</script>
+
+<!-- Spark A Smile carousel: pure CSS scroll-snap, no dependencies -->
+<script>
+  (function () {
+    const track   = document.getElementById('sparkEmbla');
+    const prevBtn = document.getElementById('sparkPrev');
+    const nextBtn = document.getElementById('sparkNext');
+    const dots    = [...document.querySelectorAll('#sparkDots .cdot')];
+    const total   = dots.length;
+    let current   = 0;
+
+    function updateUI() {
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === total - 1;
+    }
+
+    function goTo(idx) {
+      current = Math.max(0, Math.min(idx, total - 1));
+      track.scrollTo({ left: current * track.clientWidth, behavior: 'smooth' });
+      updateUI();
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+    dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+
+    // Sync dots/arrows when user swipes or drags
+    track.addEventListener('scroll', () => {
+      const idx = Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+      if (idx !== current) { current = idx; updateUI(); }
+    }, { passive: true });
+
+    updateUI();
+  })();
+</script>
+<script>
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+    dd.querySelector('.nav-dropdown-btn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      dd.classList.toggle('open');
+      this.setAttribute('aria-expanded', dd.classList.contains('open'));
+    });
+  });
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.nav-dropdown.open').forEach(function(dd) {
+      dd.classList.remove('open');
+      dd.querySelector('.nav-dropdown-btn').setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
 
 </body>
 </html>
