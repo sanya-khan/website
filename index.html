@@ -216,16 +216,15 @@
     }
     .stat-card {
       background: var(--surface);
-      border: 1px solid var(--stone);
+      border: none;
       border-radius: var(--r-card);
       padding: 28px 24px 24px;
-      box-shadow: var(--shadow-sm);
-      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
+      box-shadow: 10px 10px 26px #d3d0c8, -10px -10px 26px #ffffff;
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease);
     }
     .stat-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-xl);
-      border-color: var(--clay);
+      transform: translateY(-3px);
+      box-shadow: 14px 14px 34px #cac7c0, -14px -14px 34px #ffffff;
     }
     .stat-value {
       font-family: var(--font-serif);
@@ -312,19 +311,18 @@
     }
     .section-card {
       background: var(--surface);
-      border: 1px solid var(--stone);
+      border: none;
       border-radius: var(--r-card);
       padding: 32px 30px;
       display: flex; flex-direction: column; gap: 8px;
-      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease), border-color 300ms ease-out;
-      box-shadow: var(--shadow-sm);
+      transition: transform 500ms var(--ease), box-shadow 500ms var(--ease);
+      box-shadow: 10px 10px 26px #d3d0c8, -10px -10px 26px #ffffff;
       color: var(--fg);
     }
     .section-card:nth-child(even) { margin-top: 24px; }
     .section-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-xl);
-      border-color: var(--clay);
+      transform: translateY(-3px);
+      box-shadow: 14px 14px 34px #cac7c0, -14px -14px 34px #ffffff;
     }
     .card-tag {
       font-size: 10px; font-weight: 600;
@@ -338,14 +336,7 @@
       margin-top: 2px;
     }
     .card-desc { font-size: 14px; color: var(--fg); opacity: 0.6; line-height: 1.6; flex: 1; }
-    .card-arrow {
-      font-size: 13px; color: var(--terra);
-      font-weight: 600; margin-top: 16px;
-      display: flex; align-items: center; gap: 5px;
-      transition: gap 300ms ease-out; letter-spacing: 0.02em;
-    }
-    .section-card:hover .card-arrow { gap: 10px; }
-    .card-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.card-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
     .card-btn-link {
       display: inline-flex; align-items: center; gap: 5px;
       font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
@@ -355,6 +346,20 @@
       transition: background 250ms ease, border-color 250ms ease, transform 250ms ease;
     }
     .card-btn-link:hover { background: rgba(248,110,72,0.16); border-color: rgba(248,110,72,0.45); transform: translateY(-1px); }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 18px; }
+    .card-pill-link {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
+      color: #fff; background: var(--terra);
+      border-radius: var(--r-btn); padding: 10px 22px;
+      box-shadow: 0 4px 14px -2px rgba(248,110,72,0.35);
+      transition: background 250ms ease, box-shadow 250ms ease, gap 300ms ease-out, transform 200ms ease;
+      white-space: nowrap; flex-shrink: 0; margin-top: 16px;
+      align-self: flex-start;
+    }
+    .card-pill-link:hover,
+    .section-card:hover .card-pill-link { background: #e85c36; box-shadow: 0 6px 18px -2px rgba(248,110,72,0.45); gap: 11px; transform: translateY(-1px); }
+    .card-btns .card-pill-link { margin-top: 0; }
 
     /* ===== FOOTER ===== */
     footer { border-top: 0px solid var(--stone); padding: 40px 0; text-align: center; }
@@ -421,7 +426,6 @@
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">Sanya Khan</a>
     <ul class="nav-links">
-      <li><a href="research.html">Research</a></li>
       <li><a href="experience.html">Experience</a></li>
       <li><a href="honors.html">Honors</a></li>
       <li><a href="volunteering.html">Volunteering</a></li>
@@ -469,9 +473,9 @@
         </p>
         <div class="hero-links">
           <a href="mailto:sanyakhan2805@g.ucla.edu" class="btn btn-primary">Email Me</a>
-          <a href="https://www.linkedin.com/in/sanyakhan/" target="_blank" rel="noopener" class="btn btn-outline">LinkedIn ↗</a>
-          <a href="Sanya_Khan_Resume.pdf" target="_blank" rel="noopener" class="btn btn-outline">Resume ↗</a>
-          <a href="Sanya_Khan_CV.pdf" target="_blank" rel="noopener" class="btn btn-outline">CV ↗</a>
+          <a href="https://www.linkedin.com/in/sanyakhan/" target="_blank" rel="noopener" class="btn btn-primary">LinkedIn ↗</a>
+          <a href="Sanya_Khan_Resume.pdf" target="_blank" rel="noopener" class="btn btn-primary">Resume ↗</a>
+          <a href="Sanya_Khan_CV.pdf" target="_blank" rel="noopener" class="btn btn-primary">CV ↗</a>
         </div>
       </div>
       <div class="hero-photo-wrap">
@@ -545,44 +549,48 @@
         <div class="card-title">Published Articles</div>
         <p class="card-desc">Her Campus UCLA and FAST at UCLA — 17+ published pieces on fashion, psychology, lifestyle, and identity.</p>
         <div class="card-btns">
-          <a href="hercampus.html" class="card-btn-link">Her Campus ↗</a>
-          <a href="fastarticles.html" class="card-btn-link">FAST at UCLA ↗</a>
+          <a href="hercampus.html" class="card-pill-link">Her Campus →</a>
+          <a href="fastarticles.html" class="card-pill-link">FAST at UCLA →</a>
         </div>
       </div>
 
-      <a href="research.html" class="section-card" data-reveal data-delay="80">
-        <span class="card-tag">Research</span>
-        <div class="card-title">Research</div>
-        <p class="card-desc">International clinical publications, behavioral lab research at UCLA Anderson, and academic research projects.</p>
-        <div class="card-arrow">View research &rarr;</div>
-      </a>
+      <div class="section-card" data-reveal data-delay="80">
+        <span class="card-tag">Academia &amp; Research</span>
+        <div class="card-title">Academia &amp; Research</div>
+        <p class="card-desc">Research lab roles at UCLA, independent academic research papers, and applied course projects spanning psychology, dance, and human health.</p>
+        <div class="card-btns" style="margin-top:16px;">
+          <a href="research_lab.html" class="card-pill-link">Research Lab →</a>
+          <a href="academic_research.html" class="card-pill-link">Academic Research →</a>
+          <a href="academic_projects.html" class="card-pill-link">Academic Projects →</a>
+        </div>
+      </div>
 
       <a href="experience.html" class="section-card" data-reveal data-delay="160">
         <span class="card-tag">Career</span>
         <div class="card-title">Experience</div>
         <p class="card-desc">Brand marketing internships, clinical research, and leadership roles across UCLA and Los Angeles.</p>
-        <div class="card-arrow">View experience &rarr;</div>
+        <div class="card-pill-link">View experience →</div>
       </a>
 
       <a href="honors.html" class="section-card" data-reveal data-delay="240">
         <span class="card-tag">Recognition</span>
         <div class="card-title">Honors &amp; Awards</div>
         <p class="card-desc">World records, national competition wins, academic honors, and published literary works.</p>
-        <div class="card-arrow">View honors &rarr;</div>
+        <div class="card-pill-link">View honors →</div>
       </a>
 
       <a href="volunteering.html" class="section-card" data-reveal data-delay="320">
         <span class="card-tag">Community</span>
         <div class="card-title">Volunteering</div>
         <p class="card-desc">Healthcare outreach, education mentorship, and arts-based community programs in Mumbai and Los Angeles.</p>
-        <div class="card-arrow">View volunteering &rarr;</div>
+        <div class="card-pill-link">View volunteering →</div>
       </a>
 
       <a href="creative.html" class="section-card" data-reveal data-delay="400">
         <span class="card-tag">Creative Work</span>
         <div class="card-title">Creative Portfolio</div>
         <p class="card-desc">Dance performance, editorial modeling, commercial film, oil &amp; charcoal painting, and authored works.</p>
-        <div class="card-arrow">View creative work &rarr;</div>
+        <div class="card-pill-link">View creative work →</div>
       </a>
 
     </div>
