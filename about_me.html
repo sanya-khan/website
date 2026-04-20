@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Me — Sanya Khan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #f5f2ea;
+      --fg:       #2D3A31;
+      --sage:     #8C9A84;
+      --clay:     #DCCFC2;
+      --stone:    #E6E2DA;
+      --terra:    #f86e48;
+      --surface:  #FFFFFF;
+      --warm:     #F2F0EB;
+      --navy:     #1B263B;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans:  'Source Sans 3', system-ui, sans-serif;
+      --r-card: 24px;
+      --r-btn:  9999px;
+      --shadow-sm: 0 4px 6px -1px rgba(45,58,49,0.05);
+      --shadow-md: 0 10px 20px -4px rgba(45,58,49,0.07);
+      --shadow-lg: 0 20px 40px -10px rgba(45,58,49,0.09);
+      --shadow-xl: 0 25px 50px -12px rgba(45,58,49,0.16);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* GRAIN */
+    .grain {
+      pointer-events: none;
+      position: fixed; inset: 0; z-index: 200;
+      opacity: 0.018;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg);
+    }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 48px;
+      height: 64px; display: flex; align-items: center;
+    }
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-weight: 700; font-size: 17px;
+      color: var(--fg); letter-spacing: 0.01em;
+      margin-right: auto; flex-shrink: 0;
+      transition: color 300ms ease-out;
+    }
+    .nav-logo:hover { color: var(--sage); }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a {
+      font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
+      color: var(--fg); opacity: 0.55;
+      padding: 6px 14px; border-radius: var(--r-btn);
+      transition: all 300ms ease-out;
+    }
+    .nav-links a:hover { opacity: 1; background: var(--warm); }
+    .nav-links a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+    /* ── DROPDOWN ── */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-btn {
+      font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
+      color: var(--fg); opacity: 0.55; background: none; border: none; cursor: pointer;
+      font-family: var(--font-sans); padding: 6px 14px; border-radius: var(--r-btn);
+      display: inline-flex; align-items: center; gap: 4px;
+      transition: all 300ms ease-out;
+    }
+    .nav-dropdown-btn:hover { opacity: 1; background: var(--warm); }
+    .nav-dropdown-btn.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+    .nav-dropdown-btn svg { width: 11px; height: 11px; transition: transform 250ms var(--ease); }
+    .nav-dropdown.open .nav-dropdown-btn svg { transform: rotate(180deg); }
+    .nav-submenu {
+      position: absolute; top: calc(100% + 6px); right: 0;
+      background: var(--surface); border: 1px solid var(--stone);
+      border-radius: 14px; padding: 6px; min-width: 190px;
+      box-shadow: 0 8px 28px -4px rgba(45,58,49,0.13);
+      list-style: none;
+      opacity: 0; pointer-events: none; transform: translateY(-6px);
+      transition: opacity 200ms ease, transform 200ms ease;
+      z-index: 300;
+    }
+    .nav-dropdown.open .nav-submenu { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .nav-submenu li a {
+      display: block; font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--fg); opacity: 0.65; padding: 8px 14px; border-radius: 9px;
+      transition: all 200ms ease;
+    }
+    .nav-submenu li a:hover { opacity: 1; background: var(--warm); }
+    .nav-submenu li a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+    /* Nested submenu */
+    .has-nested { position: relative; }
+    .submenu-label {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--fg); opacity: 0.65; padding: 8px 14px; border-radius: 9px;
+      cursor: default; transition: all 200ms ease; user-select: none;
+    }
+    .submenu-label svg { width: 10px; height: 10px; flex-shrink: 0; }
+    .has-nested:hover .submenu-label { opacity: 1; background: var(--warm); }
+    .nav-nested {
+      position: absolute; top: -6px; left: calc(100% + 6px);
+      background: var(--surface); border: 1px solid var(--stone);
+      border-radius: 14px; padding: 6px; min-width: 230px;
+      box-shadow: 0 8px 28px -4px rgba(45,58,49,0.13);
+      list-style: none;
+      opacity: 0; pointer-events: none; transform: translateX(-6px);
+      transition: opacity 200ms ease, transform 200ms ease;
+      z-index: 400;
+    }
+    .has-nested:hover .nav-nested { opacity: 1; pointer-events: all; transform: translateX(0); }
+    .nav-nested li a {
+      display: block; font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+      color: var(--fg); opacity: 0.65; padding: 8px 14px; border-radius: 9px;
+      transition: all 200ms ease;
+    }
+    .nav-nested li a:hover { opacity: 1; background: var(--warm); }
+    .nav-nested li a.active { opacity: 1; color: var(--sage); background: rgba(140,154,132,0.14); }
+
+    /* CONTAINER */
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 72px; }
+
+    /* ── BACK BTN ── */
+    .back-btn { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: var(--fg); opacity: 0.6; background: var(--warm); border: 1px solid var(--stone); border-radius: var(--r-btn); padding: 6px 16px; margin-top: 24px; transition: all 300ms ease-out; }
+    .back-btn:hover { opacity: 1; border-color: var(--clay); background: var(--surface); }
+
+    /* ===== PAGE HEADER ===== */
+    .page-header {
+      padding: 96px 0 72px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-header-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: end;
+    }
+    .page-eyebrow {
+      font-size: 13px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      color: var(--terra); margin-bottom: 20px;
+      animation: fadeUp 700ms var(--ease) both;
+    }
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: clamp(3.2rem, 6vw, 5rem);
+      font-weight: 700; letter-spacing: -0.02em;
+      line-height: 1.05; color: var(--fg);
+      animation: fadeUp 700ms var(--ease) 80ms both;
+    }
+    .page-title em { font-style: italic; color: var(--terra); }
+    .page-header-lead {
+      font-size: 18px; line-height: 1.75;
+      color: var(--fg); opacity: 0.65;
+      animation: fadeUp 700ms var(--ease) 160ms both;
+      align-self: end;
+      padding-bottom: 6px;
+    }
+
+    /* ===== CONTENT SECTIONS ===== */
+    .about-body { padding: 88px 0 96px; }
+
+    /* Full-width prose block */
+    .prose-block {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 64px;
+      align-items: start;
+      padding: 64px 0;
+      border-bottom: 1px solid var(--stone);
+    }
+    .prose-block:last-child { border-bottom: none; }
+    .prose-label {
+      position: sticky; top: 88px;
+    }
+    .prose-label-tag {
+      font-size: 10px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.16em;
+      color: var(--sage); display: block; margin-bottom: 12px;
+    }
+    .prose-label-heading {
+      font-family: var(--font-serif);
+      font-size: 1.75rem; font-weight: 700;
+      line-height: 1.2; letter-spacing: -0.01em;
+      color: var(--fg);
+    }
+    .prose-label-heading em { font-style: italic; color: var(--terra); }
+    .prose-label-accent {
+      width: 36px; height: 3px;
+      background: var(--terra); border-radius: 2px;
+      margin-top: 20px;
+      opacity: 0.7;
+    }
+    .prose-content { }
+    .prose-content p {
+      font-size: 17px; line-height: 1.85;
+      color: var(--fg); opacity: 0.78;
+      margin-bottom: 28px;
+    }
+    .prose-content p:last-child { margin-bottom: 0; }
+
+    /* Pull-quote highlight */
+    .pull-quote {
+      background: var(--surface);
+      border-left: 3px solid var(--terra);
+      border-radius: 0 var(--r-card) var(--r-card) 0;
+      padding: 28px 36px;
+      margin: 36px 0;
+      box-shadow: 10px 10px 26px #d3d0c8, -10px -10px 26px #ffffff;
+    }
+    .pull-quote p {
+      font-family: var(--font-serif);
+      font-size: 1.25rem !important;
+      font-style: italic;
+      line-height: 1.6 !important;
+      color: var(--fg) !important;
+      opacity: 1 !important;
+      margin: 0 !important;
+    }
+    .pull-quote cite {
+      display: block;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--terra); margin-top: 14px;
+      font-style: normal;
+    }
+
+    /* ===== INTERESTS BAND ===== */
+    .interests-band {
+      background: var(--fg);
+      border-radius: 40px;
+      padding: 80px 72px;
+      margin: 0 0 0 0;
+    }
+    .interests-eyebrow {
+      font-size: 13px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      color: var(--terra); margin-bottom: 14px;
+    }
+    .interests-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+      font-weight: 700; color: #fff;
+      margin-bottom: 56px; line-height: 1.15; opacity: 0.95;
+    }
+    .interests-heading em { font-style: italic; color: var(--terra); }
+    .interests-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .interest-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--r-card);
+      padding: 32px 28px;
+      transition: background 300ms ease, transform 400ms var(--ease);
+    }
+    .interest-card:hover {
+      background: rgba(255,255,255,0.10);
+      transform: translateY(-3px);
+    }
+    .interest-icon {
+      font-size: 28px; margin-bottom: 16px;
+      display: block;
+    }
+    .interest-title {
+      font-family: var(--font-serif);
+      font-size: 1.1rem; font-weight: 700;
+      color: #fff; margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .interest-desc {
+      font-size: 13.5px; line-height: 1.7;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ===== FOOTER ===== */
+    footer { border-top: 0px solid var(--stone); padding: 40px 0; text-align: center; }
+    .footer-text { font-size: 13px; color: var(--fg); opacity: 0.45; letter-spacing: 0.03em; line-height: 2; }
+    .footer-text a { transition: opacity 300ms ease; }
+    .footer-text a:hover { opacity: 1; color: var(--terra); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SCROLL REVEAL */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+    }
+    [data-reveal].in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1000px) {
+      .container { padding: 0 40px; }
+      .interests-band { padding: 64px 40px; }
+      .page-header-inner { grid-template-columns: 1fr; gap: 32px; }
+      .interests-grid { grid-template-columns: repeat(2, 1fr); }
+      .prose-block { grid-template-columns: 1fr; gap: 32px; }
+      .prose-label { position: static; }
+    }
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 20px; }
+      .container { padding: 0 20px; }
+      .interests-band { padding: 48px 24px; border-radius: 28px; }
+      .page-header { padding: 60px 0 48px; }
+      .about-body { padding: 56px 0 72px; }
+      .prose-block { padding: 48px 0; }
+    }
+    @media (max-width: 560px) {
+      .interests-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Sanya Khan</a>
+    <ul class="nav-links">
+      <li><a href="about_me.html" class="active">About Me</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Academia &amp; Research
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <ul class="nav-submenu">
+          <li><a href="research_lab.html">Research Lab</a></li>
+          <li><a href="academic_research.html">Academic Research</a></li>
+          <li><a href="academic_projects.html">Academic Projects</a></li>
+        </ul>
+      </li>
+      <li><a href="experience.html">Experience</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
+          Publications
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <ul class="nav-submenu">
+          <li class="has-nested">
+            <span class="submenu-label">Articles <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+            <ul class="nav-nested">
+              <li><a href="hercampus.html">Feature Writer (HerCampus Media)</a></li>
+              <li><a href="fastarticles.html">Journalism (Fast at UCLA &ndash; Blog)</a></li>
+            </ul>
+          </li>
+          <li><a href="internation_pub.html">International Publication</a></li>
+        </ul>
+      </li>
+      <li><a href="honors.html">Honors</a></li>
+      <li><a href="volunteering.html">Volunteering</a></li>
+      <li><a href="creative.html">Creative</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="container">
+  <a href="index.html" class="back-btn">← Home</a>
+</div>
+<div class="page-header">
+  <div class="container">
+    <div class="page-header-inner">
+      <div>
+        <p class="page-eyebrow">About Me</p>
+        <h1 class="page-title">On curiosity,<br><em>people,</em><br>and craft.</h1>
+      </div>
+      <p class="page-header-lead">
+        UCLA undergraduate in Psychology &amp; Dance — drawn to the mechanics of human behavior, the emotional logic behind brand and culture, and the art of translating insight into something that endures.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="about-body">
+  <div class="container">
+
+    <!-- Section 1 -->
+    <div class="prose-block" data-reveal>
+      <div class="prose-label">
+        <span class="prose-label-tag">Foundation</span>
+        <h2 class="prose-label-heading">Intellectual<br><em>Origins</em></h2>
+        <div class="prose-label-accent"></div>
+      </div>
+      <div class="prose-content">
+        <p>I am a UCLA undergraduate pursuing a double major in Psychology and Dance, with a longstanding penchant for understanding the subtler mechanics of human behavior. Much of my intellectual life has been shaped by a curiosity about attention, trust, perception, and the conditions under which an experience acquires enough salience to endure.</p>
+        <div class="pull-quote">
+          <p>"That curiosity has developed into a more defined interest in consumer psychology, behavioral insight, and the emotional logic that undergirds how people move through brands, environments, and different forms of communication."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="prose-block" data-reveal data-delay="80">
+      <div class="prose-label">
+        <span class="prose-label-tag">Drive</span>
+        <h2 class="prose-label-heading">Systems &amp;<br><em>Purpose</em></h2>
+        <div class="prose-label-accent"></div>
+      </div>
+      <div class="prose-content">
+        <p>My work has unfolded across research labs, editorial spaces, student leadership, and startup environments, but what undergirds this is a desire to build systems that are timeless and create lasting impact. I am intrigued by the systems that begin with appraisal and crystallise those insights into something tangible in the world.</p>
+        <p>Whether it becomes a strategy, an experience, a narrative, or a brand presence, what matters to me is making it more resonant through a real understanding of people. I care deeply about the confluence of psychological insight and lived experience. The most meaningful work feels to me like the idyll of intellectual pursuit — a form of <em>seva</em> (service) that serves not only the mind, but the world itself.</p>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="prose-block" data-reveal data-delay="80">
+      <div class="prose-label">
+        <span class="prose-label-tag">Practice</span>
+        <h2 class="prose-label-heading">How I<br><em>Work</em></h2>
+        <div class="prose-label-accent"></div>
+      </div>
+      <div class="prose-content">
+        <p>In previous roles, I have learned to move fluidly between analysis and execution. I have supported behavioral and social perception research, managed participant systems and data workflows, built sponsorship proposals, led outreach, and helped shape community-based events from early ideation to final delivery.</p>
+        <p>Taken together, these experiences have taught me how to read people carefully, organize ideas with clarity, and translate insight into something tangible and compelling. My background in dance has further opened me to the worlds of artists and creators, and with that, to a deeper sensitivity toward expression, emotions, and aesthetic instinct.</p>
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="prose-block" data-reveal data-delay="80">
+      <div class="prose-label">
+        <span class="prose-label-tag">Horizon</span>
+        <h2 class="prose-label-heading">Long-term<br><em>Vision</em></h2>
+        <div class="prose-label-accent"></div>
+      </div>
+      <div class="prose-content">
+        <p>In the long term, I hope to build a career in product, brand, or consumer strategy, where behavioral insight can be translated into enduring human and commercial value. I pursue endeavors that are intellectually exacting and deeply alive to the complexities of the human psyche.</p>
+        <div class="pull-quote">
+          <p>"I eventually hope to pursue an MBA and grow into leadership roles where discernment, imagination, and prowess can become a form of service to the world."</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- INTERESTS BAND -->
+<div class="container" style="padding-bottom: 88px;">
+  <div class="interests-band" data-reveal>
+    <p class="interests-eyebrow">Areas of Interest</p>
+    <h2 class="interests-heading">Where my thinking <em>lives</em></h2>
+    <div class="interests-grid">
+      <div class="interest-card">
+        <span class="interest-icon">🧠</span>
+        <div class="interest-title">Consumer Psychology</div>
+        <p class="interest-desc">Attention, trust, and the emotional architecture that shapes how people relate to brands, experiences, and each other.</p>
+      </div>
+      <div class="interest-card">
+        <span class="interest-icon">📐</span>
+        <div class="interest-title">Brand Strategy</div>
+        <p class="interest-desc">Building systems of meaning — translating behavioral insight into brand identities that are resonant and lasting.</p>
+      </div>
+      <div class="interest-card">
+        <span class="interest-icon">📖</span>
+        <div class="interest-title">Cultural Storytelling</div>
+        <p class="interest-desc">Narrative as a vehicle for identity. Writing that sits at the intersection of fashion, psychology, and lived experience.</p>
+      </div>
+      <div class="interest-card">
+        <span class="interest-icon">🔬</span>
+        <div class="interest-title">Behavioral Research</div>
+        <p class="interest-desc">Social perception, body image, and the behavioral science that underlies human decision-making in real environments.</p>
+      </div>
+      <div class="interest-card">
+        <span class="interest-icon">💃</span>
+        <div class="interest-title">Dance &amp; Aesthetics</div>
+        <p class="interest-desc">Performance and choreography as a lens for understanding expression, emotion, and physical culture across traditions.</p>
+      </div>
+      <div class="interest-card">
+        <span class="interest-icon">🌐</span>
+        <div class="interest-title">Global Health</div>
+        <p class="interest-desc">Quality of life, pediatric medicine, and the role of psychological research in shaping better outcomes at scale.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p class="footer-text">
+    Sanya Khan &nbsp;&middot;&nbsp;
+    <a href="mailto:sanyakhan2805@g.ucla.edu">sanyakhan2805@g.ucla.edu</a> &nbsp;&middot;&nbsp;
+    <a href="https://www.linkedin.com/in/sanyakhan/" target="_blank" rel="noopener">LinkedIn</a> &nbsp;&middot;&nbsp;
+    <a href="Sanya_Khan_Resume.pdf" target="_blank" rel="noopener">Resume</a> &nbsp;&middot;&nbsp;
+    <a href="Sanya_Khan_CV.pdf" target="_blank" rel="noopener">CV</a>
+  </p>
+</footer>
+
+<script>
+  /* Scroll Reveal */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const delay = parseInt(el.dataset.delay || '0', 10);
+      setTimeout(() => el.classList.add('in-view'), delay);
+      revealObs.unobserve(el);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
+
+  document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
+
+  /* Nav dropdowns */
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+    dd.querySelector('.nav-dropdown-btn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      dd.classList.toggle('open');
+      this.setAttribute('aria-expanded', dd.classList.contains('open'));
+    });
+  });
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.nav-dropdown.open').forEach(function(dd) {
+      dd.classList.remove('open');
+      dd.querySelector('.nav-dropdown-btn').setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+</body>
+</html>
