@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dance · Sanya Khan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#f5f2ea; --fg:#2D3A31; --sage:#8C9A84; --clay:#DCCFC2; --stone:#E6E2DA;
+      --terra:#f86e48; --navy:#1B263B; --surface:#FFFFFF; --warm:#F2F0EB;
+      --font-serif:'Playfair Display',Georgia,serif; --font-sans:'Source Sans 3',system-ui,sans-serif;
+      --r-card:24px; --r-btn:9999px;
+      --shadow-sm:0 4px 6px -1px rgba(45,58,49,0.05);
+      --shadow-xl:0 25px 50px -12px rgba(45,58,49,0.16);
+      --ease:cubic-bezier(0.22,1,0.36,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--font-sans);background:var(--bg);color:var(--fg);line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;min-height:100vh;}
+    a{color:inherit;text-decoration:none;}
+    img{max-width:100%;display:block;}
+    .grain{pointer-events:none;position:fixed;inset:0;z-index:200;opacity:0.018;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;}
+
+    nav{position:sticky;top:0;z-index:100;background:var(--bg);}
+    .nav-inner{max-width:1280px;margin:0 auto;padding:0 48px;height:64px;display:flex;align-items:center;}
+    .nav-logo{font-family:var(--font-serif);font-weight:700;font-size:17px;color:var(--fg);letter-spacing:0.01em;margin-right:auto;flex-shrink:0;transition:color 300ms ease-out;}
+    .nav-logo:hover{color:var(--sage);}
+    .nav-links{display:flex;gap:2px;list-style:none;}
+    .nav-links a{font-size:13px;font-weight:500;letter-spacing:0.02em;color:var(--fg);opacity:0.55;padding:6px 14px;border-radius:var(--r-btn);transition:opacity 300ms ease-out,background 300ms ease-out;}
+    .nav-links a:hover{opacity:1;background:var(--warm);}
+    .nav-links a.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+    .nav-dropdown{position:relative;}
+    .nav-dropdown-btn{font-size:13px;font-weight:500;letter-spacing:0.02em;color:var(--fg);opacity:0.55;background:none;border:none;cursor:pointer;font-family:var(--font-sans);padding:6px 14px;border-radius:var(--r-btn);display:inline-flex;align-items:center;gap:4px;transition:opacity 300ms ease-out,background 300ms ease-out;}
+    .nav-dropdown-btn:hover{opacity:1;background:var(--warm);}
+    .nav-dropdown-btn.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+    .nav-dropdown-btn svg{width:11px;height:11px;transition:transform 250ms var(--ease);}
+    .nav-dropdown.open .nav-dropdown-btn svg{transform:rotate(180deg);}
+    .nav-submenu{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--stone);border-radius:14px;padding:6px;min-width:190px;box-shadow:0 8px 28px -4px rgba(45,58,49,0.13);list-style:none;opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity 200ms ease,transform 200ms ease;z-index:300;}
+    .nav-dropdown.open .nav-submenu{opacity:1;pointer-events:all;transform:translateY(0);}
+    .nav-submenu li a{display:block;font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--fg);opacity:0.65;padding:8px 14px;border-radius:9px;transition:opacity 200ms ease,background 200ms ease;}
+    .nav-submenu li a:hover{opacity:1;background:var(--warm);}
+    .nav-submenu li a.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+    .has-nested{position:relative;}
+    .submenu-label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--fg);opacity:0.65;padding:8px 14px;border-radius:9px;cursor:default;transition:opacity 200ms ease,background 200ms ease;user-select:none;}
+    .submenu-label svg{width:10px;height:10px;flex-shrink:0;}
+    .has-nested:hover .submenu-label{opacity:1;background:var(--warm);}
+    .nav-nested{position:absolute;top:-6px;left:calc(100% + 6px);background:var(--surface);border:1px solid var(--stone);border-radius:14px;padding:6px;min-width:230px;box-shadow:0 8px 28px -4px rgba(45,58,49,0.13);list-style:none;opacity:0;pointer-events:none;transform:translateX(-6px);transition:opacity 200ms ease,transform 200ms ease;z-index:400;}
+    .has-nested:hover .nav-nested{opacity:1;pointer-events:all;transform:translateX(0);}
+    .nav-nested li a{display:block;font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--fg);opacity:0.65;padding:8px 14px;border-radius:9px;transition:opacity 200ms ease,background 200ms ease;}
+    .nav-nested li a:hover{opacity:1;background:var(--warm);}
+    .nav-nested li a.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+
+    .container{max-width:1000px;margin:0 auto;padding:0 48px;}
+    .back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--fg);opacity:0.6;background:var(--warm);border:1px solid var(--stone);border-radius:var(--r-btn);padding:6px 16px;margin-top:24px;transition:opacity 300ms ease-out,border-color 300ms ease-out,background 300ms ease-out;}
+    .back-btn:hover{opacity:1;border-color:var(--clay);background:var(--surface);}
+
+    .page-header{padding:80px 0 64px;}
+    .eyebrow{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.18em;color:var(--sage);margin-bottom:16px;}
+    .page-title{font-family:var(--font-serif);font-size:clamp(2.2rem,5vw,3.6rem);font-weight:700;line-height:1.1;letter-spacing:-0.01em;margin-bottom:16px;}
+    .page-title em{font-style:italic;color:var(--terra);}
+    .page-subtitle{font-size:17px;color:var(--fg);opacity:0.6;line-height:1.75;max-width:540px;}
+
+    .creative-section{padding:56px 0;border-top:1px solid var(--stone);}
+    .section-label{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.16em;color:var(--sage);margin-bottom:32px;}
+
+    /* EDUCATION CARDS */
+    .edu-grid{display:flex;flex-direction:column;gap:16px;}
+    .edu-card{background:var(--surface);border:1px solid var(--stone);border-radius:var(--r-card);padding:36px 40px;box-shadow:var(--shadow-sm);transition:transform 500ms var(--ease),box-shadow 500ms var(--ease),border-color 300ms ease-out;}
+    .edu-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-xl);border-color:var(--clay);}
+    .edu-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:16px;}
+    .edu-institution{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:var(--sage);margin-bottom:8px;}
+    .edu-program{font-family:var(--font-serif);font-size:19px;font-weight:700;line-height:1.25;color:var(--fg);}
+    .edu-date{font-size:13px;color:var(--fg);opacity:0.45;white-space:nowrap;text-align:right;padding-top:4px;flex-shrink:0;}
+    .edu-divider{height:1px;background:var(--stone);margin:16px 0;}
+    .edu-desc{font-size:14px;color:var(--fg);opacity:0.7;line-height:1.75;}
+    .edu-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;}
+    .edu-tag{font-size:11px;font-weight:500;background:var(--warm);border:1px solid var(--stone);border-radius:var(--r-btn);padding:3px 10px;color:var(--fg);opacity:0.65;}
+
+    /* INLINE EDU PHOTOS */
+    .edu-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;}
+    .edu-photos img{width:100%;height:240px;object-fit:cover;border-radius:16px;border:1px solid var(--stone);box-shadow:var(--shadow-sm);transition:transform 500ms var(--ease),box-shadow 500ms var(--ease);}
+    .edu-photos img:hover{transform:translateY(-2px);box-shadow:var(--shadow-xl);}
+    .edu-cert{margin-top:20px;}
+    .edu-cert img{width:100%;height:auto;display:block;border-radius:16px;border:1px solid var(--stone);box-shadow:var(--shadow-sm);transition:transform 500ms var(--ease),box-shadow 500ms var(--ease);}
+    .edu-cert img:hover{transform:translateY(-2px);box-shadow:var(--shadow-xl);}
+
+    /* DANCE DISCIPLINES LIST */
+    .dance-list{background:var(--surface);border:1px solid var(--stone);border-radius:var(--r-card);overflow:hidden;box-shadow:var(--shadow-sm);}
+    .dance-item{display:flex;justify-content:space-between;align-items:center;padding:16px 28px;gap:20px;border-bottom:1px solid var(--stone);transition:background 300ms ease-out;}
+    .dance-item:last-child{border-bottom:none;}
+    .dance-item:hover{background:var(--warm);}
+    .dance-name{font-family:var(--font-serif);font-size:16px;font-weight:600;color:var(--fg);}
+    .dance-detail{font-size:13px;color:var(--fg);opacity:0.5;text-align:right;}
+
+    /* FEATURED PERFORMANCE CARDS */
+    .creative-featured{background:var(--surface);border:1px solid var(--stone);border-radius:var(--r-card);padding:36px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;margin-bottom:14px;transition:transform 500ms var(--ease),box-shadow 500ms var(--ease),border-color 300ms ease-out;}
+    .creative-featured:hover{transform:translateY(-3px);box-shadow:var(--shadow-xl);border-color:var(--clay);}
+    .creative-featured-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:var(--terra);margin-bottom:10px;}
+    .creative-featured-title{font-family:var(--font-serif);font-size:20px;font-weight:700;margin-bottom:4px;line-height:1.3;}
+    .creative-featured-sub{font-size:13px;color:var(--sage);font-weight:600;margin-bottom:14px;}
+    .creative-featured-desc{font-size:15px;color:var(--fg);opacity:0.68;line-height:1.75;margin-bottom:20px;}
+    .creative-featured-meta{display:flex;flex-wrap:wrap;gap:8px;}
+    .meta-tag{background:var(--warm);border:1px solid var(--stone);border-radius:var(--r-btn);padding:4px 14px;font-size:12px;color:var(--fg);opacity:0.7;}
+
+    /* PERFORMANCE MEDIA SECTION (within featured card) */
+    .perf-media{margin-top:28px;padding-top:24px;border-top:1px solid var(--stone);}
+    .perf-media-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:var(--sage);margin-bottom:12px;margin-top:20px;}
+    .perf-media-label:first-child{margin-top:0;}
+
+    /* 16:9 clip embed */
+    .clip-embed{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;}
+    .clip-embed iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+
+    /* 2-column clip grid */
+    .perf-clips-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;}
+
+    /* 2-column clip grid (practice videos — larger) */
+    .perf-clips-3{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:4px;}
+
+    /* Small centered clip (official video) */
+    .perf-clip-main{margin-bottom:4px;max-width:460px;margin-left:auto;margin-right:auto;}
+
+    /* 4-photo grid inside card */
+    .perf-photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px;}
+    .perf-photo-grid img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:12px;border:1px solid var(--stone);transition:transform 400ms var(--ease),box-shadow 400ms var(--ease);}
+    .perf-photo-grid img:hover{transform:translateY(-2px);box-shadow:var(--shadow-xl);}
+
+    /* External link buttons */
+    .perf-link-bar{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0;}
+    .perf-link{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--fg);opacity:0.8;background:var(--warm);border:1px solid var(--stone);border-radius:var(--r-btn);padding:8px 18px;transition:opacity 300ms ease-out,border-color 300ms ease-out,background 300ms ease-out,transform 300ms var(--ease);}
+    .perf-link:hover{opacity:1;border-color:var(--clay);background:var(--surface);transform:translateY(-1px);}
+    .perf-link:active{transform:translateY(0);}
+    .perf-link svg{width:15px;height:15px;flex-shrink:0;}
+
+    [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity 700ms var(--ease),transform 700ms var(--ease);}
+    [data-reveal].in-view{opacity:1;transform:translateY(0);}
+
+    footer{border-top:1px solid var(--stone);padding:40px 0;text-align:center;margin-top:40px;}
+    .footer-text{font-size:13px;color:var(--fg);opacity:0.45;letter-spacing:0.03em;}
+    .footer-text a{transition:opacity 300ms ease;}
+    .footer-text a:hover{opacity:1;color:var(--terra);}
+
+    @media(max-width:768px){
+      .nav-inner{padding:0 20px;}.nav-links a{font-size:11px;padding:5px 9px;}.container{padding:0 20px;}
+      .dance-item{flex-direction:column;align-items:flex-start;}.dance-detail{text-align:left;}
+      .edu-card-header{flex-direction:column;gap:6px;}.edu-date{text-align:left;}
+      .edu-photos{grid-template-columns:1fr;}.edu-photos img{height:200px;}
+      .perf-clips-2{grid-template-columns:1fr;}
+      .perf-clips-3{grid-template-columns:1fr;}
+      .perf-photo-grid{grid-template-columns:repeat(2,1fr);}
+    }
+  </style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Sanya Khan</a>
+    <ul class="nav-links">
+      <li><a href="about_me.html">About Me</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">Academia &amp; Research <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-submenu">
+          <li><a href="research_lab.html">Research Lab</a></li>
+          <li><a href="academic_research.html">Academic Research</a></li>
+          <li><a href="academic_projects.html">Academic Projects</a></li>
+        </ul>
+      </li>
+      <li><a href="experience.html">Experience</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">Publications <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-submenu">
+          <li class="has-nested">
+            <span class="submenu-label">Articles <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+            <ul class="nav-nested">
+              <li><a href="hercampus.html">Feature Writer (HerCampus Media)</a></li>
+              <li><a href="fastarticles.html">Journalism (Fast at UCLA &ndash; Blog)</a></li>
+            </ul>
+          </li>
+          <li><a href="internation_pub.html">International Publication</a></li>
+        </ul>
+      </li>
+      <li><a href="honors.html">Honors</a></li>
+      <li><a href="volunteering.html">Volunteering</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn active" aria-haspopup="true" aria-expanded="false">Creative <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-submenu">
+          <li><a href="creative_dance.html" class="active">Dance</a></li>
+          <li><a href="creative_modeling.html">Modeling</a></li>
+          <li><a href="creative_painting.html">Painting</a></li>
+          <li><a href="creative_poetry.html">Poetry</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <a href="index.html" class="back-btn">← Home</a>
+  <div class="page-header">
+    <p class="eyebrow">Creative Work</p>
+    <h1 class="page-title">Dance <em>Performance</em></h1>
+    <p class="page-subtitle">Bharatanatyam, ballet, Bollywood fusion, jazz, and contemporary — performance across classical, commercial, and collegiate stages spanning over a decade of training.</p>
+  </div>
+
+  <!-- DANCE EDUCATION -->
+  <section class="creative-section">
+    <p class="section-label">Dance Education</p>
+    <div class="edu-grid">
+
+      <div class="edu-card" data-reveal data-delay="0">
+        <div class="edu-card-header">
+          <div>
+            <div class="edu-institution">Institute of Classical and Modern Dance (ICMD) &nbsp;&middot;&nbsp; Mumbai, India</div>
+            <div class="edu-program">Pre-Professional Training in Western Dance Forms</div>
+          </div>
+          <div class="edu-date">2017 – 2022</div>
+        </div>
+        <div class="edu-divider"></div>
+        <p class="edu-desc">Pursued intensive multidisciplinary training in classical ballet, jazz, contemporary, Horton, hip-hop, tap, and musical theatre through ICMD's goal-oriented dance program, emphasizing technical development, mentorship, and preparation for internationally recognized Royal Academy of Dance (London) examinations. Completed the RAD vocational graded pathway through Intermediate Foundation, Intermediate, and Advanced Foundation — among seven students in India to sit for Advanced Foundation in my exam cycle.</p>
+        <div class="edu-tags">
+          <span class="edu-tag">Ballet</span>
+          <span class="edu-tag">Jazz</span>
+          <span class="edu-tag">Contemporary</span>
+          <span class="edu-tag">Horton</span>
+          <span class="edu-tag">Hip-Hop</span>
+          <span class="edu-tag">Tap</span>
+          <span class="edu-tag">Musical Theatre</span>
+          <span class="edu-tag">RAD Syllabus</span>
+        </div>
+        <div class="edu-photos">
+          <img src="Creative/Dance/dance_pic1.png" alt="Dance performance" loading="lazy" />
+          <img src="Creative/Dance/dance_pic2.png" alt="Dance performance" loading="lazy" style="height:320px;" />
+        </div>
+      </div>
+
+      <div class="edu-card" data-reveal data-delay="80">
+        <div class="edu-card-header">
+          <div>
+            <div class="edu-institution">Nupoor Zankar Institute &nbsp;&middot;&nbsp; Nalanda Dance Research Centre, Mumbai University</div>
+            <div class="edu-program">Classical Bharatanatyam Training</div>
+          </div>
+          <div class="edu-date">2011 – 2017</div>
+        </div>
+        <div class="edu-divider"></div>
+        <p class="edu-desc">Completed all seven graded levels of Bharatanatyam study with consistent A+ performance, culminating in the Kovida certification. The program involved sustained training in technique, abhinaya, rhythm, theory, and stage performance — providing the classical rigor that later undergirded a movement vocabulary across multiple dance traditions.</p>
+        <div class="edu-tags">
+          <span class="edu-tag">Bharatanatyam</span>
+          <span class="edu-tag">Abhinaya</span>
+          <span class="edu-tag">Kovida Certified</span>
+          <span class="edu-tag">7 Graded Levels</span>
+          <span class="edu-tag">A+ Performance</span>
+        </div>
+      </div>
+
+      <div class="edu-card" data-reveal data-delay="160">
+        <div class="edu-card-header">
+          <div>
+            <div class="edu-institution">Everest Yoga Institute &nbsp;&middot;&nbsp; Ludhiana, Punjab, India &nbsp;&middot;&nbsp; Yoga Alliance USA (YA ID-257949)</div>
+            <div class="edu-program">500-Hour Certified Yoga Teacher Training</div>
+          </div>
+          <div class="edu-date">Certified March 2023</div>
+        </div>
+        <div class="edu-divider"></div>
+        <p class="edu-desc">Completed a comprehensive 500-hour yoga teacher training program, certified during the 3rd International Yoga Festival 2023. Training covered asanas (Hatha, Raj, Ashtanga, and Multistyle Yoga), pranayama, mudra, bandha, drishti, meditation, yogic humanities, anatomy and physiology, and professional skills. Registered with Yoga Alliance USA.</p>
+        <div class="edu-tags">
+          <span class="edu-tag">500-Hour RYS</span>
+          <span class="edu-tag">Pranayama</span>
+          <span class="edu-tag">Asana</span>
+          <span class="edu-tag">Yoga Alliance USA</span>
+          <span class="edu-tag">Teaching Methodology</span>
+          <span class="edu-tag">Yogic Philosophy</span>
+        </div>
+        <div class="edu-cert">
+          <img src="Creative/Dance/Yoga_certificate.JPG" alt="Yoga Alliance 500-Hour Teacher Training Certificate" loading="lazy" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DANCE DISCIPLINES -->
+  <section class="creative-section">
+    <p class="section-label">Dance Disciplines</p>
+    <div class="dance-list" data-reveal>
+      <div class="dance-item">
+        <span class="dance-name">Bharatanatyam</span>
+        <span class="dance-detail">Classical Indian &nbsp;&middot;&nbsp; World Record holder &nbsp;&middot;&nbsp; Kovida certified</span>
+      </div>
+      <div class="dance-item">
+        <span class="dance-name">Ballet</span>
+        <span class="dance-detail">India Couture Week performer &nbsp;&middot;&nbsp; ICMD &nbsp;&middot;&nbsp; RAD Advanced Foundation</span>
+      </div>
+      <div class="dance-item">
+        <span class="dance-name">Bollywood &amp; Fusion</span>
+        <span class="dance-detail">UCLA Nashaa &nbsp;&middot;&nbsp; Desi Dance Network collegiate circuit</span>
+      </div>
+      <div class="dance-item">
+        <span class="dance-name">Jazz &amp; Contemporary</span>
+        <span class="dance-detail">Instructor &amp; performer &nbsp;&middot;&nbsp; 'Step On It' Dance Classes</span>
+      </div>
+      <div class="dance-item">
+        <span class="dance-name">Horton, Hip-Hop &amp; Tap</span>
+        <span class="dance-detail">ICMD Pre-Professional training &nbsp;&middot;&nbsp; 2017–2022</span>
+      </div>
+      <div class="dance-item">
+        <span class="dance-name">Musical Theatre</span>
+        <span class="dance-detail">ICMD &nbsp;&middot;&nbsp; Royal Academy of Dance syllabus</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANDMARK PERFORMANCES -->
+  <section class="creative-section">
+    <p class="section-label">Landmark Performances</p>
+
+    <div class="creative-featured" data-reveal>
+      <div class="creative-featured-label">World Record Performance</div>
+      <div class="creative-featured-title">Bharatnatyam Sword Dance — "Natya Kala Tirana"</div>
+      <div class="creative-featured-sub">Green India Mission &nbsp;&middot;&nbsp; Karnataka, India</div>
+      <p class="creative-featured-desc">A landmark performance that earned simultaneous entry in the Guinness Book of World Records, the Asia Book of Records, and the India Book of Records. The "Natya Kala Tirana" Bharatnatyam Sword Dance garnered national media coverage across India.</p>
+      <div class="creative-featured-meta">
+        <span class="meta-tag">Guinness World Record</span>
+        <span class="meta-tag">Asia Book of Records</span>
+        <span class="meta-tag">India Book of Records</span>
+        <span class="meta-tag">August 2018</span>
+      </div>
+    </div>
+
+    <div class="creative-featured" data-reveal data-delay="80">
+      <div class="creative-featured-label">Fashion Week Performance</div>
+      <div class="creative-featured-title">Ballet Production for Falguni Shane Peacock</div>
+      <div class="creative-featured-sub">India Couture Week &nbsp;&middot;&nbsp; Institute of Classical and Modern Dance (ICMD)</div>
+      <p class="creative-featured-desc">Debuted in a ballet production for fashion designers Falguni Shane Peacock at India Couture Week — part of ICMD's historic distinction as the first ballet institution ever featured in a national Indian fashion event. Managed AV logistics and staging; collaborated across production, fashion, and media teams. Performance covered by Hindustan Times, Times Now, and NDTV.</p>
+      <div class="creative-featured-meta">
+        <span class="meta-tag">India Couture Week</span>
+        <span class="meta-tag">ICMD</span>
+        <span class="meta-tag">September 2022</span>
+        <span class="meta-tag">National Media Coverage</span>
+      </div>
+      <div class="perf-media">
+        <div class="perf-media-label">Performance Clips</div>
+        <div class="perf-clips-2">
+          <div class="clip-embed">
+            <iframe src="https://drive.google.com/file/d/1KM5yccO3cF62atKgvnQZ8Ik8HXH_gjPW/preview" allow="autoplay" allowfullscreen></iframe>
+          </div>
+          <div class="clip-embed">
+            <iframe src="https://drive.google.com/file/d/1Dix9Ogt4YrE13m5hONXrMvDtVzp9l-lM/preview" allow="autoplay" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="perf-media-label">Photos</div>
+        <div class="perf-photo-grid">
+          <img src="Creative/Dance/Falguni/IMG_2400.png" alt="Falguni Shane Peacock performance" loading="lazy" />
+          <img src="Creative/Dance/Falguni/IMG_4970.png" alt="Falguni Shane Peacock performance" loading="lazy" />
+          <img src="Creative/Dance/Falguni/IMG_4973.png" alt="Falguni Shane Peacock performance" loading="lazy" />
+          <img src="Creative/Dance/Falguni/IMG_5003.png" alt="Falguni Shane Peacock performance" loading="lazy" />
+        </div>
+      </div>
+    </div>
+
+    <div class="creative-featured" data-reveal data-delay="160">
+      <div class="creative-featured-label">International Commercial</div>
+      <div class="creative-featured-title">Qatar Airways — FIFA World Cup Advertisement</div>
+      <div class="creative-featured-sub">International Commercial Campaign &nbsp;&middot;&nbsp; June 2022</div>
+      <p class="creative-featured-desc">Featured as a dancer and actor in a Qatar Airways FIFA World Cup advertisement — an international commercial campaign. Executed choreographed movement for film, adapting live performance to the specific demands of screen-based commercial production.</p>
+      <div class="creative-featured-meta">
+        <span class="meta-tag">International Commercial</span>
+        <span class="meta-tag">Qatar Airways</span>
+        <span class="meta-tag">FIFA World Cup</span>
+        <span class="meta-tag">June 2022</span>
+      </div>
+      <div class="perf-media">
+        <div class="perf-media-label">Official Commercial</div>
+        <div class="perf-link-bar">
+          <a href="https://youtu.be/NP4K9GCu7SY?si=BufiZcaege0QipgJ" target="_blank" rel="noopener" class="perf-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+            Watch on YouTube
+          </a>
+        </div>
+        <div class="perf-link-bar">
+          <a href="https://www.instagram.com/reel/CmDd-fPMXXw/?igsh=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener" class="perf-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            View on Instagram
+          </a>
+        </div>
+        <div class="perf-media-label">Behind the Scenes &amp; Practice</div>
+        <div class="perf-clips-3">
+          <div class="clip-embed">
+            <iframe src="https://drive.google.com/file/d/19olHtAupWcLv86pM7Ac7-jjFGte0Bz5Z/preview" allow="autoplay" allowfullscreen></iframe>
+          </div>
+          <div class="clip-embed">
+            <iframe src="https://drive.google.com/file/d/1NSSkDyJpSlzc9eiou4FH4GaftN2zKEo1/preview" allow="autoplay" allowfullscreen></iframe>
+          </div>
+          <div class="clip-embed">
+            <iframe src="https://drive.google.com/file/d/1eM3Ioy-1ulnXQRyKePKo4uiY6desRZ1r/preview" allow="autoplay" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  <p class="footer-text">Sanya Khan &nbsp;&middot;&nbsp; <a href="index.html">Back to home</a></p>
+</footer>
+
+<script>
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const delay = parseInt(el.dataset.delay || '0', 10);
+      setTimeout(() => el.classList.add('in-view'), delay);
+      revealObs.unobserve(el);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
+  document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
+
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+    dd.querySelector('.nav-dropdown-btn').addEventListener('click', function(e) {
+      e.stopPropagation(); dd.classList.toggle('open');
+      this.setAttribute('aria-expanded', dd.classList.contains('open'));
+    });
+  });
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.nav-dropdown.open').forEach(function(dd) {
+      dd.classList.remove('open');
+      dd.querySelector('.nav-dropdown-btn').setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+</body>
+</html>

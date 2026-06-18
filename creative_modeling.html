@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modeling · Sanya Khan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#f5f2ea; --fg:#2D3A31; --sage:#8C9A84; --clay:#DCCFC2; --stone:#E6E2DA;
+      --terra:#f86e48; --navy:#1B263B; --surface:#FFFFFF; --warm:#F2F0EB;
+      --font-serif:'Playfair Display',Georgia,serif; --font-sans:'Source Sans 3',system-ui,sans-serif;
+      --r-card:24px; --r-btn:9999px;
+      --shadow-sm:0 4px 6px -1px rgba(45,58,49,0.05);
+      --shadow-xl:0 25px 50px -12px rgba(45,58,49,0.16);
+      --ease:cubic-bezier(0.22,1,0.36,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--font-sans);background:var(--bg);color:var(--fg);line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;min-height:100vh;}
+    a{color:inherit;text-decoration:none;}
+    img{max-width:100%;display:block;}
+    .grain{pointer-events:none;position:fixed;inset:0;z-index:200;opacity:0.018;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;}
+
+    nav{position:sticky;top:0;z-index:100;background:var(--bg);}
+    .nav-inner{max-width:1280px;margin:0 auto;padding:0 48px;height:64px;display:flex;align-items:center;}
+    .nav-logo{font-family:var(--font-serif);font-weight:700;font-size:17px;color:var(--fg);letter-spacing:0.01em;margin-right:auto;flex-shrink:0;transition:color 300ms ease-out;}
+    .nav-logo:hover{color:var(--sage);}
+    .nav-links{display:flex;gap:2px;list-style:none;}
+    .nav-links a{font-size:13px;font-weight:500;letter-spacing:0.02em;color:var(--fg);opacity:0.55;padding:6px 14px;border-radius:var(--r-btn);transition:opacity 300ms ease-out,background 300ms ease-out;}
+    .nav-links a:hover{opacity:1;background:var(--warm);}
+    .nav-links a.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+    .nav-dropdown{position:relative;}
+    .nav-dropdown-btn{font-size:13px;font-weight:500;letter-spacing:0.02em;color:var(--fg);opacity:0.55;background:none;border:none;cursor:pointer;font-family:var(--font-sans);padding:6px 14px;border-radius:var(--r-btn);display:inline-flex;align-items:center;gap:4px;transition:opacity 300ms ease-out,background 300ms ease-out;}
+    .nav-dropdown-btn:hover{opacity:1;background:var(--warm);}
+    .nav-dropdown-btn.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+    .nav-dropdown-btn svg{width:11px;height:11px;transition:transform 250ms var(--ease);}
+    .nav-dropdown.open .nav-dropdown-btn svg{transform:rotate(180deg);}
+    .nav-submenu{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--stone);border-radius:14px;padding:6px;min-width:190px;box-shadow:0 8px 28px -4px rgba(45,58,49,0.13);list-style:none;opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity 200ms ease,transform 200ms ease;z-index:300;}
+    .nav-dropdown.open .nav-submenu{opacity:1;pointer-events:all;transform:translateY(0);}
+    .nav-submenu li a{display:block;font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--fg);opacity:0.65;padding:8px 14px;border-radius:9px;transition:opacity 200ms ease,background 200ms ease;}
+    .nav-submenu li a:hover{opacity:1;background:var(--warm);}
+    .nav-submenu li a.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+    .has-nested{position:relative;}
+    .submenu-label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--fg);opacity:0.65;padding:8px 14px;border-radius:9px;cursor:default;transition:opacity 200ms ease,background 200ms ease;user-select:none;}
+    .submenu-label svg{width:10px;height:10px;flex-shrink:0;}
+    .has-nested:hover .submenu-label{opacity:1;background:var(--warm);}
+    .nav-nested{position:absolute;top:-6px;left:calc(100% + 6px);background:var(--surface);border:1px solid var(--stone);border-radius:14px;padding:6px;min-width:230px;box-shadow:0 8px 28px -4px rgba(45,58,49,0.13);list-style:none;opacity:0;pointer-events:none;transform:translateX(-6px);transition:opacity 200ms ease,transform 200ms ease;z-index:400;}
+    .has-nested:hover .nav-nested{opacity:1;pointer-events:all;transform:translateX(0);}
+    .nav-nested li a{display:block;font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--fg);opacity:0.65;padding:8px 14px;border-radius:9px;transition:opacity 200ms ease,background 200ms ease;}
+    .nav-nested li a:hover{opacity:1;background:var(--warm);}
+    .nav-nested li a.active{opacity:1;color:var(--sage);background:rgba(140,154,132,0.14);}
+
+    .container{max-width:1000px;margin:0 auto;padding:0 48px;}
+    .back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--fg);opacity:0.6;background:var(--warm);border:1px solid var(--stone);border-radius:var(--r-btn);padding:6px 16px;margin-top:24px;transition:opacity 300ms ease-out,border-color 300ms ease-out,background 300ms ease-out;}
+    .back-btn:hover{opacity:1;border-color:var(--clay);background:var(--surface);}
+
+    .page-header{padding:80px 0 64px;}
+    .eyebrow{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.18em;color:var(--sage);margin-bottom:16px;}
+    .page-title{font-family:var(--font-serif);font-size:clamp(2.2rem,5vw,3.6rem);font-weight:700;line-height:1.1;letter-spacing:-0.01em;margin-bottom:16px;}
+    .page-title em{font-style:italic;color:var(--terra);}
+    .page-subtitle{font-size:17px;color:var(--fg);opacity:0.6;line-height:1.75;max-width:540px;}
+
+    .creative-section{padding:56px 0;border-top:1px solid var(--stone);}
+    .section-label{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.16em;color:var(--sage);margin-bottom:32px;}
+
+    /* FEATURED VIDEO CARD — compact centered */
+    .video-wrap{max-width:700px;margin:0 auto;}
+    .video-card{background:var(--surface);border:1px solid var(--stone);border-radius:var(--r-card);overflow:hidden;box-shadow:var(--shadow-sm);transition:transform 500ms var(--ease),box-shadow 500ms var(--ease),border-color 300ms ease-out;}
+    .video-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-xl);border-color:var(--clay);}
+    .video-embed{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;}
+    .video-embed iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+    .video-meta{padding:24px 28px;}
+    .video-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:var(--terra);margin-bottom:8px;}
+    .video-title{font-family:var(--font-serif);font-size:18px;font-weight:700;margin-bottom:5px;line-height:1.3;}
+    .video-sub{font-size:13px;color:var(--sage);font-weight:600;margin-bottom:12px;}
+    .video-desc{font-size:14px;color:var(--fg);opacity:0.68;line-height:1.75;}
+    .video-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+    .video-tag{background:var(--warm);border:1px solid var(--stone);border-radius:var(--r-btn);padding:4px 14px;font-size:12px;color:var(--fg);opacity:0.7;}
+
+    /* PHOTO GALLERY — masonry columns */
+    .gallery{columns:3;column-gap:12px;}
+    .gallery-item{break-inside:avoid;margin-bottom:12px;overflow:hidden;border-radius:16px;border:1px solid var(--stone);box-shadow:var(--shadow-sm);transition:transform 500ms var(--ease),box-shadow 500ms var(--ease);}
+    .gallery-item:hover{transform:translateY(-3px);box-shadow:var(--shadow-xl);}
+    .gallery-item img{width:100%;height:auto;display:block;transition:transform 600ms var(--ease);}
+    .gallery-item:hover img{transform:scale(1.03);}
+
+    [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity 700ms var(--ease),transform 700ms var(--ease);}
+    [data-reveal].in-view{opacity:1;transform:translateY(0);}
+
+    footer{border-top:1px solid var(--stone);padding:40px 0;text-align:center;margin-top:40px;}
+    .footer-text{font-size:13px;color:var(--fg);opacity:0.45;letter-spacing:0.03em;}
+    .footer-text a{transition:opacity 300ms ease;}
+    .footer-text a:hover{opacity:1;color:var(--terra);}
+
+    @media(max-width:768px){
+      .nav-inner{padding:0 20px;}.nav-links a{font-size:11px;padding:5px 9px;}.container{padding:0 20px;}
+      .gallery{columns:2;}
+    }
+    @media(max-width:480px){.gallery{columns:1;}}
+  </style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Sanya Khan</a>
+    <ul class="nav-links">
+      <li><a href="about_me.html">About Me</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">Academia &amp; Research <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-submenu">
+          <li><a href="research_lab.html">Research Lab</a></li>
+          <li><a href="academic_research.html">Academic Research</a></li>
+          <li><a href="academic_projects.html">Academic Projects</a></li>
+        </ul>
+      </li>
+      <li><a href="experience.html">Experience</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">Publications <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-submenu">
+          <li class="has-nested">
+            <span class="submenu-label">Articles <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+            <ul class="nav-nested">
+              <li><a href="hercampus.html">Feature Writer (HerCampus Media)</a></li>
+              <li><a href="fastarticles.html">Journalism (Fast at UCLA &ndash; Blog)</a></li>
+            </ul>
+          </li>
+          <li><a href="internation_pub.html">International Publication</a></li>
+        </ul>
+      </li>
+      <li><a href="honors.html">Honors</a></li>
+      <li><a href="volunteering.html">Volunteering</a></li>
+      <li class="nav-dropdown">
+        <button class="nav-dropdown-btn active" aria-haspopup="true" aria-expanded="false">Creative <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-submenu">
+          <li><a href="creative_dance.html">Dance</a></li>
+          <li><a href="creative_modeling.html" class="active">Modeling</a></li>
+          <li><a href="creative_painting.html">Painting</a></li>
+          <li><a href="creative_poetry.html">Poetry</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <a href="index.html" class="back-btn">← Home</a>
+  <div class="page-header">
+    <p class="eyebrow">Creative Work</p>
+    <h1 class="page-title"><em>Modeling</em></h1>
+    <p class="page-subtitle">Fashion editorial shoots, documentary film, and commercial campaigns — work at the intersection of visual storytelling and cultural identity.</p>
+  </div>
+
+  <!-- SAREE EFFECT VIDEO -->
+  <section class="creative-section">
+    <p class="section-label">The Saree Effect — Featured Video</p>
+    <div class="video-wrap" data-reveal>
+      <div class="video-card">
+        <div class="video-embed">
+          <iframe src="https://drive.google.com/file/d/1QRK9mj9KYsx46w5xBAZUwCCtCJVj22Ag/preview" allow="autoplay" allowfullscreen></iframe>
+        </div>
+        <div class="video-meta">
+          <div class="video-label">Fashion Editorial Film</div>
+          <div class="video-title">The Saree Effect</div>
+          <div class="video-sub">FAST at UCLA &nbsp;&middot;&nbsp; The Effect Series</div>
+          <p class="video-desc">A documentary-editorial film exploring the cultural and personal significance of the saree — its history, its weight, and what it means to drape it far from home. Featured model, co-director, and subject.</p>
+          <div class="video-tags">
+            <span class="video-tag">FAST at UCLA</span>
+            <span class="video-tag">Fashion Editorial</span>
+            <span class="video-tag">Cultural Identity</span>
+            <span class="video-tag">Documentary Film</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHOTO GALLERY -->
+  <section class="creative-section">
+    <p class="section-label">Photo Gallery</p>
+    <div class="gallery" data-reveal>
+      <div class="gallery-item"><img src="Creative/modeling/IMG_1450.PNG" alt="Editorial shoot" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/DSCF9216.jpg" alt="Editorial shoot" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/DSC01425.jpg" alt="Editorial shoot" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/uniformEffectByvanderKouwe (3 of 54).jpg" alt="Uniform Effect editorial" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/IMG_1441.PNG" alt="Editorial shoot" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/uniformEffectByvanderKouwe (13 of 54).jpg" alt="Uniform Effect editorial" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/IMG_1151.jpg" alt="Editorial shoot" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/DSC01324.jpg" alt="Editorial shoot" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/IMG_1782.jpg" alt="Editorial shoot" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/IMG_1147.jpg" alt="Editorial shoot" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/B1AE512C-054C-415F-8A10-E44450BFAF5C_1_105_c.jpeg" alt="Editorial shoot" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/IMG_1775.jpg" alt="Editorial shoot" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/IMG_1774.jpg" alt="Editorial shoot" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/IMG_1460.PNG" alt="Editorial shoot" loading="lazy" /></div>
+      <div class="gallery-item"><img src="Creative/modeling/IMG_1449.PNG" alt="Editorial shoot" loading="lazy" /></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p class="footer-text">Sanya Khan &nbsp;&middot;&nbsp; <a href="index.html">Back to home</a></p>
+</footer>
+
+<script>
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const delay = parseInt(el.dataset.delay || '0', 10);
+      setTimeout(() => el.classList.add('in-view'), delay);
+      revealObs.unobserve(el);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
+  document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
+
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd) {
+    dd.querySelector('.nav-dropdown-btn').addEventListener('click', function(e) {
+      e.stopPropagation(); dd.classList.toggle('open');
+      this.setAttribute('aria-expanded', dd.classList.contains('open'));
+    });
+  });
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.nav-dropdown.open').forEach(function(dd) {
+      dd.classList.remove('open');
+      dd.querySelector('.nav-dropdown-btn').setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+</body>
+</html>
